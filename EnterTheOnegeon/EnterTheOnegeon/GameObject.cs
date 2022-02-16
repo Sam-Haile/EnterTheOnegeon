@@ -52,8 +52,11 @@ namespace EnterTheOnegeon
             get { return hitbox.Y + hitbox.Height / 2; }
         }
         public abstract void Move();
-        public abstract void IsDead();
+        public abstract bool IsDead();
         public abstract void Update();
-        public abstract void Draw(SpriteBatch sb);
+        public virtual void Draw(SpriteBatch sb)
+        {
+            sb.Draw(sprite, hitbox, Color.White);
+        }
     }
 }
