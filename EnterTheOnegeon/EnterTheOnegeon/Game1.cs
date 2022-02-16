@@ -8,6 +8,8 @@ namespace EnterTheOnegeon
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        enum GameState { Title, Game, Score}
+        private GameState gameState = GameState.Title;
 
         public Game1()
         {
@@ -36,6 +38,18 @@ namespace EnterTheOnegeon
                 Exit();
 
             // TODO: Add your update logic here
+            switch (gameState)
+            {
+                case GameState.Title:
+
+                    break;
+                case GameState.Game:
+
+                    break;
+                case GameState.Score:
+
+                    break;
+            }
 
             base.Update(gameTime);
         }
@@ -45,6 +59,18 @@ namespace EnterTheOnegeon
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            switch (gameState)
+            {
+                case GameState.Title:
+
+                    break;
+                case GameState.Game:
+
+                    break;
+                case GameState.Score:
+
+                    break;
+            }
 
             base.Draw(gameTime);
         }
