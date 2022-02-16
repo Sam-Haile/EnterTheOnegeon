@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
-    ///Everything that is part of the "GameplayState"
+    /// Everything that is part of the "GameplayState"
     abstract class GameObject
     {
         /// <summary>
