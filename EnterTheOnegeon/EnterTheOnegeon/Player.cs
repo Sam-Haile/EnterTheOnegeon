@@ -8,9 +8,14 @@ namespace EnterTheOnegeon
 {
     class Player : GameObject
     {
+        private int speed;
+        private bool isDead;
         public Player(Texture2D sprite, Rectangle hitbox) : base(sprite, hitbox)
         {
-
+            speed = 1;
+            isDead = false;
         }
+
+
     }
 }

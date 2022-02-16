@@ -55,5 +55,9 @@ namespace EnterTheOnegeon
         public abstract void IsDead();
         public abstract void Update();
         public abstract void Draw(SpriteBatch sb);
+        public bool CollideWith(GameObject other)
+        {
+            return true;
+        }
     }
 }
