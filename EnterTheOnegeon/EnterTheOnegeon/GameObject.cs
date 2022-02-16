@@ -73,14 +73,12 @@ namespace EnterTheOnegeon
         public abstract void Move();
 
         /// <summary>
-        /// Will return true if an object is dead.
-        /// In the case of the player, this will end the game
-        /// In the case of enemies and enemy bullets, this will delete them
+        /// Will return true if this GameObject is dead.
         /// </summary>
-        public abstract void IsDead();
+        public abstract bool IsDead();
 
         /// <summary>
-        /// Not sure what this will be used for for each individual class
+        /// Not sure what this will be used for in each individual class
         /// </summary>
         public abstract void Update();
 
