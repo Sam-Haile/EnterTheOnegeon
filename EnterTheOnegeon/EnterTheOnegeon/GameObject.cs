@@ -92,6 +92,7 @@ namespace EnterTheOnegeon
 
         /// <summary>
         /// Checks if this GameObject is colliding with another GameObject
+        /// ****NOT YET IMPLEMENTED****
         /// </summary>
         /// <param name="other"></param>
         /// <returns>true if this object is collding with object "other"</returns>
