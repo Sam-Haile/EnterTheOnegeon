@@ -15,7 +15,21 @@ namespace EnterTheOnegeon
             speed = 1;
             isDead = false;
         }
+        public override void Update()
+        {
+        }
+        public override void Move()
+        {
 
+        }
+        public override void Draw(SpriteBatch sb)
+        {
+            throw new NotImplementedException();
+        }
+        public override bool IsDead()
+        {
+            return true;
+        }
 
     }
 }
