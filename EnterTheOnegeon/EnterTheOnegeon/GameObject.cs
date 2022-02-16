@@ -89,14 +89,12 @@ namespace EnterTheOnegeon
         public abstract void Draw(SpriteBatch sb);
 
         /// <summary>
-        /// Checks if this GameObject is colliding with another GameObject
-        /// ****NOT YET IMPLEMENTED****
+        /// Will check if this GameObject is colliding with another GameObject
+        /// Some GameObjects like the player will have hitboxes smaller than the dimensions of their 
+        /// rectangle
         /// </summary>
         /// <param name="other"></param>
         /// <returns>true if this object is collding with object "other"</returns>
-        public bool CollideWith(GameObject other)
-        {
-            return true;
-        }
+        public abstract bool CollideWith(GameObject other);
     }
 }
