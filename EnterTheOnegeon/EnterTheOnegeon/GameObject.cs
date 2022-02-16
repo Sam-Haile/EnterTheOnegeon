@@ -53,5 +53,7 @@ namespace EnterTheOnegeon
         }
         public abstract void Move();
         public abstract void IsDead();
+        public abstract void Update();
+        public abstract void Draw(SpriteBatch sb);
     }
 }
