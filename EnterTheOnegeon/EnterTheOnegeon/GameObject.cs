@@ -89,5 +89,9 @@ namespace EnterTheOnegeon
         /// </summary>
         /// <param name="sb"></param>
         public abstract void Draw(SpriteBatch sb);
+        public bool CollideWith(GameObject other)
+        {
+            return true;
+        }
     }
 }
