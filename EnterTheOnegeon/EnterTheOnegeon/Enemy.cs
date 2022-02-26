@@ -46,7 +46,7 @@ namespace EnterTheOnegeon
         /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
-            base.Draw(sb);
+            sb.Draw(sprite, hitbox, Color.White);
         }
     }
 }

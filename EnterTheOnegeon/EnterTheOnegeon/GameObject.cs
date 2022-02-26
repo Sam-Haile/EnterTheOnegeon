@@ -67,6 +67,14 @@ namespace EnterTheOnegeon
         }
 
         /// <summary>
+        /// return the rectangle of GameObject
+        /// </summary>
+        public Rectangle Position 
+        {
+            get { return hitbox; }
+        }
+
+        /// <summary>
         /// Will be used in child classes to move said class's X and Y coordinates
         /// This will be done via keyboard input for the player and AI for NPC
         /// </summary>

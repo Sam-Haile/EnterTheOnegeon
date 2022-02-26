@@ -31,5 +31,16 @@ namespace EnterTheOnegeon
             return true;
         }
 
+        public override bool CollideWith(GameObject other)
+        {
+            if (this.Position.Intersects(other.Position))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
