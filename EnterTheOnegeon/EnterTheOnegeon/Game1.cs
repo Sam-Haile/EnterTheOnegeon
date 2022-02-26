@@ -27,7 +27,7 @@ namespace EnterTheOnegeon
         // player fields
         Texture2D playerAsset;
         Player player;
-
+        
         // text fields
         SpriteFont verdana;
 
@@ -140,8 +140,6 @@ namespace EnterTheOnegeon
 
                     break;
                 case GameState.Game:        // what is happening while in the game state
-                    player.Draw(_spriteBatch);
-
                     player.Draw(_spriteBatch);
 
                     #region Text
