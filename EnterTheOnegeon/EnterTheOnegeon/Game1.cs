@@ -27,6 +27,10 @@ namespace EnterTheOnegeon
         // player fields
         Texture2D playerAsset;
         Player player;
+
+        // text fields
+        SpriteFont verdana;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -53,6 +57,10 @@ namespace EnterTheOnegeon
             playerAsset = Content.Load<Texture2D>("player");
             // for now, i put the location of the sprite near the bottom of the screen
             player = new Player(playerAsset, new Rectangle(400, 350, 40, 40));
+
+            // load font
+            verdana = Content.Load<SpriteFont>("Verdana15");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -113,14 +121,54 @@ namespace EnterTheOnegeon
             {
                 case GameState.Title:       // what is being drawn while in the title screen
 
+                    #region Text
+                    _spriteBatch.DrawString(verdana,
+                        "ENTER THE ONEGEON",
+                        new Vector2(10, 10),
+                        Color.White);
+
+                    _spriteBatch.DrawString(verdana,
+                        "Press 2 for game",
+                        new Vector2(10, 30),
+                        Color.White);
+
+                    _spriteBatch.DrawString(verdana,
+                        "Press 3 for scores",
+                        new Vector2(10, 80),
+                        Color.White);
+                    #endregion
+
                     break;
                 case GameState.Game:        // what is happening while in the game state
                     player.Draw(_spriteBatch);
 
                     player.Draw(_spriteBatch);
 
+                    #region Text
+                    _spriteBatch.DrawString(verdana,
+                        "Press 1 for menu",
+                        new Vector2(10, 50),
+                        Color.White);
+                    _spriteBatch.DrawString(verdana,
+                        "Press 3 for scores",
+                        new Vector2(10, 80),
+                        Color.White);
+                    #endregion
+
                     break;
                 case GameState.Score:       // what is happening while on the scoreboard/death screen
+
+                    #region Text
+                    _spriteBatch.DrawString(verdana,
+                        "Press 1 for menu",
+                        new Vector2(10, 50),
+                        Color.White);
+
+                    _spriteBatch.DrawString(verdana,
+                        "Press 2 for game",
+                        new Vector2(10, 30),
+                        Color.White);
+                    #endregion
 
                     break;
             }
