@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
+    /// <summary>
+    /// Contains all code to run Enter the Onegeon
+    /// </summary>
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;

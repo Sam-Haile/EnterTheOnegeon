@@ -7,7 +7,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
+    /// <summary>
     /// Everything that is part of the "GameplayState"
+    /// </summary>
+
     abstract class GameObject
     {
         /// <summary>
@@ -20,18 +23,18 @@ namespace EnterTheOnegeon
         /// <summary>
         /// The rectangle object containing GameObject's coordinates and dimensions
         /// </summary>
-        protected Rectangle hitbox;
+        protected Rectangle rectangle;
 
         /// <summary>
-        /// "sprite" is the sprite drawn on screen representing GameObject, and "hitbox" is the 
-        /// rectangle that contains GameObject's coordinates and dimensions
+        /// "sprite" is the sprite drawn on screen representing GameObject, and "rectangle" is the 
+        /// Rectangle that contains GameObject's coordinates and dimensions
         /// </summary>
         /// <param name="sprite"></param>
-        /// <param name="hitbox"></param>
-        public GameObject(Texture2D sprite, Rectangle hitbox)
+        /// <param name="rectangle"></param>
+        public GameObject(Texture2D sprite, Rectangle rectangle)
         {
             this.sprite = sprite;
-            this.hitbox = hitbox;
+            this.rectangle = rectangle;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public int X
         {
-            get { return hitbox.X; }
+            get { return rectangle.X; }
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public int CenterX
         {
-            get { return hitbox.X + hitbox.Width/2; }
+            get { return rectangle.X + rectangle.Width/2; }
         }
 
         /// <summary>
@@ -55,7 +58,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public int Y
         {
-            get { return hitbox.Y; }
+            get { return rectangle.Y; }
         }
 
         /// <summary>
@@ -63,7 +66,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public int CenterY
         {
-            get { return hitbox.Y + hitbox.Height / 2; }
+            get { return rectangle.Y + rectangle.Height / 2; }
         }
 
         /// <summary>
