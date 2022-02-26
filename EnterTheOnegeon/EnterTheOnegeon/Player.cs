@@ -30,12 +30,25 @@ namespace EnterTheOnegeon
         /// </summary>
         public override void Move()
         {
+            KeyboardState keypress = Keyboard.GetState();
 
-        }
-
-        public override void Draw(SpriteBatch sb)
-        {
-            throw new NotImplementedException();
+            // speed at which player moves is subject to change
+            if (keypress.IsKeyDown(Keys.W))
+            {
+                rectangle.Y -= 5;
+            }
+            if (keypress.IsKeyDown(Keys.A))
+            {
+                rectangle.X -= 5;
+            }
+            if (keypress.IsKeyDown(Keys.S))
+            {
+                rectangle.Y += 5;
+            }
+            if (keypress.IsKeyDown(Keys.D))
+            {
+                rectangle.X += 5;
+            }
         }
 
         public override bool IsDead()

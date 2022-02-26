@@ -45,14 +45,5 @@ namespace EnterTheOnegeon
                 return false;
             }
         }
-
-        /// <summary>
-        /// displays enemy sprite
-        /// </summary>
-        /// <param name="sb"></param>
-        public override void Draw(SpriteBatch sb)
-        {
-            
-        }
     }
 }

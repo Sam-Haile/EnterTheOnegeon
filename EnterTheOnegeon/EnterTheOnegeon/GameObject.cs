@@ -74,7 +74,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public Rectangle Position 
         {
-            get { return hitbox; }
+            get { return rectangle; }
         }
 
         /// <summary>
@@ -97,7 +97,10 @@ namespace EnterTheOnegeon
         /// Will be used to draw this object on screen
         /// </summary>
         /// <param name="sb"></param>
-        public abstract void Draw(SpriteBatch sb);
+        public virtual void Draw(SpriteBatch sb)
+        {
+            sb.Draw(sprite, rectangle, Color.White);
+        }
 
         /// <summary>
         /// Will check if this GameObject is colliding with another GameObject
