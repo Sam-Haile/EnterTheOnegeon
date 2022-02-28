@@ -9,22 +9,36 @@ namespace EnterTheOnegeon
 {
     class TestEnemy : Enemy
     {
+        int speed;
         public TestEnemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle, health)
         {
+            speed = 5;
         }
         public override bool CollideWith(GameObject other)
         {
-            throw new NotImplementedException();
+            if (this.Position.Intersects(other.Position))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
+        /// <summary>
+        /// Moves arbitrarily to a point of the screen for now
+        /// </summary>
         public override void Move()
         {
-            throw new NotImplementedException();
+            Vector2 direction = this.VectorToPosition(300, 300);
+            rectangle.X += (int) direction.X * speed;
+            rectangle.Y += (int) direction.Y * speed;
         }
 
         public override void Update()
         {
-            throw new NotImplementedException();
+            this.Move();
         }
     }
 }
