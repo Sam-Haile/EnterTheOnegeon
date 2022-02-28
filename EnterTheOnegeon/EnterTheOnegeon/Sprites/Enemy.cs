@@ -45,5 +45,26 @@ namespace EnterTheOnegeon
                 return false;
             }
         }
+        /// <summary>
+        /// Gets a vector for the direction to a position defined by 2 doubles
+        /// </summary>
+        /// <param name="x">X position</param>
+        /// <param name="y">Y position</param>
+        /// <returns></returns>
+        public Vector2 VectorToPosition(double x, double y)
+        {
+            return new Vector2((float)(x - this.CenterX), (float)(y - this.CenterY));
+        }
+        /// <summary>
+        /// Gets a vector for the direction to a position defined by a vector2
+        /// </summary>
+        /// <param name="pos">Vector2 position</param>
+        /// <returns></returns>
+        public Vector2 VectorToPosition(Vector2 pos)
+        {
+            return new Vector2((float)(pos.X - this.CenterX), (float)(pos.Y - this.CenterY));
+        }
+
+
     }
 }
