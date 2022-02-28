@@ -31,16 +31,23 @@ namespace EnterTheOnegeon
         }
 
         /// <summary>
-        /// Moves to random point
+        /// Movement testing for now
         /// </summary>
         public override void Move()
         {
             Vector2 direction = this.VectorToPosition(place);
+            
             if(rectangle.X < 0 || rectangle.Y < 0 || rectangle.X > 600 || rectangle.Y > 450)
             {
                 place.X = rand.Next(0, 600);
                 place.Y = rand.Next(0, 450);
             }
+            else if(direction.X < 5 || direction.Y < 5)
+            {
+                place.X = rand.Next(0, 600);
+                place.Y = rand.Next(0, 450);
+            }
+            direction.Normalize();
             rectangle.X += (int) (direction.X * speed);
             rectangle.Y += (int) (direction.Y * speed);
         }
