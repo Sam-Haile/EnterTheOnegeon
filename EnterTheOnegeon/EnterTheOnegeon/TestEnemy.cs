@@ -32,8 +32,8 @@ namespace EnterTheOnegeon
         public override void Move()
         {
             Vector2 direction = this.VectorToPosition(300, 300);
-            rectangle.X += (int) direction.X * speed;
-            rectangle.Y += (int) direction.Y * speed;
+            rectangle.X += (int) (direction.X * speed);
+            rectangle.Y += (int) (direction.Y * speed);
         }
 
         public override void Update()

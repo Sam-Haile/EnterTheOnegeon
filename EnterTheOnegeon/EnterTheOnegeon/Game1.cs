@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace EnterTheOnegeon
 {
@@ -27,7 +29,11 @@ namespace EnterTheOnegeon
         // player fields
         Texture2D playerAsset;
         Player player;
-        
+
+        // enemy fields
+        Texture2D enemyAsset;
+        List<Enemy> enemyList;
+
         // text fields
         SpriteFont verdana;
 
@@ -58,6 +64,11 @@ namespace EnterTheOnegeon
             // for now, i put the location of the sprite near the bottom of the screen
             player = new Player(playerAsset, new Rectangle(400, 350, 40, 40));
 
+            // loading enemy and initializing a list
+            enemyAsset = Content.Load<Texture2D>("badguy");
+            enemyList = new List<Enemy>() { new TestEnemy(enemyAsset, new Rectangle(50, 50, 40, 40), 1),
+                                            new TestEnemy(enemyAsset, new Rectangle(500, 700, 40, 40), 1),
+                                            new TestEnemy(enemyAsset, new Rectangle(0, 200, 40, 40), 1)};
             // load font
             verdana = Content.Load<SpriteFont>("Verdana15");
 
@@ -86,6 +97,12 @@ namespace EnterTheOnegeon
 
                     // players movement
                     player.Move();
+
+                    //enemy updating
+                    foreach (Enemy en in enemyList)
+                    {
+                        ((TestEnemy)en).Move();
+                    }
                     if (Keyboard.GetState().IsKeyDown(Keys.D1))     //temp dev shortcut until buttons are implimented
                     {
                         gameState = GameState.Title;
@@ -141,7 +158,10 @@ namespace EnterTheOnegeon
                     break;
                 case GameState.Game:        // what is happening while in the game state
                     player.Draw(_spriteBatch);
-
+                    foreach(Enemy en in enemyList)
+                    {
+                        en.Draw(_spriteBatch);
+                    }
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "Press 1 for menu",
