@@ -22,7 +22,7 @@ namespace EnterTheOnegeon
 
         public override void Update()
         {
-
+            Move();
         }
 
         /// <summary>

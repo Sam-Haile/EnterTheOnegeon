@@ -85,7 +85,7 @@ namespace EnterTheOnegeon
                 case GameState.Game:
 
                     // players movement
-                    player.Move();
+                    player.Update();
                     if (Keyboard.GetState().IsKeyDown(Keys.D1))     //temp dev shortcut until buttons are implimented
                     {
                         gameState = GameState.Title;

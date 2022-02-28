@@ -17,6 +17,11 @@ namespace EnterTheOnegeon
         private int speed;
 
         /// <summary>
+        /// time which bullet is active
+        /// </summary>
+        private float timer;
+
+        /// <summary>
         /// Speed can not be set at all
         /// </summary>
         public int Speed
@@ -29,10 +34,12 @@ namespace EnterTheOnegeon
             this.speed = speed;
         }
 
-        public override void Update()
+        /*
+        public override void Update(GameTime gameTime, List<SpriteBatch>)
         {
-
+            // METHOD HERE SHOULD REMOVE BULLET AFTER CERTAIN AMOUNT OF TIME
         }
+        */
 
         public override void Move()
         {

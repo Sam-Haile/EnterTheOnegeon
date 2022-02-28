@@ -26,6 +26,11 @@ namespace EnterTheOnegeon
         protected Rectangle rectangle;
 
         /// <summary>
+        /// checks if player is dead or bullet should be removed
+        /// </summary>
+        public bool isRemoved = false;
+
+        /// <summary>
         /// "sprite" is the sprite drawn on screen representing GameObject, and "rectangle" is the 
         /// Rectangle that contains GameObject's coordinates and dimensions
         /// </summary>
