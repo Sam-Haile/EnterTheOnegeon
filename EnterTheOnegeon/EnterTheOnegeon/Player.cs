@@ -12,11 +12,13 @@ namespace EnterTheOnegeon
     class Player : GameObject
     {
         private int speed;
+        private int bulletCount;
         private bool isDead;
 
         public Player(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
-            speed = 1;
+            speed = 5;
+            bulletCount = 1;
             isDead = false;
         }
 
@@ -35,19 +37,19 @@ namespace EnterTheOnegeon
             // speed at which player moves is subject to change
             if (keypress.IsKeyDown(Keys.W))
             {
-                rectangle.Y -= 5;
+                rectangle.Y -= speed;
             }
             if (keypress.IsKeyDown(Keys.A))
             {
-                rectangle.X -= 5;
+                rectangle.X -= speed;
             }
             if (keypress.IsKeyDown(Keys.S))
             {
-                rectangle.Y += 5;
+                rectangle.Y += speed;
             }
             if (keypress.IsKeyDown(Keys.D))
             {
-                rectangle.X += 5;
+                rectangle.X += speed;
             }
         }
 
@@ -65,6 +67,22 @@ namespace EnterTheOnegeon
             else
             {
                 return false;
+            }
+        }
+
+        public void Shoot()
+        {
+
+        }
+
+        public void Parry(GameObject other)
+        {
+            //foreach ()
+            {
+                if (CollideWith(other))
+                {
+                    bulletCount += 1;
+                }
             }
         }
     }
