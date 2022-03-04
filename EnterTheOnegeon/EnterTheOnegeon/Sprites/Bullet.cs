@@ -11,12 +11,7 @@ namespace EnterTheOnegeon
     /// </summary>
     class Bullet : GameObject 
     {
-
-        protected Texture2D texture;
-
         public Vector2 position;
-        public Vector2 velocity;
-        public Vector2 origin;
 
         public bool isVisible;
         /// <summary>
@@ -26,6 +21,7 @@ namespace EnterTheOnegeon
 
         /// <summary>
         /// time which bullet is active
+        /// Seconds for now
         /// </summary>
         private float timer;
 
@@ -40,7 +36,15 @@ namespace EnterTheOnegeon
         // Parameterized
         public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
-
+            position = this.PositionV;
+            speed = 1;
+            timer = 5;
+        }
+        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 ) : base(sprite, rectangle)
+        {
+            position = this.PositionV;
+            speed = 1;
+            timer = 5;
         }
 
         /*
