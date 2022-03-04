@@ -45,8 +45,5 @@ namespace EnterTheOnegeon
                 return false;
             }
         }
-     
-
-
     }
 }

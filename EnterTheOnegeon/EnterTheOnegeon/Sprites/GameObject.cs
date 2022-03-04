@@ -85,6 +85,15 @@ namespace EnterTheOnegeon
             get { return rectangle; }
         }
 
+        //
+        public Vector2 PositionV
+        {
+            get
+            {
+                return new Vector2(rectangle.X, rectangle.Y);
+            }
+        }
+
         /// <summary>
         /// Will be used in child classes to move said class's X and Y coordinates
         /// This will be done via keyboard input for the player and AI for NPC

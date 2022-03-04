@@ -9,7 +9,7 @@ namespace EnterTheOnegeon
     /// <summary>
     /// Bullet Class (Child of GameObject) - Creates an object that moves at speed "speed"
     /// </summary>
-    abstract class Bullet : GameObject 
+    class Bullet : GameObject 
     {
 
         protected Texture2D texture;
@@ -55,5 +55,19 @@ namespace EnterTheOnegeon
 
         }
 
+        public override bool IsDead()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CollideWith(GameObject other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
