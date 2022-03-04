@@ -70,6 +70,14 @@ namespace EnterTheOnegeon
             rectangle.Y += (int)(trajectory.Y * speed);
         }
 
+        public override void Draw(SpriteBatch sb)
+        {
+            if(!TimeUp())
+            {
+                base.Draw(sb);
+            }
+        }
+
         public bool TimeUp()
         {
             return timer <= 0;
