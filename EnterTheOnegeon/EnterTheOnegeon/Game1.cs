@@ -50,6 +50,8 @@ namespace EnterTheOnegeon
         Texture2D coverArt;
         Texture2D scoreBoard;
 
+        
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -214,6 +216,7 @@ namespace EnterTheOnegeon
             {
                 case GameState.Title:       // what is being drawn while in the title screen
                     _spriteBatch.Draw(coverArt, new Rectangle(0, 0, 800, 480), Color.White);
+
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "ENTER THE ONEGEON",
