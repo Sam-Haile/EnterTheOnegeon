@@ -145,9 +145,10 @@ namespace EnterTheOnegeon
 
                     //rotation = (float)Math.Atan2(distance.Y, distance.X);
 
-                    if ()
+                    if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released)
                     {
-                        //Shoot();
+                        bulletList.Add(new Bullet(bulletAssest, player.Position, 
+                                           new Vector2(_mState.X, _mState.Y), 3, 1 ));
                     }
                     _prvsKbState = Keyboard.GetState();
 
@@ -280,6 +281,11 @@ namespace EnterTheOnegeon
                     foreach(Enemy en in enemyList)
                     {
                         en.Draw(_spriteBatch);
+                    }
+
+                    foreach (Bullet b in bulletList)
+                    {
+                        b.Draw(_spriteBatch);
                     }
 
                     //foreach (NormalBullet bullet in bullets)
