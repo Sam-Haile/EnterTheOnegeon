@@ -23,7 +23,6 @@ namespace EnterTheOnegeon
         private SpriteBatch _spriteBatch;
         private GameState gameState = GameState.Title;
 
-
         // handles keyboard input
         KeyboardState _currentKbState;
         KeyboardState _prvsKbState;
@@ -48,6 +47,8 @@ namespace EnterTheOnegeon
 
         //background fields
         Texture2D dungeon;
+        Texture2D coverArt;
+        Texture2D scoreBoard;
 
         public Game1()
         {
@@ -72,7 +73,9 @@ namespace EnterTheOnegeon
             _prvsKbState = _currentKbState;
 
             // initialize background texture
+            coverArt = Content.Load<Texture2D>("coverArt");
             dungeon = Content.Load<Texture2D>("dungeon");
+            scoreBoard = Content.Load<Texture2D>("scoreBoard");
 
             // initialize player and its asset
             playerAsset = Content.Load<Texture2D>("player");
@@ -208,7 +211,7 @@ namespace EnterTheOnegeon
             switch (gameState)      // switch to control what is being drawn to the screen at each part of our fsm
             {
                 case GameState.Title:       // what is being drawn while in the title screen
-
+                    _spriteBatch.Draw(coverArt, new Rectangle(0, 0, 800, 480), Color.White);
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "ENTER THE ONEGEON",
@@ -254,6 +257,7 @@ namespace EnterTheOnegeon
                     break;
                 case GameState.Score:       // what is happening while on the scoreboard/death screen
 
+                    _spriteBatch.Draw(scoreBoard, new Rectangle(0, 0, 800, 480), Color.White);
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "Press 1 for menu",
