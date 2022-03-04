@@ -31,11 +31,8 @@ namespace EnterTheOnegeon
         Player player;
 
         // bullet fields
-        Vector2 distance;
-        float rotation;
-        Vector2 spriteVelocty;
-
-        Vector2 spritePosition;
+        Texture2D bulletAssest;
+        List<Bullet> bulletList;
 
         // enemy fields
         Texture2D enemyAsset;
@@ -83,6 +80,10 @@ namespace EnterTheOnegeon
             // for now, i put the location of the sprite near the bottom of the screen
             player = new Player(playerAsset, new Rectangle(400, 350, 16, 32));
 
+            //Loading for bullets
+            bulletAssest = Content.Load<Texture2D>("Bullet");
+            bulletList = new List<Bullet>();
+
             // loading enemy and initializing a list
             enemyAsset = Content.Load<Texture2D>("badguy");
             enemyList = new List<Enemy>() { new TestEnemy(enemyAsset, new Rectangle(50, 50, 40, 40), 1),
@@ -120,12 +121,9 @@ namespace EnterTheOnegeon
                     MouseState mouse = Mouse.GetState();
                     IsMouseVisible = true;
 
-                    distance.X = mouse.X - spritePosition.X;
-                    distance.Y = mouse.Y - spritePosition.Y;
-
                     //rotation = (float)Math.Atan2(distance.Y, distance.X);
 
-                    if (Keyboard.GetState().IsKeyDown(Keys.Space) && _prvsKbState.IsKeyUp(Keys.Space))
+                    if ()
                     {
                         //Shoot();
                     }
@@ -137,6 +135,14 @@ namespace EnterTheOnegeon
                         
                         ((TestEnemy)en).Update(player);
                     }
+
+                    //Bullets testing
+                    foreach (Bullet b in bulletList)
+                    {
+                        b.Update(gameTime);
+                    }
+
+
                     if (Keyboard.GetState().IsKeyDown(Keys.D1))     //temp dev shortcut until buttons are implimented
                     {
                         gameState = GameState.Title;
