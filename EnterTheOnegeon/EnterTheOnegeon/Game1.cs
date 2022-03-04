@@ -144,7 +144,7 @@ namespace EnterTheOnegeon
 
                     if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released)
                     {
-                        bulletList.Add(new Bullet(bulletAssest, player.Position, 
+                        bulletList.Add(new Bullet(bulletAssest, new Rectangle(player.CenterX, player.CenterY, 10, 10), 
                                            new Vector2(_mState.X, _mState.Y), 3, 1 ));
                     }
                     _prvsKbState = Keyboard.GetState();
