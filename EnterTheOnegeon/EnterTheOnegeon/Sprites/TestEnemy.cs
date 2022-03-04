@@ -11,12 +11,10 @@ namespace EnterTheOnegeon
     {
         int speed;
         Vector2 playerPos;
-        Random rand;
         public TestEnemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle, health)
         {
-            speed = 5;
-            rand = new Random();
-            playerPos = new Vector2(rand.Next(0, 600), rand.Next(0, 450));
+            speed = 3;
+            playerPos = new Vector2();
         }
         public override bool CollideWith(GameObject other)
         {

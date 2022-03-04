@@ -9,5 +9,6 @@ namespace EnterTheOnegeon
 {
     class EnemyManager
     {
+
     }
 }
