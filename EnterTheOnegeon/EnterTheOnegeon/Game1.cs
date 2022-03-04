@@ -26,6 +26,8 @@ namespace EnterTheOnegeon
         // handles keyboard input
         KeyboardState _currentKbState;
         KeyboardState _prvsKbState;
+        //handles mouse input
+
         // player fields
         Texture2D playerAsset;
         Player player;
@@ -49,7 +51,9 @@ namespace EnterTheOnegeon
         Texture2D coverArt;
         Texture2D scoreBoard;
 
-        
+        // button fields
+        Texture2D T_Button;
+        Button strtButt;
 
         public Game1()
         {
@@ -91,6 +95,9 @@ namespace EnterTheOnegeon
             // load font
             verdana = Content.Load<SpriteFont>("Verdana15");
 
+            T_Button = Content.Load<Texture2D>("T_Button");
+            strtButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -103,6 +110,7 @@ namespace EnterTheOnegeon
             switch (gameState)
             {
                 case GameState.Title:
+
                     if (Keyboard.GetState().IsKeyDown(Keys.D2))     //temp dev shortcut until buttons are implimented
                     {
                         gameState = GameState.Game;
@@ -215,6 +223,7 @@ namespace EnterTheOnegeon
             {
                 case GameState.Title:       // what is being drawn while in the title screen
                     _spriteBatch.Draw(coverArt, new Rectangle(0, 0, 800, 480), Color.White);
+                    strtButt.Draw(_spriteBatch);
 
                     #region Text
                     _spriteBatch.DrawString(verdana,
