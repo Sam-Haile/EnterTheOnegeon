@@ -11,6 +11,14 @@ namespace EnterTheOnegeon
     /// </summary>
     abstract class Bullet : GameObject 
     {
+
+        protected Texture2D texture;
+
+        public Vector2 position;
+        public Vector2 velocity;
+        public Vector2 origin;
+
+        public bool isVisible;
         /// <summary>
         /// The pixels this bullet will move forward each time Update is run in Game1.cs
         /// </summary>
@@ -27,11 +35,12 @@ namespace EnterTheOnegeon
         public int Speed
         { get { return speed; } }
 
+
         // Constructor
         // Parameterized
-        public Bullet(Texture2D sprite, Rectangle rectangle, int speed) : base(sprite, rectangle)
+        public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
-            this.speed = speed;
+
         }
 
         /*
@@ -46,16 +55,5 @@ namespace EnterTheOnegeon
 
         }
 
-        /// <summary>
-        /// Draws the bullet
-        /// </summary>
-        /// <param name="sb"></param>
-        public override void Draw(SpriteBatch sb)
-        {
-            sb.Draw(
-                sprite,
-                rectangle,
-                Color.White);
-        }
     }
 }

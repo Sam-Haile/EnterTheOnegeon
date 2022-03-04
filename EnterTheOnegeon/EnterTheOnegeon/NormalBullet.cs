@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
     class NormalBullet : Bullet
     {
-        private float _timer;
-        
+
+        public NormalBullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle )
+        {
+            this.sprite = sprite;
+            isVisible = false;
+        }
 
         public override bool CollideWith(GameObject other)
         {
@@ -23,5 +30,7 @@ namespace EnterTheOnegeon
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

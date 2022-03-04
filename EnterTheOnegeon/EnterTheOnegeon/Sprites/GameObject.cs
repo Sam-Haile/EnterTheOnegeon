@@ -30,6 +30,9 @@ namespace EnterTheOnegeon
         /// </summary>
         public bool isRemoved = false;
 
+
+        
+
         /// <summary>
         /// "sprite" is the sprite drawn on screen representing GameObject, and "rectangle" is the 
         /// Rectangle that contains GameObject's coordinates and dimensions

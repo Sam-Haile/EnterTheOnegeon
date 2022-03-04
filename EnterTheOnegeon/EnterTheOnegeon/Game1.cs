@@ -23,6 +23,7 @@ namespace EnterTheOnegeon
         private SpriteBatch _spriteBatch;
         private GameState gameState = GameState.Title;
 
+
         // handles keyboard input
         KeyboardState _currentKbState;
         KeyboardState _prvsKbState;
@@ -30,12 +31,23 @@ namespace EnterTheOnegeon
         Texture2D playerAsset;
         Player player;
 
+        // bullet fields
+        List<NormalBullet> bullets = new List<NormalBullet>();
+        Vector2 distance;
+        float rotation;
+        Vector2 spriteVelocty;
+
+        Vector2 spritePosition;
+
         // enemy fields
         Texture2D enemyAsset;
         List<Enemy> enemyList;
 
         // text fields
         SpriteFont verdana;
+
+        //background fields
+        Texture2D dungeon;
 
         public Game1()
         {
@@ -59,10 +71,13 @@ namespace EnterTheOnegeon
             _currentKbState = Keyboard.GetState();
             _prvsKbState = _currentKbState;
 
+            // initialize background texture
+            dungeon = Content.Load<Texture2D>("dungeon");
+
             // initialize player and its asset
             playerAsset = Content.Load<Texture2D>("player");
             // for now, i put the location of the sprite near the bottom of the screen
-            player = new Player(playerAsset, new Rectangle(400, 350, 40, 40));
+            player = new Player(playerAsset, new Rectangle(400, 350, 16, 32));
 
             // loading enemy and initializing a list
             enemyAsset = Content.Load<Texture2D>("badguy");
@@ -98,6 +113,20 @@ namespace EnterTheOnegeon
                     // players movement
                     player.Move();
 
+                    MouseState mouse = Mouse.GetState();
+                    IsMouseVisible = true;
+
+                    distance.X = mouse.X - spritePosition.X;
+                    distance.Y = mouse.Y - spritePosition.Y;
+
+                    //rotation = (float)Math.Atan2(distance.Y, distance.X);
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space) && _prvsKbState.IsKeyUp(Keys.Space))
+                    {
+                        //Shoot();
+                    }
+                    _prvsKbState = Keyboard.GetState();
+
                     //enemy updating
                     foreach (Enemy en in enemyList)
                     {
@@ -127,9 +156,51 @@ namespace EnterTheOnegeon
             base.Update(gameTime);
         }
 
+        public void UpdateBullets()
+        {
+            // if bullet is certain distance from player
+            foreach (NormalBullet bullet in bullets)
+            {
+                bullet.position += bullet.velocity;
+                if (Vector2.Distance(bullet.position, spritePosition) > 500)
+                {
+                    bullet.isVisible = false;
+                }
+            }
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                // remove it from screen and list
+                if (!bullets[i].isVisible)
+                {
+                    bullets.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        // Not sure how to display bullets at the front of sprite
+        /*
+        public void Shoot()
+        {
+            NormalBullet newBullet = new NormalBullet(Content.Load<Texture2D>("Bullet"), rectangle);
+
+            // retrieve angle of the player and shoots bullet at current angle
+            // also prevent bullet from colliding into own player
+            newBullet.velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * 5f + player.Speed;
+            // bullets position is equal to front of player and shoots out
+            newBullet.position = spritePosition + newBullet.velocity * 5;
+            newBullet.isVisible = true;
+
+            if (bullets.Count < 20)
+            {
+                bullets.Add(newBullet);
+            }
+        }
+        */
+
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.MediumPurple);
 
             // TODO: Add your drawing code here
 
@@ -157,10 +228,17 @@ namespace EnterTheOnegeon
 
                     break;
                 case GameState.Game:        // what is happening while in the game state
+
+                    _spriteBatch.Draw(dungeon, new Rectangle(0,0,800,480), Color.White);
                     player.Draw(_spriteBatch);
                     foreach(Enemy en in enemyList)
                     {
                         en.Draw(_spriteBatch);
+                    }
+
+                    foreach (NormalBullet bullet in bullets)
+                    {
+                        bullet.Draw(_spriteBatch);
                     }
                     #region Text
                     _spriteBatch.DrawString(verdana,

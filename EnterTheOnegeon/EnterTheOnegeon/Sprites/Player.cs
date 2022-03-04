@@ -22,6 +22,11 @@ namespace EnterTheOnegeon
             isDead = false;
         }
 
+        public int Speed
+        {
+            get { return speed; }
+        }
+
         public override void Update()
         {
             Move();
