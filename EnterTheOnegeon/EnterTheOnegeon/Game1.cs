@@ -27,7 +27,9 @@ namespace EnterTheOnegeon
         KeyboardState _currentKbState;
         KeyboardState _prvsKbState;
         //handles mouse input
-
+        MouseState _mState;
+        MouseState _prevMState;
+        
         // player fields
         Texture2D playerAsset;
         Player player;
@@ -54,6 +56,8 @@ namespace EnterTheOnegeon
         // button fields
         Texture2D T_Button;
         Button strtButt;
+        Button menuButt;
+        Button quitButt;
 
         public Game1()
         {
@@ -97,6 +101,8 @@ namespace EnterTheOnegeon
 
             T_Button = Content.Load<Texture2D>("T_Button");
             strtButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
+            quitButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
+            menuButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
 
         }
 
@@ -106,10 +112,15 @@ namespace EnterTheOnegeon
 
             _prvsKbState = _currentKbState;
             _currentKbState = Keyboard.GetState();
+            _mState = Mouse.GetState();
 
             switch (gameState)
             {
                 case GameState.Title:
+                    if(_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width && _mState.X > strtButt.ButtRect.X && _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height && _mState.Y > strtButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                    }
 
                     if (Keyboard.GetState().IsKeyDown(Keys.D2))     //temp dev shortcut until buttons are implimented
                     {
@@ -156,6 +167,8 @@ namespace EnterTheOnegeon
 
                     break;
                 case GameState.Score:
+
+
                     if (Keyboard.GetState().IsKeyDown(Keys.D2))     //temp dev shortcut until buttons are implimented
                     {
                         gameState = GameState.Game;
@@ -166,6 +179,7 @@ namespace EnterTheOnegeon
                     }
                     break;
             }
+            _prevMState = _mState;
 
             base.Update(gameTime);
         }
