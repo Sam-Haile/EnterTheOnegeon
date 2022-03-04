@@ -95,22 +95,6 @@ namespace EnterTheOnegeon
         }
 
         /// <summary>
-        /// Will be used in child classes to move said class's X and Y coordinates
-        /// This will be done via keyboard input for the player and AI for NPC
-        /// </summary>
-        public abstract void Move();
-
-        /// <summary>
-        /// Will return true if this GameObject is dead.
-        /// </summary>
-        public abstract bool IsDead();
-
-        /// <summary>
-        /// Not sure what this will be used for in each individual class
-        /// </summary>
-        public abstract void Update();
-
-        /// <summary>
         /// Will be used to draw this object on screen
         /// </summary>
         /// <param name="sb"></param>
@@ -126,7 +110,17 @@ namespace EnterTheOnegeon
         /// </summary>
         /// <param name="other"></param>
         /// <returns>true if this object is collding with object "other"</returns>
-        public abstract bool CollideWith(GameObject other);
+        public virtual bool CollideWith(GameObject other)
+        {
+            if (this.Position.Intersects(other.Position))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
         /// <summary>

@@ -61,24 +61,5 @@ namespace EnterTheOnegeon
         }
         */
 
-        public override void Move()
-        {
-
-        }
-
-        public override bool IsDead()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Update()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool CollideWith(GameObject other)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
