@@ -31,7 +31,6 @@ namespace EnterTheOnegeon
         Player player;
 
         // bullet fields
-        List<NormalBullet> bullets = new List<NormalBullet>();
         Vector2 distance;
         float rotation;
         Vector2 spriteVelocty;
@@ -166,23 +165,23 @@ namespace EnterTheOnegeon
         public void UpdateBullets()
         {
             // if bullet is certain distance from player
-            foreach (NormalBullet bullet in bullets)
-            {
-                bullet.position += bullet.velocity;
-                if (Vector2.Distance(bullet.position, spritePosition) > 500)
-                {
-                    bullet.isVisible = false;
-                }
-            }
-            for (int i = 0; i < bullets.Count; i++)
-            {
-                // remove it from screen and list
-                if (!bullets[i].isVisible)
-                {
-                    bullets.RemoveAt(i);
-                    i--;
-                }
-            }
+            //foreach (NormalBullet bullet in bullets)
+            //{
+            //    bullet.position += bullet.velocity;
+            //    if (Vector2.Distance(bullet.position, spritePosition) > 500)
+            //    {
+            //        bullet.isVisible = false;
+            //    }
+            //}
+            //for (int i = 0; i < bullets.Count; i++)
+            //{
+            //    // remove it from screen and list
+            //    if (!bullets[i].isVisible)
+            //    {
+            //        bullets.RemoveAt(i);
+            //        i--;
+            //    }
+            //}
         }
 
         // Not sure how to display bullets at the front of sprite
@@ -244,10 +243,10 @@ namespace EnterTheOnegeon
                         en.Draw(_spriteBatch);
                     }
 
-                    foreach (NormalBullet bullet in bullets)
-                    {
-                        bullet.Draw(_spriteBatch);
-                    }
+                    //foreach (NormalBullet bullet in bullets)
+                    //{
+                    //    bullet.Draw(_spriteBatch);
+                    //}
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "Press 1 for menu",
