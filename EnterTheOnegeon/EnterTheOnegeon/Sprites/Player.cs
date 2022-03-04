@@ -27,7 +27,7 @@ namespace EnterTheOnegeon
             get { return speed; }
         }
 
-        public override void Update()
+        public void Update()
         {
             Move();
         }
@@ -35,7 +35,7 @@ namespace EnterTheOnegeon
         /// <summary>
         /// ToDo: Keyboard input
         /// </summary>
-        public override void Move()
+        public void Move()
         {
             KeyboardState keypress = Keyboard.GetState();
 
@@ -58,21 +58,9 @@ namespace EnterTheOnegeon
             }
         }
 
-        public override bool IsDead()
+        public bool IsDead()
         {
             return true;
-        }
-
-        public override bool CollideWith(GameObject other)
-        {
-            if (this.Position.Intersects(other.Position))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public void Shoot()

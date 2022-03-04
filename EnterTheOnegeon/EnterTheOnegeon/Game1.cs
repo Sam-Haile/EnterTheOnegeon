@@ -142,8 +142,8 @@ namespace EnterTheOnegeon
                     //enemy updating
                     foreach (Enemy en in enemyList)
                     {
-                        ((TestEnemy)en).Relocate(player);
-                        ((TestEnemy)en).Move();
+                        
+                        ((TestEnemy)en).Update(player);
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.D1))     //temp dev shortcut until buttons are implimented
                     {

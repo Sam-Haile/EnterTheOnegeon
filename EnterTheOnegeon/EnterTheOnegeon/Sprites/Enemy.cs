@@ -34,7 +34,7 @@ namespace EnterTheOnegeon
         /// determines if enemy is dead
         /// </summary>
         /// <returns>true if enemy is dead, false if enemy is alive</returns>
-        public override bool IsDead()
+        public bool IsDead()
         {
             if (health <= 0)
             {

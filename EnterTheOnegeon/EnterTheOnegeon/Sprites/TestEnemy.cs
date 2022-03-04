@@ -31,7 +31,7 @@ namespace EnterTheOnegeon
         /// <summary>
         /// Movement testing for now
         /// </summary>
-        public override void Move()
+        public void Move()
         {
             Vector2 direction = this.VectorToPosition(playerPos);
             
@@ -40,14 +40,10 @@ namespace EnterTheOnegeon
             rectangle.Y += (int) (direction.Y * speed);
         }
 
-        public override void Update()
-        {
-            this.Move();
-        }
-        //
-        public void Relocate(Player p)
+        public void Update(Player p)
         {
             playerPos = p.PositionV;
+            this.Move();
         }
 
     }
