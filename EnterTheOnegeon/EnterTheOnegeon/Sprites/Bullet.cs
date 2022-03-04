@@ -11,7 +11,9 @@ namespace EnterTheOnegeon
     /// </summary>
     class Bullet : GameObject 
     {
-        public Vector2 position;
+        private Vector2 position;
+
+        private Vector2 trajectory;
 
         public bool isVisible;
         /// <summary>
@@ -34,17 +36,23 @@ namespace EnterTheOnegeon
 
         // Constructor
         // Parameterized
+        // SHOULD DELETE LATER AFTER TESTING
         public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
             position = this.PositionV;
             speed = 1;
-            timer = 5;
+            timer = 3;
+            trajectory = new Vector2();
         }
-        public Bullet(Texture2D sprite, Rectangle rectangle, int spd, double time) : base(sprite, rectangle)
+
+
+        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 posToMoveTo, int spd, double time) : base(sprite, rectangle)
         {
             position = this.PositionV;
             speed = spd;
             timer = time;
+            trajectory = base.VectorToPosition(posToMoveTo);
+            trajectory.Normalize();
         }
 
         //public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 spawnPos, int spd, double time) : base(sprite, rectangle)
@@ -54,12 +62,17 @@ namespace EnterTheOnegeon
         //    timer = time;
         //}
 
-        /*
-        public override void Update(GameTime gameTime, List<SpriteBatch>)
+        public void Update(GameTime gameTime)
         {
-            // METHOD HERE SHOULD REMOVE BULLET AFTER CERTAIN AMOUNT OF TIME
+            timer -= gameTime.ElapsedGameTime.TotalSeconds;
+            
+            rectangle.X += (int)(trajectory.X * speed);
+            rectangle.Y += (int)(trajectory.Y * speed);
         }
-        */
 
+        public bool TimeUp()
+        {
+            return timer <= 0;
+        }
     }
 }
