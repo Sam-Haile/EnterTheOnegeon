@@ -112,7 +112,7 @@ namespace EnterTheOnegeon
                     }
                     break;
                 case GameState.Game:
-
+                    
                     // players movement
                     player.Move();
 
@@ -143,6 +143,7 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Score;
                     }
+
                     break;
                 case GameState.Score:
                     if (Keyboard.GetState().IsKeyDown(Keys.D2))     //temp dev shortcut until buttons are implimented
