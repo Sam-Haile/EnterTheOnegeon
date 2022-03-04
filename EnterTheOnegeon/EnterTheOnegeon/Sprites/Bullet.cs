@@ -23,7 +23,7 @@ namespace EnterTheOnegeon
         /// time which bullet is active
         /// Seconds for now
         /// </summary>
-        private float timer;
+        private double timer;
 
         /// <summary>
         /// Speed can not be set at all
@@ -40,12 +40,19 @@ namespace EnterTheOnegeon
             speed = 1;
             timer = 5;
         }
-        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 ) : base(sprite, rectangle)
+        public Bullet(Texture2D sprite, Rectangle rectangle, int spd, double time) : base(sprite, rectangle)
         {
             position = this.PositionV;
-            speed = 1;
-            timer = 5;
+            speed = spd;
+            timer = time;
         }
+
+        //public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 spawnPos, int spd, double time) : base(sprite, rectangle)
+        //{
+        //    position = spawnPos;
+        //    speed = spd;
+        //    timer = time;
+        //}
 
         /*
         public override void Update(GameTime gameTime, List<SpriteBatch>)
