@@ -102,8 +102,8 @@ namespace EnterTheOnegeon
 
             T_Button = Content.Load<Texture2D>("T_Button");
             strtButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
-            quitButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
-            menuButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
+            quitButt = new Button(verdana, T_Button, "Quit", new Rectangle(GraphicsDevice.Viewport.Width - 180, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
+            menuButt = new Button(verdana, T_Button, "Menu", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
 
         }
 
@@ -122,8 +122,11 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Game;
                     }
-
-                    if (Keyboard.GetState().IsKeyDown(Keys.D2))     //temp dev shortcut until buttons are implimented
+                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && _mState.X > quitButt.ButtRect.X && _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && _mState.Y > quitButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        Exit();
+                    }
+                        if (Keyboard.GetState().IsKeyDown(Keys.D2))     //temp dev shortcut until buttons are implimented
                     {
                         gameState = GameState.Game;
                     }
@@ -174,7 +177,14 @@ namespace EnterTheOnegeon
 
                     break;
                 case GameState.Score:
-
+                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && _mState.X > quitButt.ButtRect.X && _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && _mState.Y > quitButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        Exit();
+                    }
+                    if (_mState.X < menuButt.ButtRect.X + menuButt.ButtRect.Width && _mState.X > menuButt.ButtRect.X && _mState.Y < menuButt.ButtRect.Y + menuButt.ButtRect.Height && _mState.Y > menuButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Title;
+                    }
 
                     if (Keyboard.GetState().IsKeyDown(Keys.D2))     //temp dev shortcut until buttons are implimented
                     {
@@ -245,7 +255,7 @@ namespace EnterTheOnegeon
                 case GameState.Title:       // what is being drawn while in the title screen
                     _spriteBatch.Draw(coverArt, new Rectangle(0, 0, 800, 480), Color.White);
                     strtButt.Draw(_spriteBatch);
-
+                    quitButt.Draw(_spriteBatch);
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "ENTER THE ONEGEON",
@@ -297,6 +307,8 @@ namespace EnterTheOnegeon
                 case GameState.Score:       // what is happening while on the scoreboard/death screen
 
                     _spriteBatch.Draw(scoreBoard, new Rectangle(0, 0, 800, 480), Color.White);
+                    menuButt.Draw(_spriteBatch);
+                    quitButt.Draw(_spriteBatch);
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "Press 1 for menu",
