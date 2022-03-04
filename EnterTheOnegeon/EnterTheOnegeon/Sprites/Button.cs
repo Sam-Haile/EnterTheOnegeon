@@ -20,11 +20,16 @@ namespace EnterTheOnegeon
         private string text;
         private Vector2 textPos;
         private Rectangle buttRect;
-        private MouseState prevMouseState;
         private Color textColor;
 
+        // Properties
+        public Rectangle ButtRect
+        {
+            get { return buttRect; }
+        }
+        
         // Constructor
-        public Button(SpriteFont fnt, Texture2D buttonText, string name, Rectangle buttonRect, MouseState prevMouseState, Color textColour)
+        public Button(SpriteFont fnt, Texture2D buttonText, string name, Rectangle buttonRect, Color textColour)
         {
             font = fnt;
             buttText = buttonText;
@@ -34,8 +39,21 @@ namespace EnterTheOnegeon
             textPos = new Vector2(
                     (buttRect.X + buttRect.Width / 2) - textSize.X / 2,
                     (buttRect.Y + buttRect.Height / 2) - textSize.Y / 2);
-            this.prevMouseState = prevMouseState;
             textColor = textColour;
         }
+
+        public void Draw(SpriteBatch sb)
+        {
+            sb.Draw(
+                buttText,
+                buttRect,
+                Color.White);
+            sb.DrawString(
+                font,
+                text,
+                textPos,
+                textColor);
+        }
+
     }
 }
