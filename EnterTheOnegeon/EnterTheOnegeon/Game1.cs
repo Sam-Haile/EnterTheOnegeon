@@ -282,6 +282,12 @@ namespace EnterTheOnegeon
                     {
                         en.Draw(_spriteBatch);
                     }
+                    //String for seeing enemy postion temporarily
+
+                    _spriteBatch.DrawString(verdana,
+                                            String.Format("Enemy1 Pos: {0}, {1}", enemyList[0].X, enemyList[0].Y),
+                                            new Vector2(300, 50),
+                                            Color.White);
 
                     foreach (Bullet b in bulletList)
                     {
