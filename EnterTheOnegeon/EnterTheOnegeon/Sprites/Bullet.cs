@@ -96,10 +96,19 @@ namespace EnterTheOnegeon
         }
 
         //For decrementing after it hits an enemy
+        //REPLACE WITH HITENEMY and HITPLAYER after testing
         public void DecPasses()
         {
             passes--;
         }
+        /*
+        public void HitEnemy(Enemy enem)
+        {
+            passes--;
+        calculate the dmg and other stuff?
+        }
+         */
+
 
         public void Update(GameTime gameTime)
         {
