@@ -393,6 +393,12 @@ namespace EnterTheOnegeon
                         new Vector2(10, 80),
                         Color.White);
                     #endregion
+                    //Drawing the line
+                    
+                    for (int i = 0; i < 20; i++)
+                    {
+                        _spriteBatch.Draw(dungeon, new Rectangle(player.CenterX + ((_mState.X - player.CenterX) * i / 20), player.CenterY + ((_mState.Y - player.CenterY) * i / 20), 4, 4), Color.Black);
+                    }
 
                     break;
                 case GameState.Score:       // what is happening while on the scoreboard/death screen
