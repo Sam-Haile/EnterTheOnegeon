@@ -21,7 +21,7 @@ namespace EnterTheOnegeon
             speed = 5;
             bulletCount = 5;
             //temp hp
-            hp = 3;
+            hp = 4;
         }
 
         public int BulletCount

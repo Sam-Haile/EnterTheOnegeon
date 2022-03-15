@@ -29,6 +29,12 @@ namespace EnterTheOnegeon
         //handles mouse input
         MouseState _mState;
         MouseState _prevMState;
+
+        //Temp Game fields
+        double totalGameTime;
+        double tempTime;
+        int score;
+        Random random = new Random();
         
         // player fields
         Texture2D playerAsset;
@@ -66,7 +72,8 @@ namespace EnterTheOnegeon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            totalGameTime = 0;
+            score = 0;
             base.Initialize();
         }
 
@@ -94,9 +101,7 @@ namespace EnterTheOnegeon
 
             // loading enemy and initializing a list
             enemyAsset = Content.Load<Texture2D>("badguy");
-            enemyList = new List<Enemy>() { new TestEnemy(enemyAsset, new Rectangle(50, 50, 40, 40), 1),
-                                            new TestEnemy(enemyAsset, new Rectangle(500, 700, 40, 40), 1),
-                                            new TestEnemy(enemyAsset, new Rectangle(0, 200, 40, 40), 1)};
+            enemyList = new List<Enemy>();
             // load font
             verdana = Content.Load<SpriteFont>("Verdana15");
 
@@ -118,7 +123,15 @@ namespace EnterTheOnegeon
             switch (gameState)
             {
                 case GameState.Title:
-                    if(_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width && _mState.X > strtButt.ButtRect.X && _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height && _mState.Y > strtButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    //Reset all the lists and player whenever going to title for now
+                    player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
+                    bulletList = new List<Bullet>();
+                    enemyList = new List<Enemy>();
+                    totalGameTime = 0;
+                    tempTime = 0;
+                    score = 0;
+
+                    if (_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width && _mState.X > strtButt.ButtRect.X && _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height && _mState.Y > strtButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         gameState = GameState.Game;
                     }
@@ -140,6 +153,27 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Score;
                     }
+
+                    //Enemy spawning logic here
+                    if(totalGameTime < 20)
+                    {
+                        if (tempTime > 2)
+                        {
+                            SpawnEnemy(2);
+                            tempTime = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (tempTime > 2)
+                        {
+                            SpawnEnemy(5);
+                            tempTime = 0;
+                        }
+                    }
+                    
+                    
+
                     // players movement
                     player.Move();
 
@@ -193,10 +227,16 @@ namespace EnterTheOnegeon
                     for (int i = enemyList.Count - 1; i >= 0; i--)
                     {
                         if (!enemyList[i].Active)
+                        {
                             enemyList.RemoveAt(i);
+                            score += 100;
+                        }
+                            
                     }
 
-
+                    //Adding to the timer
+                    totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
+                    tempTime += gameTime.ElapsedGameTime.TotalSeconds;
 
                     if (Keyboard.GetState().IsKeyDown(Keys.D1))     //temp dev shortcut until buttons are implimented
                     {
@@ -317,6 +357,17 @@ namespace EnterTheOnegeon
 
 
                     //Showing some of the player stuff temporarily
+                    //Score
+                    _spriteBatch.DrawString(verdana,
+                                            String.Format("Score: {0}", score),
+                                            new Vector2(350, 10),
+                                            Color.White);
+                    //Timer
+                    _spriteBatch.DrawString(verdana,
+                                            String.Format("Time Elapsed: {0:F3}", totalGameTime),
+                                            new Vector2(580, 10),
+                                            Color.White);
+                    //Bullets
                     _spriteBatch.Draw(bulletAsset, new Rectangle(350, 30, 30, 30), Color.White);
                     _spriteBatch.DrawString(verdana,
                                             String.Format("x{0}", player.BulletCount),
@@ -347,6 +398,9 @@ namespace EnterTheOnegeon
                 case GameState.Score:       // what is happening while on the scoreboard/death screen
 
                     _spriteBatch.Draw(scoreBoard, new Rectangle(0, 0, 800, 480), Color.White);
+                    _spriteBatch.DrawString(verdana,
+                                            String.Format("{0}", score),
+                                            new Vector2(400, 200), Color.White);
                     menuButt.Draw(_spriteBatch);
                     quitButt.Draw(_spriteBatch);
                     #region Text
@@ -366,6 +420,32 @@ namespace EnterTheOnegeon
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        //Temp helping method to spawn a certain number of enemies
+        public void SpawnEnemy(int num)
+        {
+            for(int i = 0; i < num; i++)
+            {
+                enemyList.Add(new TestEnemy(enemyAsset, new Rectangle(RandPoint(), new Point(50, 50)), 1));
+            }
+
+        }
+        //gets a random point with a certain distance to the player
+        public Point RandPoint()
+        {
+            int randx = random.Next(0, GraphicsDevice.Viewport.Width - 200);
+            int randy = random.Next(0, GraphicsDevice.Viewport.Height - 100);
+            if(randx > player.X - 30)
+            {
+                randx += 200;
+            }
+            if (randy > player.Y - 30)
+            {
+                randy += 100;
+            }
+
+            return new Point(randx, randy);
         }
     }
 }
