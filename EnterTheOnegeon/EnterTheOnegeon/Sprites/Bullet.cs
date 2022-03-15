@@ -95,19 +95,13 @@ namespace EnterTheOnegeon
             }
         }
 
-        //For decrementing after it hits an enemy
-        //REPLACE WITH HITENEMY and HITPLAYER after testing
-        public void DecPasses()
-        {
-            passes--;
-        }
-        /*
+        //Whenever this  bullet hits an enemy decrement number of passes and make the enemy take damage
         public void HitEnemy(Enemy enem)
         {
             passes--;
-        calculate the dmg and other stuff?
+            enem.TakeDamage(1);
         }
-         */
+        
 
 
         public void Update(GameTime gameTime)

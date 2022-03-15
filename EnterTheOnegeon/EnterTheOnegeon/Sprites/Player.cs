@@ -13,18 +13,36 @@ namespace EnterTheOnegeon
     {
         private int speed;
         private int bulletCount;
-        private bool isDead;
+        //temp hp
+        private int hp;
 
         public Player(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
             speed = 5;
-            bulletCount = 1;
-            isDead = false;
+            bulletCount = 5;
+            //temp hp
+            hp = 3;
+        }
+
+        public int BulletCount
+        {
+            get { return bulletCount; }
+            set { bulletCount = value; }
+        }
+
+        public bool Active
+        {
+            get { return hp > 0; }
         }
 
         public int Speed
         {
             get { return speed; }
+        }
+
+        public void TakeDamage(int damage)
+        {
+            hp -= damage;
         }
 
         public void Update()
@@ -58,14 +76,15 @@ namespace EnterTheOnegeon
             }
         }
 
-        public bool IsDead()
+        //Overriding draw to draw a hp bar as well
+        public override void Draw(SpriteBatch sb)
         {
-            return true;
-        }
-
-        public void Shoot()
-        {
-
+            sb.Draw(sprite, rectangle, Color.White);
+            Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
+            tempTexture.SetData(new Color[] { Color.White });
+            
+            sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, rectangle.Width, 5), Color.Red);
+            sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, (int)(rectangle.Width * (double)hp/4), 5), Color.LimeGreen);
         }
 
         public void Parry(GameObject other)

@@ -30,20 +30,23 @@ namespace EnterTheOnegeon
         }
 
 
-        /// <summary>
-        /// determines if enemy is dead
-        /// </summary>
-        /// <returns>true if enemy is dead, false if enemy is alive</returns>
-        public bool IsDead()
+        public virtual bool Active
         {
-            if (health <= 0)
+            get
             {
-                return true;
+                return health > 0;
             }
-            else
-            {
-                return false;
-            }
+        }
+
+        public virtual void TakeDamage(int damage)
+        {
+            health -= damage;
+        }
+
+        public virtual void HitPlayer(Player player)
+        {
+            TakeDamage(1);
+            player.TakeDamage(1);
         }
     }
 }

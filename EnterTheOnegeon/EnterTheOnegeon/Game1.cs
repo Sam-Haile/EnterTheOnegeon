@@ -35,7 +35,7 @@ namespace EnterTheOnegeon
         Player player;
 
         // bullet fields
-        Texture2D bulletAssest;
+        Texture2D bulletAsset;
         List<Bullet> bulletList;
 
         // enemy fields
@@ -86,10 +86,10 @@ namespace EnterTheOnegeon
             // initialize player and its asset
             playerAsset = Content.Load<Texture2D>("player");
             // for now, i put the location of the sprite near the bottom of the screen
-            player = new Player(playerAsset, new Rectangle(400, 350, 16, 32));
+            player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
 
             //Loading for bullets
-            bulletAssest = Content.Load<Texture2D>("Bullet");
+            bulletAsset = Content.Load<Texture2D>("Bullet");
             bulletList = new List<Bullet>();
 
             // loading enemy and initializing a list
@@ -136,19 +136,21 @@ namespace EnterTheOnegeon
                     }
                     break;
                 case GameState.Game:
-                    
+                    if(!player.Active)
+                    {
+                        gameState = GameState.Score;
+                    }
                     // players movement
                     player.Move();
 
                     MouseState mouse = Mouse.GetState();
                     IsMouseVisible = true;
 
-                    //rotation = (float)Math.Atan2(distance.Y, distance.X);
-
-                    if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released)
+                    if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
                     {
-                        bulletList.Add(new Bullet(bulletAssest, new Rectangle(player.CenterX, player.CenterY, 10, 10), 
-                                           new Vector2(_mState.X, _mState.Y), 3, 1 ));
+                        bulletList.Add(new Bullet(bulletAsset, new Rectangle(player.CenterX, player.CenterY, 10, 10), 
+                                           new Vector2(_mState.X, _mState.Y), 5, 2));
+                        player.BulletCount--;
                     }
                     _prvsKbState = Keyboard.GetState();
 
@@ -157,13 +159,43 @@ namespace EnterTheOnegeon
                     {
                         
                         ((TestEnemy)en).Update(player);
+                        if(en.CollideWith(player))
+                        {
+                            en.HitPlayer(player);
+                        }
                     }
+                    /*
+                    for(int i = enemyList.Count-1; i >= 0; i--)
+                    {
+                        if (!enemyList[i].Active)
+                            enemyList.RemoveAt(i);
+                    }
+                    */
 
                     //Bullets testing
                     foreach (Bullet b in bulletList)
                     {
                         b.Update(gameTime);
+                        foreach(Enemy en in enemyList)
+                        {
+                            if(b.CollideWith(en))
+                            {
+                                b.HitEnemy(en);
+                                player.BulletCount++;
+                            }
+                        }
                     }
+                    for (int i = bulletList.Count - 1; i >= 0; i--)
+                    {
+                        if (!bulletList[i].Active)
+                            bulletList.RemoveAt(i);
+                    }
+                    for (int i = enemyList.Count - 1; i >= 0; i--)
+                    {
+                        if (!enemyList[i].Active)
+                            enemyList.RemoveAt(i);
+                    }
+
 
 
                     if (Keyboard.GetState().IsKeyDown(Keys.D1))     //temp dev shortcut until buttons are implimented
@@ -282,11 +314,13 @@ namespace EnterTheOnegeon
                     {
                         en.Draw(_spriteBatch);
                     }
-                    //String for seeing enemy postion temporarily
 
+
+                    //Showing some of the player stuff temporarily
+                    _spriteBatch.Draw(bulletAsset, new Rectangle(350, 30, 30, 30), Color.White);
                     _spriteBatch.DrawString(verdana,
-                                            String.Format("Enemy1 Pos: {0}, {1}", enemyList[0].X, enemyList[0].Y),
-                                            new Vector2(300, 50),
+                                            String.Format("x{0}", player.BulletCount),
+                                            new Vector2(380, 30),
                                             Color.White);
 
                     foreach (Bullet b in bulletList)
