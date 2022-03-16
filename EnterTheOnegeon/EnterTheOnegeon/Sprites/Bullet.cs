@@ -99,12 +99,17 @@ namespace EnterTheOnegeon
 
         /// <summary>
         /// Property that returns true when the bullet can pass through more enemies
+        /// Bullets despawn when 100 pixels offscreen in any direction
         /// </summary>
         public bool Active
         {
             get 
             {
-                return passes > 0;
+                return passes > 0 || 
+                   rectangle.X < 0 - 100 || 
+                   rectangle.Y < 0 - 100 ||
+                   rectangle.Y > 1080 + 100 ||
+                   rectangle.Y < 1920 + 100);
             }
         }
 
