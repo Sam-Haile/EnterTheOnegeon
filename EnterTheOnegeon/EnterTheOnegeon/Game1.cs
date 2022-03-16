@@ -4,6 +4,14 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
+/*
+ * TO DO: 
+ * >IMPLEMENT FIPPS FONT (https://www.dafont.com/fipps.font)
+ * >
+ * >
+ */
+
+
 namespace EnterTheOnegeon
 {
     /// <summary>
