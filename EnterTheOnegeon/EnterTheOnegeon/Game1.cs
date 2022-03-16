@@ -597,39 +597,47 @@ namespace EnterTheOnegeon
             return new Point(randx, randy);
             */
 
-            int randx;
-            int randy;
+            int randX;
+            int randY;
             // 50/50 to decide to change x or y offscreen
-            //X is off screen
+            //enemy comes in from left or right
             if (random.Next(2) > 0)
             {
-                randy = random.Next(0, GraphicsDevice.Viewport.Height);
-                randx = random.Next(0, 51);
-                if(randx >= 25)
+                randY = random.Next(0 - enemyAsset.Height, GraphicsDevice.Viewport.Height);
+                randX = random.Next(2);
+                // enemy spawns east of viewport
+                if(randX == 1)
                 {
-                    randx += GraphicsDevice.Viewport.Width;
+                    randX = GraphicsDevice.Viewport.Width;
                 }
+                // enemy spawns west of viewport
                 else
                 {
-                    randx *= -1 - enemyAsset.Width;
+                    // 50 is the height of the enemy object, the height of the object !=
+                    // the height of the sprite.
+                    randX = 0 - 50;
                 }
 
             }
-            //Y is off screen
+            //enemy comes in from top or bottom
             else
             {
-                randx = random.Next(0, GraphicsDevice.Viewport.Width);
-                randy = random.Next(0, 41);
-                if (randy >= 20)
+                randX = random.Next(0 - enemyAsset.Width, GraphicsDevice.Viewport.Width);
+                randY = random.Next(2);
+                // enemy spawns south of viewport 
+                if (randY == 1)
                 {
-                    randy += GraphicsDevice.Viewport.Height;
+                    randY = GraphicsDevice.Viewport.Height;
                 }
+                // enemy spawns north of viewport
                 else
                 {
-                    randy *= -1 - enemyAsset.Height;
+                    // 50 is the height of the enemy object, the height of the object !=
+                    // the height of the sprite.
+                    randY = 0 - 50;
                 }
             }
-            return new Point(randx, randy);
+            return new Point(randX, randY);
         }
     }
 }
