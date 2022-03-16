@@ -13,7 +13,7 @@ namespace EnterTheOnegeon
         Vector2 playerPos;
         public TestEnemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle, health)
         {
-            speed = 3;
+            speed = 2;
             playerPos = new Vector2();
         }
         public override bool CollideWith(GameObject other)
@@ -38,8 +38,8 @@ namespace EnterTheOnegeon
             if(direction.Length() > 1)
                 direction.Normalize();
 
-            rectangle.X += (int) (direction.X * speed);
-            rectangle.Y += (int) (direction.Y * speed);
+            rectangle.X += (int) (Math.Round(direction.X * speed));
+            rectangle.Y += (int) (Math.Round(direction.Y * speed));
         }
 
         public void Update(Player p)
