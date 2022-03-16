@@ -155,7 +155,7 @@ namespace EnterTheOnegeon
                     }
 
                     //Enemy spawning logic here
-                    /*if(totalGameTime < 20)
+                    if(totalGameTime < 20)
                     {
                         if (tempTime > 2)
                         {
@@ -170,7 +170,7 @@ namespace EnterTheOnegeon
                             SpawnEnemy(5);
                             tempTime = 0;
                         }
-                    }*/
+                    }
 
 
 
