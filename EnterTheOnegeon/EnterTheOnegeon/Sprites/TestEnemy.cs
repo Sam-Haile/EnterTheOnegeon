@@ -9,8 +9,8 @@ namespace EnterTheOnegeon
 {
     class TestEnemy : Enemy
     {
-        int speed;
-        Vector2 playerPos;
+        private int speed;
+        private Vector2 playerPos;
         public TestEnemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle, health)
         {
             speed = 2;

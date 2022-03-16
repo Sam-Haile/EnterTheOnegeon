@@ -155,15 +155,15 @@ namespace EnterTheOnegeon
                     }
 
                     //Enemy spawning logic here
-                    if(totalGameTime < 20)
+                    if (totalGameTime < 20)
                     {
                         if (tempTime > 2)
                         {
-                            SpawnEnemy(2);
+                            SpawnEnemy(3);
                             tempTime = 0;
                         }
                     }
-                    else
+                    else if (totalGameTime < 40)
                     {
                         if (tempTime > 2)
                         {
@@ -171,8 +171,16 @@ namespace EnterTheOnegeon
                             tempTime = 0;
                         }
                     }
+                    else
+                    {
+                        if (tempTime > 2)
+                        {
+                            SpawnEnemy(10);
+                            tempTime = 0;
+                        }
+                    }
 
-
+                    
 
                     // players movement
                     player.Move();
@@ -456,8 +464,10 @@ namespace EnterTheOnegeon
 
         }
         //gets a random point with a certain distance to the player
+        // Above commented out that and now does off screen
         public Point RandPoint()
         {
+            /*
             int randx = random.Next(0, GraphicsDevice.Viewport.Width - 200);
             int randy = random.Next(0, GraphicsDevice.Viewport.Height - 100);
             if(randx > player.X - 30)
@@ -469,6 +479,41 @@ namespace EnterTheOnegeon
                 randy += 100;
             }
 
+            return new Point(randx, randy);
+            */
+
+            int randx;
+            int randy;
+            // 50/50 to decide to change x or y offscreen
+            //X is off screen
+            if (random.Next(2) > 0)
+            {
+                randy = random.Next(0, GraphicsDevice.Viewport.Height);
+                randx = random.Next(0, 51);
+                if(randx >= 25)
+                {
+                    randx += GraphicsDevice.Viewport.Width;
+                }
+                else
+                {
+                    randx *= -1;
+                }
+
+            }
+            //Y is off screen
+            else
+            {
+                randx = random.Next(0, GraphicsDevice.Viewport.Width);
+                randy = random.Next(0, 41);
+                if (randy >= 20)
+                {
+                    randy += GraphicsDevice.Viewport.Height;
+                }
+                else
+                {
+                    randy *= -1;
+                }
+            }
             return new Point(randx, randy);
         }
     }
