@@ -155,7 +155,7 @@ namespace EnterTheOnegeon
                     }
 
                     //Enemy spawning logic here
-                    if(totalGameTime < 20)
+                    /*if(totalGameTime < 20)
                     {
                         if (tempTime > 2)
                         {
@@ -170,9 +170,9 @@ namespace EnterTheOnegeon
                             SpawnEnemy(5);
                             tempTime = 0;
                         }
-                    }
-                    
-                    
+                    }*/
+
+
 
                     // players movement
                     player.Move();
@@ -180,10 +180,18 @@ namespace EnterTheOnegeon
                     MouseState mouse = Mouse.GetState();
                     IsMouseVisible = true;
 
+                    // bullet spawning when mouse clicked
                     if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
                     {
-                        bulletList.Add(new Bullet(bulletAsset, new Rectangle(player.CenterX, player.CenterY, 10, 10), 
-                                           new Vector2(_mState.X, _mState.Y), 5, 2));
+                        bulletList.Add(
+                            new Bullet(bulletAsset, 
+                                new Rectangle(
+                                    player.CenterX - bulletAsset.Width / 2, 
+                                    player.CenterY - bulletAsset.Height / 2, 
+                                    10, 
+                                    10), 
+                                new Vector2(_mState.X, _mState.Y), 2, gameTime));
+
                         player.BulletCount--;
                     }
                     _prvsKbState = Keyboard.GetState();

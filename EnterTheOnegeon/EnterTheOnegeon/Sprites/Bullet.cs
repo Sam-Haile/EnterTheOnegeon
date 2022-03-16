@@ -14,12 +14,17 @@ namespace EnterTheOnegeon
         private Vector2 trajectory;
 
         /// <summary>
-        /// The pixels this bullet will move forward each time Update is run in Game1.cs
+        /// seconds the bullet takes to travel 1000 pixels in the direction of (spawnX, spawnY)
         /// </summary>
         private int speed;
 
         /// <summary>
-        /// time which bullet is active
+        /// second the bullet was created
+        /// </summary>
+        private double timeCreated;
+
+        /// <summary>
+        /// total time the bullet has been alive
         /// Seconds for now
         /// </summary>
         private double timer;
@@ -29,18 +34,26 @@ namespace EnterTheOnegeon
         /// </summary>
         private int passes;
 
+        /// <summary>
+        /// the X coordinates of the bullet's spawn location
+        /// </summary>
+        private int spawnX;
 
+        /// <summary>
+        /// the Y coordinates of the bullet's spawn location
+        /// </summary>
+        private int spawnY;
 
         // Constructor
         // Parameterized
         // SHOULD DELETE LATER AFTER TESTING
-        public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
-        {
-            
-            speed = 1;
-            timer = 3;
-            trajectory = new Vector2();
-        }
+        //public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
+        //{
+        //    
+        //    speed = 1;
+        //    timer = 3;
+        //    trajectory = new Vector2();
+        //}
 
         /// <summary>
         /// Creates a bullet using the 5 params
@@ -48,26 +61,36 @@ namespace EnterTheOnegeon
         /// <param name="sprite">The asset</param>
         /// <param name="rectangle">Currently the hitbox, asset dimensions, and intial postion</param>
         /// <param name="posToMoveTo">Point where you want the bullet to move to</param>
-        /// <param name="spd">speed of the bullet</param>
+        /// <param name="spd">seconds it will take the bullet to travel 1000 pixels</param>
         /// <param name="time">Time on the screen</param>
-        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 posToMoveTo, int spd, double time) : base(sprite, rectangle)
+        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 posToMoveTo, int spd,
+            GameTime gameTime) : base(sprite, rectangle)
         {
             speed = spd;
-            timer = time;
-            trajectory = base.VectorToPosition(posToMoveTo);
+            timeCreated = gameTime.TotalGameTime.TotalSeconds;
+            spawnX = rectangle.X;
+            spawnY = rectangle.Y;
+            trajectory = VectorToPosition(posToMoveTo);
             trajectory.Normalize();
+            trajectory.X = trajectory.X * 1000;
+            trajectory.Y = trajectory.Y * 1000;
             passes = 1;
         }
 
         /// <summary>
         /// Same thing as other constructor just with the extra variable
         /// </summary>
-        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 posToMoveTo, int spd, double time, int pass) : base(sprite, rectangle)
+        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 posToMoveTo, int spd, 
+            GameTime gameTime, int pass) : base(sprite, rectangle)
         {
             speed = spd;
-            timer = time;
-            trajectory = base.VectorToPosition(posToMoveTo);
+            timeCreated = gameTime.TotalGameTime.TotalSeconds;
+            spawnX = rectangle.X;
+            spawnY = rectangle.Y;
+            trajectory = VectorToPosition(posToMoveTo);
             trajectory.Normalize();
+            trajectory.X = trajectory.X * 1000;
+            trajectory.Y = trajectory.Y * 1000;
             passes = pass;
         }
 
@@ -91,7 +114,7 @@ namespace EnterTheOnegeon
         {
             get 
             {
-                return timer > 0 && passes > 0;
+                return passes > 0;
             }
         }
 
@@ -108,10 +131,11 @@ namespace EnterTheOnegeon
         {
             if (this.Active)
             {
-                timer -= gameTime.ElapsedGameTime.TotalSeconds;
+                // Sets timer to amount of time bullet has been alive
+                timer = gameTime.TotalGameTime.TotalSeconds - timeCreated;
 
-                rectangle.X += (int)(trajectory.X * speed);
-                rectangle.Y += (int)(trajectory.Y * speed);
+                rectangle.X = (int)(spawnX + (trajectory.X * timer / speed));
+                rectangle.Y = (int)(spawnY + (trajectory.Y * timer / speed));
             }
         }
 
