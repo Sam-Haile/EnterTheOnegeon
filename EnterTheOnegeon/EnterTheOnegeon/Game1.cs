@@ -155,15 +155,15 @@ namespace EnterTheOnegeon
                     }
 
                     //Enemy spawning logic here
-                    if(totalGameTime < 20)
+                    if (totalGameTime < 20)
                     {
                         if (tempTime > 2)
                         {
-                            SpawnEnemy(2);
+                            SpawnEnemy(3);
                             tempTime = 0;
                         }
                     }
-                    else
+                    else if (totalGameTime < 40)
                     {
                         if (tempTime > 2)
                         {
@@ -171,8 +171,16 @@ namespace EnterTheOnegeon
                             tempTime = 0;
                         }
                     }
+                    else
+                    {
+                        if (tempTime > 2)
+                        {
+                            SpawnEnemy(10);
+                            tempTime = 0;
+                        }
+                    }
 
-
+                    
 
                     // players movement
                     player.Move();
