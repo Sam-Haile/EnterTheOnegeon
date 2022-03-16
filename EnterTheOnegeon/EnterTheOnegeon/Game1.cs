@@ -611,7 +611,7 @@ namespace EnterTheOnegeon
                 }
                 else
                 {
-                    randx *= -1;
+                    randx *= -1 - enemyAsset.Width;
                 }
 
             }
@@ -626,7 +626,7 @@ namespace EnterTheOnegeon
                 }
                 else
                 {
-                    randy *= -1;
+                    randy *= -1 - enemyAsset.Height;
                 }
             }
             return new Point(randx, randy);
