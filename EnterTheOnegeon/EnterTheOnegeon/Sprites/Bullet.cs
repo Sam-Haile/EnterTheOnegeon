@@ -11,37 +11,25 @@ namespace EnterTheOnegeon
     /// </summary>
     class Bullet : GameObject 
     {
+        /// <summary> coordinates of a point 1000 pixels in the direction of the mouse cursor </summary>
         private Vector2 trajectory;
 
-        /// <summary>
-        /// seconds the bullet takes to travel 1000 pixels in the direction of (spawnX, spawnY)
-        /// </summary>
+        /// <summary> seconds taken to travel from player to trajectory</summary>
         private int speed;
 
-        /// <summary>
-        /// second the bullet was created
-        /// </summary>
+        /// <summary> second the bullet was created </summary>
         private double timeCreated;
 
-        /// <summary>
-        /// total time the bullet has been alive
-        /// Seconds for now
-        /// </summary>
+        /// <summary> time the bullet has been alive </summary>
         private double timer;
 
-        /// <summary>
-        /// how many more enemies it can pass through
-        /// </summary>
+        /// <summary> how many more enemies bullet can pass through </summary>
         private int passes;
 
-        /// <summary>
-        /// the X coordinates of the bullet's spawn location
-        /// </summary>
+        /// <summary> X coordinates of bullet's spawn location </summary>
         private int spawnX;
 
-        /// <summary>
-        /// the Y coordinates of the bullet's spawn location
-        /// </summary>
+        /// <summary> the Y coordinates of bullet's spawn location </summary>
         private int spawnY;
 
         // Constructor
@@ -67,14 +55,18 @@ namespace EnterTheOnegeon
             GameTime gameTime) : base(sprite, rectangle)
         {
             speed = spd;
+
             timeCreated = gameTime.TotalGameTime.TotalSeconds;
+
             spawnX = rectangle.X;
             spawnY = rectangle.Y;
+
+            passes = 1; // no piercing enemies
+
             trajectory = VectorToPosition(posToMoveTo);
             trajectory.Normalize();
             trajectory.X = trajectory.X * 1000;
             trajectory.Y = trajectory.Y * 1000;
-            passes = 1;
         }
 
         /// <summary>
@@ -84,14 +76,18 @@ namespace EnterTheOnegeon
             GameTime gameTime, int pass) : base(sprite, rectangle)
         {
             speed = spd;
+
             timeCreated = gameTime.TotalGameTime.TotalSeconds;
+
             spawnX = rectangle.X;
             spawnY = rectangle.Y;
+
+            passes = pass;
+
             trajectory = VectorToPosition(posToMoveTo);
             trajectory.Normalize();
             trajectory.X = trajectory.X * 1000;
             trajectory.Y = trajectory.Y * 1000;
-            passes = pass;
         }
 
         /*
@@ -105,10 +101,7 @@ namespace EnterTheOnegeon
 
 
         /// <summary>
-        /// Property that returns true when the bullet is active
-        /// CheckList:
-        /// -timer is more than 0
-        /// -if it has passed through more enemies
+        /// Property that returns true when the bullet can pass through more enemies
         /// </summary>
         public bool Active
         {
@@ -124,8 +117,6 @@ namespace EnterTheOnegeon
             passes--;
             enem.TakeDamage(1);
         }
-        
-
 
         public void Update(GameTime gameTime)
         {
