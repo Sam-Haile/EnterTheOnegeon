@@ -35,7 +35,7 @@ namespace EnterTheOnegeon
         {
             Vector2 direction = this.VectorToPosition(playerPos);
             
-            if(direction.Length() > 1)
+            if(direction.Length() > 0)
                 direction.Normalize();
 
             rectangle.X += (int) (Math.Round(direction.X * speed));
