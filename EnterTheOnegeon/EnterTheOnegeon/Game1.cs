@@ -155,7 +155,7 @@ namespace EnterTheOnegeon
                     }
 
                     //Enemy spawning logic here
-                    /*if(totalGameTime < 20)
+                    if(totalGameTime < 20)
                     {
                         if (tempTime > 2)
                         {
@@ -170,7 +170,7 @@ namespace EnterTheOnegeon
                             SpawnEnemy(5);
                             tempTime = 0;
                         }
-                    }*/
+                    }
 
 
 
@@ -381,6 +381,16 @@ namespace EnterTheOnegeon
                                             String.Format("x{0}", player.BulletCount),
                                             new Vector2(380, 30),
                                             Color.White);
+
+                    //Show  1st enemy position
+                    /*if(enemyList.Count > 0)
+                    {
+                        _spriteBatch.DrawString(verdana,
+                                            String.Format("Enemy: {0}, {1}", enemyList[0].X, enemyList[0].Y),
+                                            new Vector2(350, 60),
+                                            Color.White);
+                    }
+                    */
 
                     foreach (Bullet b in bulletList)
                     {
