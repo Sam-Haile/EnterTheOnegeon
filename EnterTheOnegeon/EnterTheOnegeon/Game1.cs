@@ -122,6 +122,7 @@ namespace EnterTheOnegeon
 
             switch (gameState)
             {
+                // ---Title state---
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
@@ -148,6 +149,8 @@ namespace EnterTheOnegeon
                         gameState = GameState.Score;
                     }
                     break;
+
+                // ---Main game state---
                 case GameState.Game:
                     if(!player.Active)
                     {
@@ -204,7 +207,7 @@ namespace EnterTheOnegeon
                     }
                     _prvsKbState = Keyboard.GetState();
 
-                    //enemy updating
+                    // enemy updating
                     foreach (Enemy en in enemyList)
                     {
                         
@@ -262,14 +265,26 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Score;
                     }
-
                     break;
+
+                // ---Scoreboard state---
                 case GameState.Score:
-                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && _mState.X > quitButt.ButtRect.X && _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && _mState.Y > quitButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && 
+                        _mState.X > quitButt.ButtRect.X && 
+                        _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && 
+                        _mState.Y > quitButt.ButtRect.Y && 
+                        _mState.LeftButton == ButtonState.Released && 
+                        _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         Exit();
                     }
-                    if (_mState.X < menuButt.ButtRect.X + menuButt.ButtRect.Width && _mState.X > menuButt.ButtRect.X && _mState.Y < menuButt.ButtRect.Y + menuButt.ButtRect.Height && _mState.Y > menuButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+
+                    if (_mState.X < menuButt.ButtRect.X + menuButt.ButtRect.Width && 
+                        _mState.X > menuButt.ButtRect.X && 
+                        _mState.Y < menuButt.ButtRect.Y + menuButt.ButtRect.Height && 
+                        _mState.Y > menuButt.ButtRect.Y && 
+                        _mState.LeftButton == ButtonState.Released && 
+                        _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         gameState = GameState.Title;
                     }
@@ -291,24 +306,24 @@ namespace EnterTheOnegeon
 
         public void UpdateBullets()
         {
-            // if bullet is certain distance from player
-            //foreach (NormalBullet bullet in bullets)
-            //{
-            //    bullet.position += bullet.velocity;
-            //    if (Vector2.Distance(bullet.position, spritePosition) > 500)
-            //    {
-            //        bullet.isVisible = false;
-            //    }
-            //}
-            //for (int i = 0; i < bullets.Count; i++)
-            //{
-            //    // remove it from screen and list
-            //    if (!bullets[i].isVisible)
-            //    {
-            //        bullets.RemoveAt(i);
-            //        i--;
-            //    }
-            //}
+            /* if bullet is certain distance from player
+            foreach (NormalBullet bullet in bullets)
+            {
+                bullet.position += bullet.velocity;
+                if (Vector2.Distance(bullet.position, spritePosition) > 500)
+                {
+                    bullet.isVisible = false;
+                }
+            }
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                // remove it from screen and list
+                if (!bullets[i].isVisible)
+                {
+                    bullets.RemoveAt(i);
+                    i--;
+                }
+            }*/
         }
 
         // Not sure how to display bullets at the front of sprite
@@ -320,6 +335,7 @@ namespace EnterTheOnegeon
             // retrieve angle of the player and shoots bullet at current angle
             // also prevent bullet from colliding into own player
             newBullet.velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * 5f + player.Speed;
+
             // bullets position is equal to front of player and shoots out
             newBullet.position = spritePosition + newBullet.velocity * 5;
             newBullet.isVisible = true;
@@ -335,68 +351,105 @@ namespace EnterTheOnegeon
         {
             GraphicsDevice.Clear(Color.MediumPurple);
 
-            // TODO: Add your drawing code here
-
             _spriteBatch.Begin();
-            switch (gameState)      // switch to control what is being drawn to the screen at each part of our fsm
+
+            // switch to control what is being drawn to the screen at each part of our fsm
+            switch (gameState)      
             {
-                case GameState.Title:       // what is being drawn while in the title screen
-                    _spriteBatch.Draw(coverArt, new Rectangle(0, 0, 800, 480), Color.White);
+                // ---Title state---
+                case GameState.Title:       
+                    _spriteBatch.Draw(
+                        coverArt, 
+                        new Rectangle(
+                            0, 
+                            0, 
+                            800, 
+                            480),
+                        Color.White);
+
                     strtButt.Draw(_spriteBatch);
                     quitButt.Draw(_spriteBatch);
+
                     #region Text
-                    _spriteBatch.DrawString(verdana,
+                    _spriteBatch.DrawString(
+                        verdana,
                         "ENTER THE ONEGEON",
                         new Vector2(10, 10),
                         Color.White);
 
-                    _spriteBatch.DrawString(verdana,
+                    _spriteBatch.DrawString(
+                        verdana,
                         "Press 2 for game",
                         new Vector2(10, 30),
                         Color.White);
 
-                    _spriteBatch.DrawString(verdana,
+                    _spriteBatch.DrawString(
+                        verdana,
                         "Press 3 for scores",
                         new Vector2(10, 80),
                         Color.White);
                     #endregion
-
                     break;
-                case GameState.Game:        // what is happening while in the game state
 
-                    _spriteBatch.Draw(dungeon, new Rectangle(0,0,800,480), Color.White);
+                // ---Main game state---
+                case GameState.Game:        
+                    _spriteBatch.Draw(
+                        dungeon, 
+                        new Rectangle(
+                            0,
+                            0,
+                            800,
+                            480), 
+                        Color.White);
+
                     player.Draw(_spriteBatch);
+
                     foreach(Enemy en in enemyList)
                     {
                         en.Draw(_spriteBatch);
                     }
 
-
                     //Showing some of the player stuff temporarily
-                    //Score
-                    _spriteBatch.DrawString(verdana,
-                                            String.Format("Score: {0}", score),
-                                            new Vector2(350, 10),
-                                            Color.White);
-                    //Timer
-                    _spriteBatch.DrawString(verdana,
-                                            String.Format("Time Elapsed: {0:F3}", totalGameTime),
-                                            new Vector2(580, 10),
-                                            Color.White);
-                    //Bullets
-                    _spriteBatch.Draw(bulletAsset, new Rectangle(350, 30, 30, 30), Color.White);
-                    _spriteBatch.DrawString(verdana,
-                                            String.Format("x{0}", player.BulletCount),
-                                            new Vector2(380, 30),
-                                            Color.White);
+                    // Score UI
+                    _spriteBatch.DrawString(
+                        verdana,
+                        String.Format("Score: {0}", score),
+                        new Vector2(350, 10),
+                        Color.White);
 
-                    //Show  1st enemy position
+                    // Timer UI
+                    _spriteBatch.DrawString(
+                        verdana,
+                        String.Format("Time Elapsed: {0:F3}", totalGameTime),
+                        new Vector2(580, 10),
+                        Color.White);
+
+                    // Bullet UI
+                    _spriteBatch.Draw(
+                        bulletAsset, 
+                        new Rectangle(
+                            350, 
+                            30, 
+                            30, 
+                            30), 
+                        Color.White);
+
+                    _spriteBatch.DrawString(
+                        verdana,
+                        String.Format("x{0}", player.BulletCount),
+                        new Vector2(380, 30),
+                        Color.White);
+
+                    // Show  1st enemy position
                     /*if(enemyList.Count > 0)
                     {
-                        _spriteBatch.DrawString(verdana,
-                                            String.Format("Enemy: {0}, {1}", enemyList[0].X, enemyList[0].Y),
-                                            new Vector2(350, 60),
-                                            Color.White);
+                        _spriteBatch.DrawString(
+                            verdana,
+                            String.Format("Enemy: {0}, {1}", enemyList[0].X, enemyList[0].Y),
+                            new Vector2(
+                                350,
+                                60),
+                            Color.White);
                     }
                     */
 
@@ -409,32 +462,61 @@ namespace EnterTheOnegeon
                     //{
                     //    bullet.Draw(_spriteBatch);
                     //}
+
                     #region Text
-                    _spriteBatch.DrawString(verdana,
+                    _spriteBatch.DrawString(
+                        verdana,
                         "Press 1 for menu",
-                        new Vector2(10, 50),
+                        new Vector2(
+                            10, 
+                            50),
                         Color.White);
-                    _spriteBatch.DrawString(verdana,
+                    _spriteBatch.DrawString(
+                        verdana,
                         "Press 3 for scores",
-                        new Vector2(10, 80),
+                        new Vector2(
+                            10, 
+                            80),
                         Color.White);
                     #endregion
-                    //Drawing the line
-                    
+
+                    //Drawing the line from player to cursor
                     for (int i = 0; i < 20; i++)
                     {
-                        _spriteBatch.Draw(dungeon, new Rectangle(player.CenterX + ((_mState.X - player.CenterX) * i / 20), player.CenterY + ((_mState.Y - player.CenterY) * i / 20), 4, 4), Color.Black);
+                        _spriteBatch.Draw(
+                            dungeon, 
+                            new Rectangle(
+                                player.CenterX + ((_mState.X - player.CenterX) * i / 20), 
+                                player.CenterY + ((_mState.Y - player.CenterY) * i / 20), 
+                                4, 
+                                4), 
+                            Color.Black);
                     }
-
                     break;
-                case GameState.Score:       // what is happening while on the scoreboard/death screen
 
-                    _spriteBatch.Draw(scoreBoard, new Rectangle(0, 0, 800, 480), Color.White);
-                    _spriteBatch.DrawString(verdana,
-                                            String.Format("{0}", score),
-                                            new Vector2(400, 200), Color.White);
+                // ---Scoreboard state---
+                case GameState.Score:       
+                    _spriteBatch.Draw(
+                        scoreBoard, 
+                        new Rectangle(
+                            0, 
+                            0, 
+                            800, 
+                            480), 
+                        Color.White);
+
+                    _spriteBatch.DrawString(
+                        verdana,
+                        score.ToString(),
+                        new Vector2(
+                            400, 
+                            200), 
+                        Color.White);
+
                     menuButt.Draw(_spriteBatch);
+
                     quitButt.Draw(_spriteBatch);
+
                     #region Text
                     _spriteBatch.DrawString(verdana,
                         "Press 1 for menu",
@@ -446,9 +528,9 @@ namespace EnterTheOnegeon
                         new Vector2(10, 30),
                         Color.White);
                     #endregion
-
                     break;
             }
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -459,7 +541,15 @@ namespace EnterTheOnegeon
         {
             for(int i = 0; i < num; i++)
             {
-                enemyList.Add(new TestEnemy(enemyAsset, new Rectangle(RandPoint(), new Point(50, 50)), 1));
+                enemyList.Add(
+                    new TestEnemy(
+                        enemyAsset, 
+                        new Rectangle(
+                            RandPoint(), 
+                            new Point(
+                                50, 
+                                50)),
+                        1));
             }
 
         }
