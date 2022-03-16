@@ -11,11 +11,18 @@ namespace EnterTheOnegeon
     {
         private int speed;
         private Vector2 playerPos;
+
         public TestEnemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle, health)
         {
             speed = 2;
             playerPos = new Vector2();
         }
+
+        /// <summary>
+        /// returns true if collsision is detected
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public override bool CollideWith(GameObject other)
         {
             if (this.Position.Intersects(other.Position))

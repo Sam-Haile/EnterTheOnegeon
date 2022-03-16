@@ -6,9 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 namespace EnterTheOnegeon
 {
-    /// <summary>
-    /// Bullet Class (Child of GameObject) - Creates an object that moves at speed "speed"
-    /// </summary>
     class Bullet : GameObject 
     {
         /// <summary> coordinates of a point 1000 pixels in the direction of the mouse cursor </summary>

@@ -14,9 +14,6 @@ using System.Collections.Generic;
 
 namespace EnterTheOnegeon
 {
-    /// <summary>
-    /// Contains all code to run Enter the Onegeon
-    
     // base fsm, other enums to be added include Help + Pause
     enum GameState
     {
@@ -24,6 +21,9 @@ namespace EnterTheOnegeon
         Game,
         Score
     }
+
+    /// <summary>
+    /// Contains all code to run Enter the Onegeon
     /// </summary>
     public class Game1 : Game
     {
@@ -33,7 +33,8 @@ namespace EnterTheOnegeon
 
         // handles keyboard input
         KeyboardState _currentKbState;
-        KeyboardState _prvsKbState;
+        KeyboardState _prevKbState;
+
         //handles mouse input
         MouseState _mState;
         MouseState _prevMState;
@@ -42,6 +43,7 @@ namespace EnterTheOnegeon
         double totalGameTime;
         double tempTime;
         int score;
+
         Random random = new Random();
         
         // player fields
@@ -79,19 +81,20 @@ namespace EnterTheOnegeon
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             totalGameTime = 0;
             score = 0;
             base.Initialize();
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
         {
-            // TODO: use this.Content to load your game content here
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _currentKbState = Keyboard.GetState();
-            _prvsKbState = _currentKbState;
+            _prevKbState = _currentKbState;
 
             // initialize background texture
             coverArt = Content.Load<Texture2D>("coverArt");
@@ -100,6 +103,7 @@ namespace EnterTheOnegeon
 
             // initialize player and its asset
             playerAsset = Content.Load<Texture2D>("player");
+
             // for now, i put the location of the sprite near the bottom of the screen
             player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
 
@@ -110,9 +114,11 @@ namespace EnterTheOnegeon
             // loading enemy and initializing a list
             enemyAsset = Content.Load<Texture2D>("badguy");
             enemyList = new List<Enemy>();
+
             // load font
             verdana = Content.Load<SpriteFont>("Verdana15");
 
+            // load button texture and create all buttons
             T_Button = Content.Load<Texture2D>("T_Button");
             strtButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
             quitButt = new Button(verdana, T_Button, "Quit", new Rectangle(GraphicsDevice.Viewport.Width - 180, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
@@ -122,9 +128,7 @@ namespace EnterTheOnegeon
 
         protected override void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
-
-            _prvsKbState = _currentKbState;
+            _prevKbState = _currentKbState;
             _currentKbState = Keyboard.GetState();
             _mState = Mouse.GetState();
 
@@ -140,11 +144,21 @@ namespace EnterTheOnegeon
                     tempTime = 0;
                     score = 0;
 
-                    if (_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width && _mState.X > strtButt.ButtRect.X && _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height && _mState.Y > strtButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    if (_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width && 
+                        _mState.X > strtButt.ButtRect.X && 
+                        _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height && 
+                        _mState.Y > strtButt.ButtRect.Y && 
+                        _mState.LeftButton == ButtonState.Released && 
+                        _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         gameState = GameState.Game;
                     }
-                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && _mState.X > quitButt.ButtRect.X && _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && _mState.Y > quitButt.ButtRect.Y && _mState.LeftButton == ButtonState.Released && _prevMState.LeftButton == ButtonState.Pressed)
+                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && 
+                        _mState.X > quitButt.ButtRect.X && 
+                        _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && 
+                        _mState.Y > quitButt.ButtRect.Y && 
+                        _mState.LeftButton == ButtonState.Released && 
+                        _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         Exit();
                     }
@@ -191,8 +205,6 @@ namespace EnterTheOnegeon
                         }
                     }
 
-                    
-
                     // players movement
                     player.Move();
 
@@ -203,17 +215,22 @@ namespace EnterTheOnegeon
                     if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
                     {
                         bulletList.Add(
-                            new Bullet(bulletAsset, 
+                            new Bullet(
+                                bulletAsset, 
                                 new Rectangle(
                                     player.CenterX - bulletAsset.Width / 2, 
                                     player.CenterY - bulletAsset.Height / 2, 
                                     10, 
                                     10), 
-                                new Vector2(_mState.X, _mState.Y), 2, gameTime));
+                                new Vector2(
+                                    _mState.X, 
+                                    _mState.Y), 
+                                1, 
+                                gameTime));
 
                         player.BulletCount--;
                     }
-                    _prvsKbState = Keyboard.GetState();
+                    _prevKbState = Keyboard.GetState();
 
                     // enemy updating
                     foreach (Enemy en in enemyList)
