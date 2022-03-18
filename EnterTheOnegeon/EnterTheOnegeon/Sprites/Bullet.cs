@@ -105,11 +105,11 @@ namespace EnterTheOnegeon
         {
             get 
             {
-                return passes > 0 || 
-                   rectangle.X < 0 - 100 || 
-                   rectangle.Y < 0 - 100 ||
-                   rectangle.Y > 1080 + 100 ||
-                   rectangle.Y < 1920 + 100);
+                return passes > 0 && 
+                   rectangle.X > 0 - 100 && 
+                   rectangle.Y > 0 - 100 &&
+                   rectangle.Y < 1080 + 100 &&
+                   rectangle.Y < 1920 + 100;
             }
         }
 
