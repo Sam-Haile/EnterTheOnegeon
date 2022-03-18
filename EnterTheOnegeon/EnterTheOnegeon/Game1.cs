@@ -484,6 +484,13 @@ namespace EnterTheOnegeon
                         new Vector2(380, 30),
                         Color.White);
 
+                    // Player iframes
+                    _spriteBatch.DrawString(
+                        verdana,
+                        String.Format("Iframe time: {0:F3}", player.IFrameTimeLeft),
+                        new Vector2(300, 50),
+                        Color.White);
+
                     // Show  1st enemy position
                     /*if(enemyList.Count > 0)
                     {

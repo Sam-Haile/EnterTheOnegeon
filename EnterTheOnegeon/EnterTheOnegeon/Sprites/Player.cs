@@ -46,6 +46,11 @@ namespace EnterTheOnegeon
             get { return speed; }
         }
 
+        public double IFrameTimeLeft
+        {
+            get { return invTimer; }
+        }
+
         public void TakeDamage(int damage)
         {
             if(invTimer <= 0)
