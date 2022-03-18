@@ -16,12 +16,18 @@ namespace EnterTheOnegeon
         //temp hp
         private int hp;
 
+        //Invincibility frames
+        private double invTime;
+        private double invTimer;
+
         public Player(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
             speed = 8;
             bulletCount = 5;
             //temp hp
             hp = 4;
+            invTime = 3;
+            invTimer = 0;
         }
 
         public int BulletCount
@@ -42,11 +48,17 @@ namespace EnterTheOnegeon
 
         public void TakeDamage(int damage)
         {
-            hp -= damage;
+            if(invTimer <= 0)
+            {
+                hp -= damage;
+                invTimer = invTime;
+            }
+            
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
+            invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             Move();
         }
 
@@ -79,10 +91,20 @@ namespace EnterTheOnegeon
         //Overriding draw to draw a hp bar as well
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(sprite, rectangle, Color.White);
+            //When invincible he is red
+            if(invTimer > 0)
+            {
+                sb.Draw(sprite, rectangle, Color.Red);
+            }
+            //not invincible
+            else
+            {
+                sb.Draw(sprite, rectangle, Color.White);
+            }
+
+            //Hp bar here
             Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
             tempTexture.SetData(new Color[] { Color.White });
-            
             sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, rectangle.Width, 5), Color.Red);
             sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, (int)(rectangle.Width * (double)hp/4), 5), Color.LimeGreen);
         }

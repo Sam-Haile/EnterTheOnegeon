@@ -216,7 +216,7 @@ namespace EnterTheOnegeon
                     }
 
                     // players movement
-                    player.Move();
+                    player.Update(gameTime);
 
                     MouseState mouse = Mouse.GetState();
                     IsMouseVisible = true;
