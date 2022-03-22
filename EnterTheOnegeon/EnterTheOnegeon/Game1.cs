@@ -31,6 +31,11 @@ namespace EnterTheOnegeon
         private SpriteBatch _spriteBatch;
         private GameState gameState = GameState.Title;
 
+        // camera that follows sprite
+        private Camera camera;
+        public static int screenHeight;
+        public static int screenWidth;
+
         // handles keyboard input
         KeyboardState _currentKbState;
         KeyboardState _prevKbState;
@@ -87,11 +92,15 @@ namespace EnterTheOnegeon
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.ApplyChanges();
+            screenHeight = _graphics.PreferredBackBufferHeight;
+            screenWidth = _graphics.PreferredBackBufferWidth;
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            camera = new Camera();
 
             _currentKbState = Keyboard.GetState();
             _prevKbState = _currentKbState;
@@ -217,6 +226,8 @@ namespace EnterTheOnegeon
 
                     // players movement
                     player.Update(gameTime);
+                    // cameras movement
+                    camera.Follow(player);
 
                     MouseState mouse = Mouse.GetState();
                     IsMouseVisible = true;
@@ -348,54 +359,11 @@ namespace EnterTheOnegeon
             base.Update(gameTime);
         }
 
-        public void UpdateBullets()
-        {
-            /* if bullet is certain distance from player
-            foreach (NormalBullet bullet in bullets)
-            {
-                bullet.position += bullet.velocity;
-                if (Vector2.Distance(bullet.position, spritePosition) > 500)
-                {
-                    bullet.isVisible = false;
-                }
-            }
-            for (int i = 0; i < bullets.Count; i++)
-            {
-                // remove it from screen and list
-                if (!bullets[i].isVisible)
-                {
-                    bullets.RemoveAt(i);
-                    i--;
-                }
-            }*/
-        }
-
-        // Not sure how to display bullets at the front of sprite
-        /*
-        public void Shoot()
-        {
-            NormalBullet newBullet = new NormalBullet(Content.Load<Texture2D>("Bullet"), rectangle);
-
-            // retrieve angle of the player and shoots bullet at current angle
-            // also prevent bullet from colliding into own player
-            newBullet.velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * 5f + player.Speed;
-
-            // bullets position is equal to front of player and shoots out
-            newBullet.position = spritePosition + newBullet.velocity * 5;
-            newBullet.isVisible = true;
-
-            if (bullets.Count < 20)
-            {
-                bullets.Add(newBullet);
-            }
-        }
-        */
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.MediumPurple);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(/*transformMatrix: camera.Transform*/);
 
             // switch to control what is being drawn to the screen at each part of our fsm
             switch (gameState)      
@@ -509,11 +477,6 @@ namespace EnterTheOnegeon
                         b.Draw(_spriteBatch);
                     }
 
-                    //foreach (NormalBullet bullet in bullets)
-                    //{
-                    //    bullet.Draw(_spriteBatch);
-                    //}
-
                     #region Text
                     _spriteBatch.DrawString(
                         verdana,
@@ -604,6 +567,7 @@ namespace EnterTheOnegeon
             }
 
         }
+
         //gets a random point with a certain distance to the player
         // Above commented out that and now does off screen
         public Point RandPoint()

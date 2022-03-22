@@ -45,6 +45,15 @@ namespace EnterTheOnegeon
             this.rectangle = rectangle;
         }
 
+
+        /// <summary>
+        /// Returns the rectangle coordinates of a sprite
+        /// </summary>
+        public Rectangle Rectangle
+        {
+            get { return new Rectangle((int)Position.X, (int)Position.Y, sprite.Width, sprite.Height); }
+        }
+
         /// <summary>
         /// Returns the x of the upper left corner of GameObject
         /// </summary>
