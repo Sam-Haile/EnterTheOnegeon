@@ -123,12 +123,13 @@ namespace EnterTheOnegeon
             {
                 // Sets timer to amount of time bullet has been alive
                 timer = gameTime.TotalGameTime.TotalSeconds - timeCreated;
-                /*
+                /* Original
                 rectangle.X = (int)(spawnX + (trajectory.X * 1000 * timer / speed));
                 rectangle.Y = (int)(spawnY + (trajectory.Y * 1000 * timer / speed));
                  */
-                rectangle.X = (int)(spawnX + (trajectory.X * 1000 * timer / speed));
-                rectangle.Y = (int)(spawnY + (trajectory.Y * 1000 * timer / speed));
+                int arbConst = 100;
+                rectangle.X = (int)(spawnX + (trajectory.X * arbConst * timer * speed));
+                rectangle.Y = (int)(spawnY + (trajectory.Y * arbConst * timer * speed));
             }
         }
 

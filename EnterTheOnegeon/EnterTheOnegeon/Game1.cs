@@ -247,7 +247,7 @@ namespace EnterTheOnegeon
                                 new Vector2(
                                     _mState.X, 
                                     _mState.Y), 
-                                1));
+                                5));
 
                         player.BulletCount--;
                     }
