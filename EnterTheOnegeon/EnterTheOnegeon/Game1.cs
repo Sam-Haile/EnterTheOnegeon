@@ -242,12 +242,12 @@ namespace EnterTheOnegeon
                                     player.CenterX - bulletAsset.Width / 2, 
                                     player.CenterY - bulletAsset.Height / 2, 
                                     10, 
-                                    10), 
+                                    10),
+                                gameTime, 
                                 new Vector2(
                                     _mState.X, 
                                     _mState.Y), 
-                                1, 
-                                gameTime));
+                                1));
 
                         player.BulletCount--;
                     }

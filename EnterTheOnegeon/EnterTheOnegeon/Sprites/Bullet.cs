@@ -32,6 +32,7 @@ namespace EnterTheOnegeon
         // Constructor
         // Parameterized
         // SHOULD DELETE LATER AFTER TESTING
+        // MAYBE NOT DELETE AND IT CAN BE USED FOR CREATING AN INACTIVE BULLET
         //public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         //{
         //    
@@ -48,8 +49,8 @@ namespace EnterTheOnegeon
         /// <param name="posToMoveTo">Point where you want the bullet to move to</param>
         /// <param name="spd">seconds it will take the bullet to travel 1000 pixels</param>
         /// <param name="time">Time on the screen</param>
-        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 posToMoveTo, int spd,
-            GameTime gameTime) : base(sprite, rectangle)
+        public Bullet(Texture2D sprite, Rectangle rectangle, GameTime gameTime, Vector2 posToMoveTo, int spd) 
+            : base(sprite, rectangle)
         {
             speed = spd;
 
@@ -69,8 +70,8 @@ namespace EnterTheOnegeon
         /// <summary>
         /// Same thing as other constructor just with the extra variable
         /// </summary>
-        public Bullet(Texture2D sprite, Rectangle rectangle, Vector2 posToMoveTo, int spd, 
-            GameTime gameTime, int pass) : base(sprite, rectangle)
+        public Bullet(Texture2D sprite, Rectangle rectangle, GameTime gameTime, Vector2 posToMoveTo, int spd, 
+           int pass) : base(sprite, rectangle)
         {
             speed = spd;
 
