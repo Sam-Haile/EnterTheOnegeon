@@ -63,8 +63,6 @@ namespace EnterTheOnegeon
 
             trajectory = VectorToPosition(posToMoveTo);
             trajectory.Normalize();
-            trajectory.X = trajectory.X * 1000;
-            trajectory.Y = trajectory.Y * 1000;
         }
 
         /// <summary>
@@ -84,8 +82,6 @@ namespace EnterTheOnegeon
 
             trajectory = VectorToPosition(posToMoveTo);
             trajectory.Normalize();
-            trajectory.X = trajectory.X * 1000;
-            trajectory.Y = trajectory.Y * 1000;
         }
 
         /*
@@ -127,9 +123,12 @@ namespace EnterTheOnegeon
             {
                 // Sets timer to amount of time bullet has been alive
                 timer = gameTime.TotalGameTime.TotalSeconds - timeCreated;
-
-                rectangle.X = (int)(spawnX + (trajectory.X * timer / speed));
-                rectangle.Y = (int)(spawnY + (trajectory.Y * timer / speed));
+                /*
+                rectangle.X = (int)(spawnX + (trajectory.X * 1000 * timer / speed));
+                rectangle.Y = (int)(spawnY + (trajectory.Y * 1000 * timer / speed));
+                 */
+                rectangle.X = (int)(spawnX + (trajectory.X * 1000 * timer / speed));
+                rectangle.Y = (int)(spawnY + (trajectory.Y * 1000 * timer / speed));
             }
         }
 
