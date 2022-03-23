@@ -568,25 +568,9 @@ namespace EnterTheOnegeon
 
         }
 
-        //gets a random point with a certain distance to the player
-        // Above commented out that and now does off screen
+        // Gets a random point off screen
         public Point RandPoint()
         {
-            /*
-            int randx = random.Next(0, GraphicsDevice.Viewport.Width - 200);
-            int randy = random.Next(0, GraphicsDevice.Viewport.Height - 100);
-            if(randx > player.X - 30)
-            {
-                randx += 200;
-            }
-            if (randy > player.Y - 30)
-            {
-                randy += 100;
-            }
-
-            return new Point(randx, randy);
-            */
-
             int randX;
             int randY;
             // 50/50 to decide to change x or y offscreen
@@ -607,7 +591,6 @@ namespace EnterTheOnegeon
                     // the height of the sprite.
                     randX = 0 - 50;
                 }
-
             }
             //enemy comes in from top or bottom
             else
