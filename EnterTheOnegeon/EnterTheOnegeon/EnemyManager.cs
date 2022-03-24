@@ -108,6 +108,7 @@ namespace EnterTheOnegeon
                 if (!testEnemyList[i].Active)
                 {
                     testEnemyList.RemoveAt(i);
+                    //Score here 
                 }
 
             }
