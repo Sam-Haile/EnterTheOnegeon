@@ -23,7 +23,7 @@ namespace EnterTheOnegeon
         public Player(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
             speed = 8;
-            bulletCount = 5;
+            bulletCount = 15;
             //temp hp
             hp = 4;
             invTime = 3;

@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
+    /// <summary>
+    /// This class handles all the enemies
+    /// Also has the score and timer
+    /// </summary>
     class EnemyManager
     {
         //fields
@@ -15,6 +19,7 @@ namespace EnterTheOnegeon
         private double timer;
         private double waveTime;
         private int wavePoints;
+        private int score;
 
         //Have a separate list for each type of enemy
         private List<TestEnemy> testEnemyList;
@@ -44,6 +49,10 @@ namespace EnterTheOnegeon
             get { return testEnemyList.Count /*+ enemy2List.Count etc*/; }
         }
 
+        public int Score
+        {
+            get { return score; }
+        }
         public double Time
         {
             get { return timer; }
@@ -52,6 +61,9 @@ namespace EnterTheOnegeon
         {
             return testEnemyList;
         }
+        /// <summary>
+        /// Handles updating all the enemies and the spawning of them
+        /// </summary>
         public void Update(GameTime gameTime, Player player)
         {
             timer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -60,6 +72,8 @@ namespace EnterTheOnegeon
             //Every time a wave is spawned
             //Resets the countdown to next wave
             //Spawns an amount of enemies according to the amount of wave points availible
+            //Might move this to a method of some sort
+            //UpdateWave();
             if(waveTime <= 0)
             {
                 if (timer < 20)
@@ -75,8 +89,8 @@ namespace EnterTheOnegeon
                     //when there is enough points it will do checks for spawning which type of enemy
                     if(curWavePoints >= 3)
                     {
-                        //25% chance to spawn wide dude
-                        if(rng.Next(4) == 0)
+                        //10% chance to spawn wide dude
+                        if(rng.Next(10) == 0)
                         {
                             SpawnWideBoi(RandPoint());
                             curWavePoints -= 3;
@@ -96,24 +110,57 @@ namespace EnterTheOnegeon
                 //Every wave gets harder
                 wavePoints += 1;
             }
-
-            foreach (TestEnemy tEn in testEnemyList)
+            UpdateTestEnemy(player);
+        }
+        /// <summary>
+        /// Updates all the TestEnemies
+        /// </summary>
+        private void UpdateTestEnemy(Player player)
+        {
+            //Updating each enemy and checking the collision
+            foreach (TestEnemy en in testEnemyList)
             {
-                tEn.Update(player);
-                if (tEn.CollideWith(player))
-                    tEn.HitPlayer(player);
+                en.Update(player);
+                if (en.CollideWith(player))
+                    en.HitPlayer(player);
             }
+            //Removing the inactive enemies
             for (int i = testEnemyList.Count - 1; i >= 0; i--)
             {
                 if (!testEnemyList[i].Active)
                 {
                     testEnemyList.RemoveAt(i);
-                    //Score here 
+                    //Stuff that happens when an enemy dies
+                    score += 100;
+                    player.BulletCount++;
                 }
 
             }
         }
-
+        public void Draw(SpriteBatch sb, SpriteFont font)
+        {
+            foreach (TestEnemy en in testEnemyList)
+            {
+                en.Draw(sb);
+            }
+            //Score
+            sb.DrawString(font,
+                        String.Format("Score: {0}", score),
+                        new Vector2(graphics.GraphicsDevice.Viewport.Width/2 - 100, 10),
+                        Color.White);
+            //Time to next wave
+            sb.DrawString(font,
+                        String.Format("Time to next wave: {0:F3}", waveTime),
+                        new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - 100, 30),
+                        Color.White);
+            //Total time in top right
+            sb.DrawString(font,
+                        String.Format("Total Time: {0:F3}", timer),
+                        new Vector2(graphics.GraphicsDevice.Viewport.Width - 200, 10),
+                        Color.White);
+            
+        }
+        
 
         public void SpawnTestEnemy(Point pos)
         {
@@ -134,6 +181,7 @@ namespace EnterTheOnegeon
                             new Point(150, 100)),
                         3)); //Health
         }
+
         // Gets a random point off screen
         public Point RandPoint()
         {

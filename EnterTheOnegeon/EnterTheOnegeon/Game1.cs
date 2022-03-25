@@ -62,6 +62,7 @@ namespace EnterTheOnegeon
         // enemy fields
         Texture2D enemyAsset;
         List<Enemy> enemyList;
+        EnemyManager enemyManager;
 
         // text fields
         SpriteFont verdana;
@@ -123,6 +124,7 @@ namespace EnterTheOnegeon
             // loading enemy and initializing a list
             enemyAsset = Content.Load<Texture2D>("badguy");
             enemyList = new List<Enemy>();
+            enemyManager = new EnemyManager(_graphics, enemyAsset);
 
             // load font
             verdana = Content.Load<SpriteFont>("Verdana15");
@@ -151,6 +153,7 @@ namespace EnterTheOnegeon
                     player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
                     bulletList = new List<Bullet>();
                     enemyList = new List<Enemy>();
+                    enemyManager = new EnemyManager(_graphics, enemyAsset);
                     totalGameTime = 0;
                     tempTime = 0;
                     score = 0;
@@ -198,7 +201,7 @@ namespace EnterTheOnegeon
                         gameState = GameState.Score;
                     }
 
-                    //Enemy spawning logic here
+                    /*//Enemy spawning logic here
                     if (totalGameTime < 20)
                     {
                         if (tempTime > 2)
@@ -222,7 +225,7 @@ namespace EnterTheOnegeon
                             SpawnEnemy(10);
                             tempTime = 0;
                         }
-                    }
+                    }*/
 
                     // players movement
                     player.Update(gameTime);
@@ -253,7 +256,7 @@ namespace EnterTheOnegeon
                     }
                     _prevKbState = Keyboard.GetState();
 
-                    // enemy updating
+                    /*// enemy updating
                     foreach (Enemy en in enemyList)
                     {
                         
@@ -262,18 +265,19 @@ namespace EnterTheOnegeon
                         {
                             en.HitPlayer(player);
                         }
-                    }
+                    }*/
 
+
+                    enemyManager.Update(gameTime, player);
                     //Bullets testing
                     foreach (Bullet b in bulletList)
                     {
                         b.Update(gameTime);
-                        foreach(Enemy en in enemyList)
+                        foreach(TestEnemy en in enemyManager.GetTestEnemies())
                         {
                             if(b.CollideWith(en))
                             {
                                 b.HitEnemy(en);
-                                player.BulletCount++;
                             }
                         }
                     }
@@ -286,7 +290,7 @@ namespace EnterTheOnegeon
                             bulletList.RemoveAt(i);
                     }
 
-                    // Remove enemies that are shot
+                    /*// Remove enemies that are shot
                     for (int i = enemyList.Count - 1; i >= 0; i--)
                     {
                         if (!enemyList[i].Active)
@@ -295,7 +299,7 @@ namespace EnterTheOnegeon
                             score += 100;
                         }
                             
-                    }
+                    }*/
 
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
@@ -416,13 +420,14 @@ namespace EnterTheOnegeon
 
                     player.Draw(_spriteBatch);
 
-                    foreach(Enemy en in enemyList)
+                    /*foreach(Enemy en in enemyList)
                     {
                         en.Draw(_spriteBatch);
-                    }
+                    }*/
+                    enemyManager.Draw(_spriteBatch, verdana);
 
                     //Showing some of the player stuff temporarily
-                    // Score UI
+                    /*// Score UI
                     _spriteBatch.DrawString(
                         verdana,
                         String.Format("Score: {0}", score),
@@ -434,7 +439,7 @@ namespace EnterTheOnegeon
                         verdana,
                         String.Format("Time Elapsed: {0:F3}", totalGameTime),
                         new Vector2(580, 10),
-                        Color.White);
+                        Color.White);*/
 
                     // Bullet UI
                     _spriteBatch.Draw(
