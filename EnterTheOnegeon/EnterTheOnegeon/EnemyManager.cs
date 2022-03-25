@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
+    
+    public enum EManagerState
+    {
+        Waves,
+        Shop
+    }
     /// <summary>
     /// This class handles all the enemies
     /// Also has the score and timer
