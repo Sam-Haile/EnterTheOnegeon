@@ -113,6 +113,8 @@ namespace EnterTheOnegeon
             }
             UpdateTestEnemy(player);
         }
+        //public void DebugUpdate()
+
         /// <summary>
         /// Updates all the TestEnemies
         /// </summary>
