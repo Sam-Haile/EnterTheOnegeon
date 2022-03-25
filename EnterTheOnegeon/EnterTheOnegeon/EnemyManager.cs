@@ -90,6 +90,7 @@ namespace EnterTheOnegeon
                     if(curWavePoints >= 3)
                     {
                         //10% chance to spawn wide dude
+                        //Change LATER for different enemy types
                         if(rng.Next(10) == 0)
                         {
                             SpawnWideBoi(RandPoint());
@@ -150,7 +151,7 @@ namespace EnterTheOnegeon
                         Color.White);
             //Time to next wave
             sb.DrawString(font,
-                        String.Format("Time to next wave: {0:F3}", waveTime),
+                        String.Format("Next wave: {0:F3}", waveTime),
                         new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - 100, 30),
                         Color.White);
             //Total time in top right
@@ -166,7 +167,10 @@ namespace EnterTheOnegeon
             Draw(sb, font);
         }
         
-
+        /// <summary>
+        /// Spawns a test enemy at the given point
+        /// </summary>
+        /// <param name="pos">position to spawn the enemy</param>
         public void SpawnTestEnemy(Point pos)
         {
             testEnemyList.Add(
