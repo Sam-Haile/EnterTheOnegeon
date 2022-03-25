@@ -160,6 +160,11 @@ namespace EnterTheOnegeon
                         Color.White);
             
         }
+
+        public void DebugDraw(SpriteBatch sb, SpriteFont font)
+        {
+            Draw(sb, font);
+        }
         
 
         public void SpawnTestEnemy(Point pos)

@@ -61,7 +61,6 @@ namespace EnterTheOnegeon
 
         // enemy fields
         Texture2D enemyAsset;
-        List<Enemy> enemyList;
         EnemyManager enemyManager;
 
         // text fields
@@ -123,7 +122,6 @@ namespace EnterTheOnegeon
 
             // loading enemy and initializing a list
             enemyAsset = Content.Load<Texture2D>("badguy");
-            enemyList = new List<Enemy>();
             enemyManager = new EnemyManager(_graphics, enemyAsset);
 
             // load font
@@ -152,7 +150,6 @@ namespace EnterTheOnegeon
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
                     bulletList = new List<Bullet>();
-                    enemyList = new List<Enemy>();
                     enemyManager = new EnemyManager(_graphics, enemyAsset);
                     totalGameTime = 0;
                     tempTime = 0;
@@ -526,7 +523,7 @@ namespace EnterTheOnegeon
 
                     _spriteBatch.DrawString(
                         verdana,
-                        score.ToString(),
+                        enemyManager.Score.ToString(),
                         new Vector2(
                             400, 
                             200), 
@@ -555,23 +552,6 @@ namespace EnterTheOnegeon
             base.Draw(gameTime);
         }
 
-        //Temp helping method to spawn a certain number of enemies
-        public void SpawnEnemy(int num)
-        {
-            for(int i = 0; i < num; i++)
-            {
-                enemyList.Add(
-                    new TestEnemy(
-                        enemyAsset, 
-                        new Rectangle(
-                            RandPoint(), 
-                            new Point(
-                                50, 
-                                50)),
-                        1));
-            }
-
-        }
 
         // Gets a random point off screen
         public Point RandPoint()
