@@ -33,8 +33,8 @@ namespace EnterTheOnegeon
 
         // camera that follows sprite
         private Camera camera;
-        public static int screenHeight;
-        public static int screenWidth;
+        public static int screenHeight = 1080;
+        public static int screenWidth = 1920;
 
         // handles keyboard input
         KeyboardState _currentKbState;
@@ -92,8 +92,6 @@ namespace EnterTheOnegeon
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.ApplyChanges();
-            screenHeight = _graphics.PreferredBackBufferHeight;
-            screenWidth = _graphics.PreferredBackBufferWidth;
             IsMouseVisible = true;
         }
 
@@ -130,9 +128,23 @@ namespace EnterTheOnegeon
 
             // load button texture and create all buttons
             T_Button = Content.Load<Texture2D>("T_Button");
-            strtButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
-            quitButt = new Button(verdana, T_Button, "Quit", new Rectangle(GraphicsDevice.Viewport.Width - 180, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
-            menuButt = new Button(verdana, T_Button, "Menu", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
+            strtButt = new Button(
+                verdana, 
+                T_Button, 
+                "Start", 
+                new Rectangle(30, screenHeight - 90, 150, 75), 
+                Color.Gold);
+            quitButt = new Button(
+                verdana, 
+                T_Button, 
+                "Quit", 
+                new Rectangle(screenWidth - 180, screenHeight - 90, 150, 75), Color.Gold);
+            menuButt = new Button(
+                verdana, 
+                T_Button, 
+                "Menu", 
+                new Rectangle(30, screenHeight - 90, 150, 75), 
+                Color.Gold);
 
         }
 
@@ -370,8 +382,8 @@ namespace EnterTheOnegeon
                         new Rectangle(
                             0, 
                             0, 
-                            800, 
-                            480),
+                            1920, 
+                            1080),
                         Color.White);
 
                     strtButt.Draw(_spriteBatch);
@@ -398,7 +410,6 @@ namespace EnterTheOnegeon
                     #endregion
                     break;
                 #endregion
-
                 #region Game State
                 case GameState.Game:        
                     _spriteBatch.Draw(
