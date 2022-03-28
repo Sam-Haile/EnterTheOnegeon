@@ -94,6 +94,7 @@ namespace EnterTheOnegeon
             _graphics.ApplyChanges();
             screenHeight = _graphics.PreferredBackBufferHeight;
             screenWidth = _graphics.PreferredBackBufferWidth;
+            IsMouseVisible = true;
         }
 
         protected override void LoadContent()
@@ -143,9 +144,7 @@ namespace EnterTheOnegeon
 
             switch (gameState)
             {
-                // -----------------
-                // ---Title state---
-                // -----------------
+                #region Title State
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
@@ -189,9 +188,8 @@ namespace EnterTheOnegeon
                         gameState = GameState.Score;
                     }
                     break;
-                // ---------------------
-                // ---Main game state---
-                // ---------------------
+                #endregion
+                #region Game State
                 case GameState.Game:
                     if(!player.Active)
                     {
@@ -228,9 +226,6 @@ namespace EnterTheOnegeon
                     player.Update(gameTime);
                     // cameras movement
                     camera.Follow(player);
-
-                    MouseState mouse = Mouse.GetState();
-                    IsMouseVisible = true;
 
                     // bullet spawning when mouse clicked
                     if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
@@ -314,10 +309,8 @@ namespace EnterTheOnegeon
                         gameState = GameState.Score;
                     }
                     break;
-
-                // ----------------------
-                // ---Scoreboard state---
-                // ----------------------
+                #endregion
+                #region Scoreboard State
                 case GameState.Score:
                     // quit button pressed
                     if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && 
@@ -353,6 +346,7 @@ namespace EnterTheOnegeon
                         gameState = GameState.Title;
                     }
                     break;
+                #endregion
             }
 
             _prevMState = _mState;
@@ -369,7 +363,7 @@ namespace EnterTheOnegeon
             // switch to control what is being drawn to the screen at each part of our fsm
             switch (gameState)      
             {
-                // ---Title state---
+                #region Title State
                 case GameState.Title:       
                     _spriteBatch.Draw(
                         coverArt, 
@@ -403,8 +397,9 @@ namespace EnterTheOnegeon
                         Color.White);
                     #endregion
                     break;
+                #endregion
 
-                // ---Main game state---
+                #region Game State
                 case GameState.Game:        
                     _spriteBatch.Draw(
                         dungeon, 
@@ -509,8 +504,8 @@ namespace EnterTheOnegeon
                             Color.Black);
                     }
                     break;
-
-                // ---Scoreboard state---
+                #endregion
+                #region Scoreboard State
                 case GameState.Score:       
                     _spriteBatch.Draw(
                         scoreBoard, 
@@ -545,6 +540,7 @@ namespace EnterTheOnegeon
                         Color.White);
                     #endregion
                     break;
+                #endregion
             }
 
             _spriteBatch.End();
