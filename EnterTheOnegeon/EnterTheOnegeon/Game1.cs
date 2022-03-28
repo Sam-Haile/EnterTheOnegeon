@@ -193,39 +193,15 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Game State
                 case GameState.Game:
+                    // Scoreboard when player dies
                     if(!player.Active)
                     {
                         gameState = GameState.Score;
                     }
 
-                    /*//Enemy spawning logic here
-                    if (totalGameTime < 20)
-                    {
-                        if (tempTime > 2)
-                        {
-                            SpawnEnemy(3);
-                            tempTime = 0;
-                        }
-                    }
-                    else if (totalGameTime < 40)
-                    {
-                        if (tempTime > 2)
-                        {
-                            SpawnEnemy(5);
-                            tempTime = 0;
-                        }
-                    }
-                    else
-                    {
-                        if (tempTime > 2)
-                        {
-                            SpawnEnemy(10);
-                            tempTime = 0;
-                        }
-                    }*/
-
                     // players movement
                     player.Update(gameTime);
+
                     // cameras movement
                     camera.Follow(player);
 
@@ -248,21 +224,10 @@ namespace EnterTheOnegeon
 
                         player.BulletCount--;
                     }
-                    _prevKbState = Keyboard.GetState();
 
-                    /*// enemy updating
-                    foreach (Enemy en in enemyList)
-                    {
-                        
-                        ((TestEnemy)en).Update(player);
-                        if(en.CollideWith(player))
-                        {
-                            en.HitPlayer(player);
-                        }
-                    }*/
-
-
+                    // enemy spawning and updating
                     enemyManager.Update(gameTime, player);
+
                     //Bullets testing
                     foreach (Bullet b in bulletList)
                     {
