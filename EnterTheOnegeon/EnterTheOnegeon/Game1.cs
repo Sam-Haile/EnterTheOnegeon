@@ -189,18 +189,6 @@ namespace EnterTheOnegeon
                     {
                         Exit();
                     }
-
-                    // temp dev shortcut to move to game state
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D2))     
-                    {
-                        gameState = GameState.Game;
-                    }
-
-                    // temp dev shortcut to move to score state
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D3))     
-                    {
-                        gameState = GameState.Score;
-                    }
                     break;
                 #endregion
                 #region Game State
@@ -310,18 +298,6 @@ namespace EnterTheOnegeon
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
                     tempTime += gameTime.ElapsedGameTime.TotalSeconds;
-
-                    //temp dev shortcut until buttons are implimented
-                    if (Keyboard.GetState().IsKeyDown(Keys.D1))
-                    {
-                        gameState = GameState.Title;
-                    }
-
-                    //temp dev shortcut until buttons are implimented
-                    if (Keyboard.GetState().IsKeyDown(Keys.D3))
-                    { 
-                        gameState = GameState.Score;
-                    }
                     break;
                 #endregion
                 #region Scoreboard State
@@ -347,20 +323,22 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Title;
                     }
-
-                    //temp dev shortcut until buttons are implimented
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D2))
-                    { 
-                        gameState = GameState.Game;
-                    }
-
-                    //temp dev shortcut until buttons are implimented
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D1))     
-                    {
-                        gameState = GameState.Title;
-                    }
                     break;
                 #endregion
+            }
+
+            //dev shortcuts
+            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            {
+                gameState = GameState.Title;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                gameState = GameState.Game;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                gameState = GameState.Score;
             }
 
             _prevMState = _mState;
