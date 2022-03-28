@@ -33,6 +33,8 @@ namespace EnterTheOnegeon
 
         // camera that follows sprite
         private Camera camera;
+
+        // static variables can not be changed once declared
         public static int screenHeight = 1080;
         public static int screenWidth = 1920;
 
@@ -63,7 +65,7 @@ namespace EnterTheOnegeon
         Texture2D enemyAsset;
         EnemyManager enemyManager;
 
-        // text fields
+        // text/font fields
         SpriteFont verdana;
 
         //background fields
@@ -389,38 +391,26 @@ namespace EnterTheOnegeon
                     strtButt.Draw(_spriteBatch);
                     quitButt.Draw(_spriteBatch);
 
-                    #region Text
                     _spriteBatch.DrawString(
                         verdana,
                         "ENTER THE ONEGEON",
                         new Vector2(10, 10),
                         Color.White);
-
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 2 for game",
-                        new Vector2(10, 30),
-                        Color.White);
-
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 3 for scores",
-                        new Vector2(10, 80),
-                        Color.White);
-                    #endregion
                     break;
                 #endregion
                 #region Game State
                 case GameState.Game:        
+                    // Game background
                     _spriteBatch.Draw(
                         dungeon, 
                         new Rectangle(
                             0,
                             0,
-                            800,
-                            480), 
+                            screenWidth,
+                            screenHeight), 
                         Color.White);
 
+                    // Player
                     player.Draw(_spriteBatch);
 
                     /*foreach(Enemy en in enemyList)
@@ -485,23 +475,6 @@ namespace EnterTheOnegeon
                         b.Draw(_spriteBatch);
                     }
 
-                    #region Text
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 1 for menu",
-                        new Vector2(
-                            10, 
-                            50),
-                        Color.White);
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 3 for scores",
-                        new Vector2(
-                            10, 
-                            80),
-                        Color.White);
-                    #endregion
-
                     //Drawing the line from player to cursor
                     for (int i = 0; i < 20; i++)
                     {
@@ -523,36 +496,45 @@ namespace EnterTheOnegeon
                         new Rectangle(
                             0, 
                             0, 
-                            800, 
-                            480), 
+                            screenWidth, 
+                            screenHeight), 
                         Color.White);
 
                     _spriteBatch.DrawString(
                         verdana,
                         enemyManager.Score.ToString(),
                         new Vector2(
-                            400, 
-                            200), 
+                            screenWidth / 2, 
+                            screenHeight / 2), 
                         Color.White);
 
                     menuButt.Draw(_spriteBatch);
 
                     quitButt.Draw(_spriteBatch);
-
-                    #region Text
-                    _spriteBatch.DrawString(verdana,
-                        "Press 1 for menu",
-                        new Vector2(10, 50),
-                        Color.White);
-
-                    _spriteBatch.DrawString(verdana,
-                        "Press 2 for game",
-                        new Vector2(10, 30),
-                        Color.White);
-                    #endregion
                     break;
                 #endregion
+
             }
+
+            #region Debug hotkey text
+            _spriteBatch.DrawString(
+                verdana,
+                "Press 1 for menu",
+                new Vector2(10, 30),
+                Color.White);
+
+            _spriteBatch.DrawString(
+                verdana,
+                "Press 2 for game",
+                new Vector2(10, 50),
+                Color.White);
+
+            _spriteBatch.DrawString(
+                verdana,
+                "Press 3 for score",
+                new Vector2(10, 70),
+                Color.White);
+            #endregion
 
             _spriteBatch.End();
 
