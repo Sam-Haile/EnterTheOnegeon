@@ -20,6 +20,7 @@ namespace EnterTheOnegeon
         private double waveTime;
         private int wavePoints;
         private int score;
+        protected Camera camera = new Camera();
 
         //Have a separate list for each type of enemy
         private List<TestEnemy> testEnemyList;
@@ -112,6 +113,8 @@ namespace EnterTheOnegeon
                 wavePoints += 1;
             }
             UpdateTestEnemy(player);
+            camera.Follow(player);
+
         }
         //public void DebugUpdate()
 
@@ -149,19 +152,22 @@ namespace EnterTheOnegeon
             //Score
             sb.DrawString(font,
                         String.Format("Score: {0}", score),
-                        new Vector2(graphics.GraphicsDevice.Viewport.Width/2 - 100, 10),
+                        new Vector2(-(int)camera.Transform.Translation.X + 1500,
+                            -(int)camera.Transform.Translation.Y + 70),
                         Color.White);
             //Time to next wave
             sb.DrawString(font,
                         String.Format("Next wave: {0:F3}", waveTime),
-                        new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - 100, 30),
+                        new Vector2(-(int)camera.Transform.Translation.X + 800,
+                            -(int)camera.Transform.Translation.Y + 100),
                         Color.White);
             //Total time in top right
             sb.DrawString(font,
                         String.Format("Total Time: {0:F3}", timer),
-                        new Vector2(graphics.GraphicsDevice.Viewport.Width - 200, 10),
+                        new Vector2(-(int)camera.Transform.Translation.X + 1500,
+                            -(int)camera.Transform.Translation.Y + 100),
                         Color.White);
-            
+
         }
 
         public void DebugDraw(SpriteBatch sb, SpriteFont font)
