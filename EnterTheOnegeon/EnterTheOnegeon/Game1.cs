@@ -7,7 +7,9 @@ using System.Collections.Generic;
 /*
  * TO DO: 
  * >IMPLEMENT FIPPS FONT (https://www.dafont.com/fipps.font)
- * >
+ * > Add parry mechanic (bullet can be stationary for now)
+ * > Bullet stats and manager class
+ * > Collision detection for the stage
  * >
  */
 
@@ -67,6 +69,7 @@ namespace EnterTheOnegeon
 
         // text/font fields
         SpriteFont verdana;
+        SpriteFont fipps;
 
         //background fields
         Texture2D dungeon;
@@ -127,22 +130,23 @@ namespace EnterTheOnegeon
 
             // load font
             verdana = Content.Load<SpriteFont>("Verdana15");
+            fipps = Content.Load<SpriteFont>("fipps15");
 
             // load button texture and create all buttons
             T_Button = Content.Load<Texture2D>("T_Button");
             strtButt = new Button(
-                verdana, 
+                fipps, 
                 T_Button, 
                 "Start", 
                 new Rectangle(30, screenHeight - 90, 150, 75), 
                 Color.Gold);
             quitButt = new Button(
-                verdana, 
+                fipps, 
                 T_Button, 
                 "Quit", 
                 new Rectangle(screenWidth - 180, screenHeight - 90, 150, 75), Color.Gold);
             menuButt = new Button(
-                verdana, 
+                fipps, 
                 T_Button, 
                 "Menu", 
                 new Rectangle(30, screenHeight - 90, 150, 75), 
@@ -162,7 +166,7 @@ namespace EnterTheOnegeon
                 #region Title State
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
-                    player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
+                    player = new Player(playerAsset, new Rectangle(1910, 1550, 32, 64));
                     bulletList = new List<Bullet>();
                     enemyManager = new EnemyManager(_graphics, enemyAsset);
                     totalGameTime = 0;
@@ -338,7 +342,7 @@ namespace EnterTheOnegeon
                     quitButt.Draw(_spriteBatch);
 
                     _spriteBatch.DrawString(
-                        verdana,
+                        fipps,
                         "ENTER THE ONEGEON",
                         new Vector2(-540, -150),
                         Color.White);
@@ -353,8 +357,8 @@ namespace EnterTheOnegeon
                         new Rectangle(
                             0,
                             0,
-                            screenWidth,
-                            screenHeight), 
+                            3840,
+                            2176), 
                         Color.White);
 
                     // Player
@@ -364,19 +368,19 @@ namespace EnterTheOnegeon
                     {
                         en.Draw(_spriteBatch);
                     }*/
-                    enemyManager.Draw(_spriteBatch, verdana);
+                    enemyManager.Draw(_spriteBatch, fipps);
 
                     //Showing some of the player stuff temporarily
                     /*// Score UI
                     _spriteBatch.DrawString(
-                        verdana,
+                        fipps,
                         String.Format("Score: {0}", score),
                         new Vector2(350, 10),
                         Color.White);
 
                     // Timer UI
                     _spriteBatch.DrawString(
-                        verdana,
+                        fipps,
                         String.Format("Time Elapsed: {0:F3}", totalGameTime),
                         new Vector2(580, 10),
                         Color.White);*/
@@ -385,34 +389,34 @@ namespace EnterTheOnegeon
                     _spriteBatch.Draw(
                         bulletAsset, 
                         new Rectangle(
-                            350 - (int)camera.Transform.Translation.X, 
-                            30 - (int)camera.Transform.Translation.Y, 
+                            400 - (int)camera.Transform.Translation.X, 
+                            70 - (int)camera.Transform.Translation.Y, 
                             30, 
                             30), 
                         Color.White);
 
                     _spriteBatch.DrawString(
-                        verdana,
+                        fipps,
                         String.Format("x{0}", player.BulletCount),
                         new Vector2(
-                            380 - (int)camera.Transform.Translation.X,
-                            30 - (int)camera.Transform.Translation.Y),
+                            4420 - (int)camera.Transform.Translation.X,
+                            70 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
                     // Player iframes
                     _spriteBatch.DrawString(
-                        verdana,
+                        fipps,
                         String.Format("Iframe time: {0:F3}", player.IFrameTimeLeft),
                         new Vector2(
-                            300 - (int)camera.Transform.Translation.X,
-                            50 - (int)camera.Transform.Translation.Y),
+                            400 - (int)camera.Transform.Translation.X,
+                            100 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
                     // Show  1st enemy position
                     /*if(enemyList.Count > 0)
                     {
                         _spriteBatch.DrawString(
-                            verdana,
+                            fipps,
                             String.Format("Enemy: {0}, {1}", enemyList[0].X, enemyList[0].Y),
                             new Vector2(
                                 350,
@@ -453,7 +457,7 @@ namespace EnterTheOnegeon
                         Color.White);
 
                     _spriteBatch.DrawString(
-                        verdana,
+                        fipps,
                         enemyManager.Score.ToString(),
                         new Vector2(
                             screenWidth / 2 - camera.Transform.Translation.X,
@@ -470,22 +474,26 @@ namespace EnterTheOnegeon
 
             #region Debug hotkey text
             _spriteBatch.DrawString(
-                verdana,
+                fipps,
                 "Press 1 for menu",
-                new Vector2(-540, -130),
+                new Vector2(-(int)camera.Transform.Translation.X + 10,
+                            -(int)camera.Transform.Translation.Y + 40),
                 Color.White);
 
             _spriteBatch.DrawString(
-                verdana,
+                fipps,
                 "Press 2 for game",
-                new Vector2(-540, -110),
+                new Vector2(-(int)camera.Transform.Translation.X + 10,
+                            -(int)camera.Transform.Translation.Y + 70),
                 Color.White);
 
             _spriteBatch.DrawString(
-                verdana,
+                fipps,
                 "Press 3 for score",
-                new Vector2(-540, -90),
+                new Vector2(-(int)camera.Transform.Translation.X + 10,
+                            -(int)camera.Transform.Translation.Y + 100),
                 Color.White);
+
             #endregion
 
             _spriteBatch.End();
