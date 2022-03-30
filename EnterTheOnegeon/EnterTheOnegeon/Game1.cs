@@ -10,7 +10,7 @@ using System.Collections.Generic;
  * > Add parry mechanic (bullet can be stationary for now)
  * > Bullet stats and manager class
  * > Collision detection for the stage
- * >
+ * > Add a real debug mode
  */
 
 
