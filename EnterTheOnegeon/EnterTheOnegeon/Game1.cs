@@ -29,7 +29,6 @@ namespace EnterTheOnegeon
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private SpriteBatch _spriteBatch2;
         private GameState gameState = GameState.Title;
 
         // camera that follows sprite
@@ -101,7 +100,6 @@ namespace EnterTheOnegeon
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _spriteBatch2 = new SpriteBatch(GraphicsDevice);
 
             camera = new Camera();
 
@@ -223,8 +221,8 @@ namespace EnterTheOnegeon
                                     10),
                                 gameTime, 
                                 new Vector2(
-                                    _mState.X, 
-                                    _mState.Y), 
+                                    _mState.X - camera.Transform.Translation.X, 
+                                    _mState.Y - camera.Transform.Translation.Y), 
                                 5));
 
                         player.BulletCount--;
@@ -321,29 +319,28 @@ namespace EnterTheOnegeon
             GraphicsDevice.Clear(Color.MediumPurple);
 
             _spriteBatch.Begin(transformMatrix: camera.Transform);
-            _spriteBatch2.Begin();
 
             // switch to control what is being drawn to the screen at each part of our fsm
             switch (gameState)      
             {
                 #region Title State
                 case GameState.Title:       
-                    _spriteBatch2.Draw(
+                    _spriteBatch.Draw(
                         coverArt, 
                         new Rectangle(
-                            0, 
-                            0, 
+                            -(int)camera.Transform.Translation.X,
+                            -(int)camera.Transform.Translation.Y, 
                             1920, 
                             1080),
                         Color.White);
 
-                    strtButt.Draw(_spriteBatch2);
-                    quitButt.Draw(_spriteBatch2);
+                    strtButt.Draw(_spriteBatch);
+                    quitButt.Draw(_spriteBatch);
 
                     _spriteBatch.DrawString(
                         verdana,
                         "ENTER THE ONEGEON",
-                        new Vector2(10, 10),
+                        new Vector2(-540, -150),
                         Color.White);
                     break;
                 #endregion
@@ -361,7 +358,7 @@ namespace EnterTheOnegeon
                         Color.White);
 
                     // Player
-                    player.Draw(_spriteBatch2);
+                    player.Draw(_spriteBatch);
 
                     /*foreach(Enemy en in enemyList)
                     {
@@ -385,26 +382,30 @@ namespace EnterTheOnegeon
                         Color.White);*/
 
                     // Bullet UI
-                    _spriteBatch2.Draw(
+                    _spriteBatch.Draw(
                         bulletAsset, 
                         new Rectangle(
-                            350, 
-                            30, 
+                            350 - (int)camera.Transform.Translation.X, 
+                            30 - (int)camera.Transform.Translation.Y, 
                             30, 
                             30), 
                         Color.White);
 
-                    _spriteBatch2.DrawString(
+                    _spriteBatch.DrawString(
                         verdana,
                         String.Format("x{0}", player.BulletCount),
-                        new Vector2(380, 30),
+                        new Vector2(
+                            380 - (int)camera.Transform.Translation.X,
+                            30 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
                     // Player iframes
-                    _spriteBatch2.DrawString(
+                    _spriteBatch.DrawString(
                         verdana,
                         String.Format("Iframe time: {0:F3}", player.IFrameTimeLeft),
-                        new Vector2(300, 50),
+                        new Vector2(
+                            300 - (int)camera.Transform.Translation.X,
+                            50 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
                     // Show  1st enemy position
@@ -422,17 +423,18 @@ namespace EnterTheOnegeon
 
                     foreach (Bullet b in bulletList)
                     {
-                        b.Draw(_spriteBatch2);
+                        b.Draw(_spriteBatch);
                     }
 
                     //Drawing the line from player to cursor
                     for (int i = 0; i < 20; i++)
                     {
-                        _spriteBatch2.Draw(
-                            dungeon, 
+                        _spriteBatch.Draw(
+                            dungeon,
+
                             new Rectangle(
-                                player.CenterX + ((_mState.X - player.CenterX) * i / 20), 
-                                player.CenterY + ((_mState.Y - player.CenterY) * i / 20), 
+                                player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20), 
+                                player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20), 
                                 4, 
                                 4), 
                             Color.Black);
@@ -441,53 +443,52 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Scoreboard State
                 case GameState.Score:       
-                    _spriteBatch2.Draw(
+                    _spriteBatch.Draw(
                         scoreBoard, 
                         new Rectangle(
-                            0, 
-                            0, 
+                            -(int)camera.Transform.Translation.X,
+                            -(int)camera.Transform.Translation.Y,
                             screenWidth, 
                             screenHeight), 
                         Color.White);
 
-                    _spriteBatch2.DrawString(
+                    _spriteBatch.DrawString(
                         verdana,
                         enemyManager.Score.ToString(),
                         new Vector2(
-                            screenWidth / 2, 
-                            screenHeight / 2), 
+                            screenWidth / 2 - camera.Transform.Translation.X,
+                            screenHeight / 2 - camera.Transform.Translation.Y), 
                         Color.White);
 
-                    menuButt.Draw(_spriteBatch2);
+                    menuButt.Draw(_spriteBatch);
 
-                    quitButt.Draw(_spriteBatch2);
+                    quitButt.Draw(_spriteBatch);
                     break;
                 #endregion
 
             }
 
             #region Debug hotkey text
-            _spriteBatch2.DrawString(
+            _spriteBatch.DrawString(
                 verdana,
                 "Press 1 for menu",
-                new Vector2(10, 30),
+                new Vector2(-540, -130),
                 Color.White);
 
-            _spriteBatch2.DrawString(
+            _spriteBatch.DrawString(
                 verdana,
                 "Press 2 for game",
-                new Vector2(10, 50),
+                new Vector2(-540, -110),
                 Color.White);
 
-            _spriteBatch2.DrawString(
+            _spriteBatch.DrawString(
                 verdana,
                 "Press 3 for score",
-                new Vector2(10, 70),
+                new Vector2(-540, -90),
                 Color.White);
             #endregion
 
             _spriteBatch.End();
-            _spriteBatch2.End();
 
             base.Draw(gameTime);
         }
