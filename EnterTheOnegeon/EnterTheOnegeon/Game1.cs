@@ -405,8 +405,8 @@ namespace EnterTheOnegeon
                         fipps,
                         String.Format("x{0}", player.BulletCount),
                         new Vector2(
-                            4420 - (int)camera.Transform.Translation.X,
-                            70 - (int)camera.Transform.Translation.Y),
+                            440 - (int)camera.Transform.Translation.X,
+                            65 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
                     // Player iframes
