@@ -7,15 +7,35 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon.Sprites
 {
+    /// <summary>
+    /// Holds the stats of the bullet
+    /// </summary>
     public struct BulletStats
     {
-        public BulletStats(int speed, int passes)//int damage, int lifetime
+        private int speed;
+        private int passes;
+        private int damage;
+        public BulletStats(int spd, int numPasses, int dmg)// int lifetime
         {
-            
+            speed = spd;
+            passes = numPasses;
+            damage = dmg;
         }
         public int Speed 
         {
-            get { return 0; }
+            get { return speed; }
+            set { speed = value; }
         }
+        public int Passes
+        {
+            get { return passes; }
+            set { passes = value; }
+        }
+        public int Damage
+        {
+            get { return damage; }
+            set { damage = value; }
+        }
+
     }
 }
