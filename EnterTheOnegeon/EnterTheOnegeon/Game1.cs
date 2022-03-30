@@ -166,7 +166,7 @@ namespace EnterTheOnegeon
                 #region Title State
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
-                    player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
+                    player = new Player(playerAsset, new Rectangle(1910, 1550, 32, 64));
                     bulletList = new List<Bullet>();
                     enemyManager = new EnemyManager(_graphics, enemyAsset);
                     totalGameTime = 0;
