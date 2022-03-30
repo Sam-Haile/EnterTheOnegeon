@@ -31,6 +31,7 @@ namespace EnterTheOnegeon
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteBatch _spriteBatch2;
         private GameState gameState = GameState.Title;
 
         // camera that follows sprite
@@ -103,6 +104,7 @@ namespace EnterTheOnegeon
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch2 = new SpriteBatch(GraphicsDevice);
 
             camera = new Camera();
 
@@ -324,22 +326,26 @@ namespace EnterTheOnegeon
 
             _spriteBatch.Begin(transformMatrix: camera.Transform);
 
+            // for stationary images
+            // title/score screen, buttons etc.
+            _spriteBatch2.Begin();
+
             // switch to control what is being drawn to the screen at each part of our fsm
             switch (gameState)      
             {
                 #region Title State
                 case GameState.Title:       
-                    _spriteBatch.Draw(
+                    _spriteBatch2.Draw(
                         coverArt, 
                         new Rectangle(
-                            -(int)camera.Transform.Translation.X,
-                            -(int)camera.Transform.Translation.Y, 
+                            0,
+                            0, 
                             1920, 
                             1080),
                         Color.White);
 
-                    strtButt.Draw(_spriteBatch);
-                    quitButt.Draw(_spriteBatch);
+                    strtButt.Draw(_spriteBatch2);
+                    quitButt.Draw(_spriteBatch2);
 
                     _spriteBatch.DrawString(
                         fipps,
@@ -447,11 +453,10 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Scoreboard State
                 case GameState.Score:       
-                    _spriteBatch.Draw(
+                    _spriteBatch2.Draw(
                         scoreBoard, 
                         new Rectangle(
-                            -(int)camera.Transform.Translation.X,
-                            -(int)camera.Transform.Translation.Y,
+                           0,0,
                             screenWidth, 
                             screenHeight), 
                         Color.White);
@@ -464,9 +469,9 @@ namespace EnterTheOnegeon
                             screenHeight / 2 - camera.Transform.Translation.Y), 
                         Color.White);
 
-                    menuButt.Draw(_spriteBatch);
+                    menuButt.Draw(_spriteBatch2);
 
-                    quitButt.Draw(_spriteBatch);
+                    quitButt.Draw(_spriteBatch2);
                     break;
                 #endregion
 
@@ -497,6 +502,7 @@ namespace EnterTheOnegeon
             #endregion
 
             _spriteBatch.End();
+            _spriteBatch2.End();
 
             base.Draw(gameTime);
         }
