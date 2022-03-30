@@ -153,9 +153,6 @@ namespace EnterTheOnegeon
         protected override void Update(GameTime gameTime)
         {
 
-            // cameras movement
-            camera.Follow(player);
-
             _prevKbState = _currentKbState;
             _currentKbState = Keyboard.GetState();
             _mState = Mouse.GetState();
@@ -197,6 +194,7 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Game State
                 case GameState.Game:
+
                     // Scoreboard when player dies
                     if(!player.Active)
                     {
@@ -207,6 +205,8 @@ namespace EnterTheOnegeon
                     // players movement
                     player.Update(gameTime);
 
+                    // cameras movement
+                    camera.Follow(player);
 
                     // bullet spawning when mouse clicked
                     if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
