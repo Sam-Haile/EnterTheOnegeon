@@ -151,5 +151,38 @@ namespace EnterTheOnegeon
         {
             return new Vector2((float)(pos.X - this.CenterX), (float)(pos.Y - this.CenterY));
         }
+
+        /// <summary>
+        /// Moves both game objects away from each other
+        /// </summary>
+        /// <param name="other">The other gameobject</param>
+        public void MoveAwayFrom(GameObject other)
+        {
+            int moveBack = 5;
+            //On the right side
+            if(this.CenterX > other.CenterX)
+            {
+                rectangle.X += moveBack;
+                other.rectangle.X += -moveBack;
+            }
+            //On the left side
+            if (this.CenterX < other.CenterX)
+            {
+                rectangle.X += -moveBack;
+                other.rectangle.X += moveBack;
+            }
+            //Under it
+            if (this.CenterY > other.CenterY)
+            {
+                rectangle.Y += moveBack;
+                other.rectangle.Y += -moveBack;
+            }
+            //Above it
+            if (this.CenterY > other.CenterY)
+            {
+                rectangle.Y += -moveBack;
+                other.rectangle.Y += moveBack;
+            }
+        }
     }
 }
