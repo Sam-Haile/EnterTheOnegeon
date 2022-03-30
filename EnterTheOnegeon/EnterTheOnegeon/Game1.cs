@@ -33,8 +33,10 @@ namespace EnterTheOnegeon
 
         // camera that follows sprite
         private Camera camera;
-        public static int screenHeight;
-        public static int screenWidth;
+
+        // static variables can not be changed once declared
+        public static int screenHeight = 1080;
+        public static int screenWidth = 1920;
 
         // handles keyboard input
         KeyboardState _currentKbState;
@@ -63,7 +65,7 @@ namespace EnterTheOnegeon
         Texture2D enemyAsset;
         EnemyManager enemyManager;
 
-        // text fields
+        // text/font fields
         SpriteFont verdana;
 
         //background fields
@@ -92,8 +94,7 @@ namespace EnterTheOnegeon
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.ApplyChanges();
-            screenHeight = _graphics.PreferredBackBufferHeight;
-            screenWidth = _graphics.PreferredBackBufferWidth;
+            IsMouseVisible = true;
         }
 
         protected override void LoadContent()
@@ -129,23 +130,39 @@ namespace EnterTheOnegeon
 
             // load button texture and create all buttons
             T_Button = Content.Load<Texture2D>("T_Button");
-            strtButt = new Button(verdana, T_Button, "Start", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
-            quitButt = new Button(verdana, T_Button, "Quit", new Rectangle(GraphicsDevice.Viewport.Width - 180, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
-            menuButt = new Button(verdana, T_Button, "Menu", new Rectangle(30, GraphicsDevice.Viewport.Height - 90, 150, 75), Color.Gold);
+            strtButt = new Button(
+                verdana, 
+                T_Button, 
+                "Start", 
+                new Rectangle(30, screenHeight - 90, 150, 75), 
+                Color.Gold);
+            quitButt = new Button(
+                verdana, 
+                T_Button, 
+                "Quit", 
+                new Rectangle(screenWidth - 180, screenHeight - 90, 150, 75), Color.Gold);
+            menuButt = new Button(
+                verdana, 
+                T_Button, 
+                "Menu", 
+                new Rectangle(30, screenHeight - 90, 150, 75), 
+                Color.Gold);
 
         }
 
         protected override void Update(GameTime gameTime)
         {
+
+            // cameras movement
+            camera.Follow(player);
+
             _prevKbState = _currentKbState;
             _currentKbState = Keyboard.GetState();
             _mState = Mouse.GetState();
 
             switch (gameState)
             {
-                // -----------------
-                // ---Title state---
-                // -----------------
+                #region Title State
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
@@ -176,61 +193,20 @@ namespace EnterTheOnegeon
                     {
                         Exit();
                     }
-
-                    // temp dev shortcut to move to game state
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D2))     
-                    {
-                        gameState = GameState.Game;
-                    }
-
-                    // temp dev shortcut to move to score state
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D3))     
-                    {
-                        gameState = GameState.Score;
-                    }
                     break;
-                // ---------------------
-                // ---Main game state---
-                // ---------------------
+                #endregion
+                #region Game State
                 case GameState.Game:
+                    // Scoreboard when player dies
                     if(!player.Active)
                     {
                         gameState = GameState.Score;
                     }
 
-                    /*//Enemy spawning logic here
-                    if (totalGameTime < 20)
-                    {
-                        if (tempTime > 2)
-                        {
-                            SpawnEnemy(3);
-                            tempTime = 0;
-                        }
-                    }
-                    else if (totalGameTime < 40)
-                    {
-                        if (tempTime > 2)
-                        {
-                            SpawnEnemy(5);
-                            tempTime = 0;
-                        }
-                    }
-                    else
-                    {
-                        if (tempTime > 2)
-                        {
-                            SpawnEnemy(10);
-                            tempTime = 0;
-                        }
-                    }*/
 
                     // players movement
                     player.Update(gameTime);
-                    // cameras movement
-                    camera.Follow(player);
 
-                    MouseState mouse = Mouse.GetState();
-                    IsMouseVisible = true;
 
                     // bullet spawning when mouse clicked
                     if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
@@ -245,27 +221,16 @@ namespace EnterTheOnegeon
                                     10),
                                 gameTime, 
                                 new Vector2(
-                                    _mState.X, 
-                                    _mState.Y), 
+                                    _mState.X - camera.Transform.Translation.X, 
+                                    _mState.Y - camera.Transform.Translation.Y), 
                                 5));
 
                         player.BulletCount--;
                     }
-                    _prevKbState = Keyboard.GetState();
 
-                    /*// enemy updating
-                    foreach (Enemy en in enemyList)
-                    {
-                        
-                        ((TestEnemy)en).Update(player);
-                        if(en.CollideWith(player))
-                        {
-                            en.HitPlayer(player);
-                        }
-                    }*/
-
-
+                    // enemy spawning and updating
                     enemyManager.Update(gameTime, player);
+
                     //Bullets testing
                     foreach (Bullet b in bulletList)
                     {
@@ -301,23 +266,9 @@ namespace EnterTheOnegeon
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
                     tempTime += gameTime.ElapsedGameTime.TotalSeconds;
-
-                    //temp dev shortcut until buttons are implimented
-                    if (Keyboard.GetState().IsKeyDown(Keys.D1))
-                    {
-                        gameState = GameState.Title;
-                    }
-
-                    //temp dev shortcut until buttons are implimented
-                    if (Keyboard.GetState().IsKeyDown(Keys.D3))
-                    { 
-                        gameState = GameState.Score;
-                    }
                     break;
-
-                // ----------------------
-                // ---Scoreboard state---
-                // ----------------------
+                #endregion
+                #region Scoreboard State
                 case GameState.Score:
                     // quit button pressed
                     if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && 
@@ -340,19 +291,22 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Title;
                     }
-
-                    //temp dev shortcut until buttons are implimented
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D2))
-                    { 
-                        gameState = GameState.Game;
-                    }
-
-                    //temp dev shortcut until buttons are implimented
-                    else if (Keyboard.GetState().IsKeyDown(Keys.D1))     
-                    {
-                        gameState = GameState.Title;
-                    }
                     break;
+                #endregion
+            }
+
+            //dev shortcuts
+            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            {
+                gameState = GameState.Title;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                gameState = GameState.Game;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                gameState = GameState.Score;
             }
 
             _prevMState = _mState;
@@ -364,57 +318,46 @@ namespace EnterTheOnegeon
         {
             GraphicsDevice.Clear(Color.MediumPurple);
 
-            _spriteBatch.Begin(/*transformMatrix: camera.Transform*/);
+            _spriteBatch.Begin(transformMatrix: camera.Transform);
 
             // switch to control what is being drawn to the screen at each part of our fsm
             switch (gameState)      
             {
-                // ---Title state---
+                #region Title State
                 case GameState.Title:       
                     _spriteBatch.Draw(
                         coverArt, 
                         new Rectangle(
-                            0, 
-                            0, 
-                            800, 
-                            480),
+                            -(int)camera.Transform.Translation.X,
+                            -(int)camera.Transform.Translation.Y, 
+                            1920, 
+                            1080),
                         Color.White);
 
                     strtButt.Draw(_spriteBatch);
                     quitButt.Draw(_spriteBatch);
 
-                    #region Text
                     _spriteBatch.DrawString(
                         verdana,
                         "ENTER THE ONEGEON",
-                        new Vector2(10, 10),
+                        new Vector2(-540, -150),
                         Color.White);
-
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 2 for game",
-                        new Vector2(10, 30),
-                        Color.White);
-
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 3 for scores",
-                        new Vector2(10, 80),
-                        Color.White);
-                    #endregion
                     break;
+                #endregion
+                #region Game State
 
-                // ---Main game state---
                 case GameState.Game:        
+                    // Game background
                     _spriteBatch.Draw(
                         dungeon, 
                         new Rectangle(
                             0,
                             0,
-                            800,
-                            480), 
+                            screenWidth,
+                            screenHeight), 
                         Color.White);
 
+                    // Player
                     player.Draw(_spriteBatch);
 
                     /*foreach(Enemy en in enemyList)
@@ -442,8 +385,8 @@ namespace EnterTheOnegeon
                     _spriteBatch.Draw(
                         bulletAsset, 
                         new Rectangle(
-                            350, 
-                            30, 
+                            350 - (int)camera.Transform.Translation.X, 
+                            30 - (int)camera.Transform.Translation.Y, 
                             30, 
                             30), 
                         Color.White);
@@ -451,14 +394,18 @@ namespace EnterTheOnegeon
                     _spriteBatch.DrawString(
                         verdana,
                         String.Format("x{0}", player.BulletCount),
-                        new Vector2(380, 30),
+                        new Vector2(
+                            380 - (int)camera.Transform.Translation.X,
+                            30 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
                     // Player iframes
                     _spriteBatch.DrawString(
                         verdana,
                         String.Format("Iframe time: {0:F3}", player.IFrameTimeLeft),
-                        new Vector2(300, 50),
+                        new Vector2(
+                            300 - (int)camera.Transform.Translation.X,
+                            50 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
                     // Show  1st enemy position
@@ -479,73 +426,67 @@ namespace EnterTheOnegeon
                         b.Draw(_spriteBatch);
                     }
 
-                    #region Text
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 1 for menu",
-                        new Vector2(
-                            10, 
-                            50),
-                        Color.White);
-                    _spriteBatch.DrawString(
-                        verdana,
-                        "Press 3 for scores",
-                        new Vector2(
-                            10, 
-                            80),
-                        Color.White);
-                    #endregion
-
                     //Drawing the line from player to cursor
                     for (int i = 0; i < 20; i++)
                     {
                         _spriteBatch.Draw(
-                            dungeon, 
+                            dungeon,
+
                             new Rectangle(
-                                player.CenterX + ((_mState.X - player.CenterX) * i / 20), 
-                                player.CenterY + ((_mState.Y - player.CenterY) * i / 20), 
+                                player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20), 
+                                player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20), 
                                 4, 
                                 4), 
                             Color.Black);
                     }
                     break;
-
-                // ---Scoreboard state---
+                #endregion
+                #region Scoreboard State
                 case GameState.Score:       
                     _spriteBatch.Draw(
                         scoreBoard, 
                         new Rectangle(
-                            0, 
-                            0, 
-                            800, 
-                            480), 
+                            -(int)camera.Transform.Translation.X,
+                            -(int)camera.Transform.Translation.Y,
+                            screenWidth, 
+                            screenHeight), 
                         Color.White);
 
                     _spriteBatch.DrawString(
                         verdana,
                         enemyManager.Score.ToString(),
                         new Vector2(
-                            400, 
-                            200), 
+                            screenWidth / 2 - camera.Transform.Translation.X,
+                            screenHeight / 2 - camera.Transform.Translation.Y), 
                         Color.White);
 
                     menuButt.Draw(_spriteBatch);
 
                     quitButt.Draw(_spriteBatch);
-
-                    #region Text
-                    _spriteBatch.DrawString(verdana,
-                        "Press 1 for menu",
-                        new Vector2(10, 50),
-                        Color.White);
-
-                    _spriteBatch.DrawString(verdana,
-                        "Press 2 for game",
-                        new Vector2(10, 30),
-                        Color.White);
-                    #endregion
                     break;
+                #endregion
+
             }
+
+            #region Debug hotkey text
+            _spriteBatch.DrawString(
+                verdana,
+                "Press 1 for menu",
+                new Vector2(-540, -130),
+                Color.White);
+
+            _spriteBatch.DrawString(
+                verdana,
+                "Press 2 for game",
+                new Vector2(-540, -110),
+                Color.White);
+
+            _spriteBatch.DrawString(
+                verdana,
+                "Press 3 for score",
+                new Vector2(-540, -90),
+                Color.White);
+            #endregion
 
             _spriteBatch.End();
 
