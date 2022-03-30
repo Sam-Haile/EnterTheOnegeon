@@ -127,11 +127,18 @@ namespace EnterTheOnegeon
         private void UpdateTestEnemy(Player player)
         {
             //Updating each enemy and checking the collision
-            foreach (TestEnemy en in testEnemyList)
+            //As well as making sure they don't overlap
+            for (int i = 0; i < testEnemyList.Count; i++)
             {
-                en.Update(player);
-                if (en.CollideWith(player))
-                    en.HitPlayer(player);
+                testEnemyList[i].Update(player);
+                if (testEnemyList[i].CollideWith(player))
+                    testEnemyList[i].HitPlayer(player);
+                //Checking each enemy with each other
+                for (int j = i+1; j < testEnemyList.Count; j++)
+                {
+                    if (testEnemyList[i].CollideWith(testEnemyList[j]))
+                        testEnemyList[i].MoveAwayFrom(testEnemyList[j]);
+                }
             }
             //Removing the inactive enemies
             for (int i = testEnemyList.Count - 1; i >= 0; i--)
