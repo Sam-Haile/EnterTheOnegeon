@@ -100,18 +100,18 @@ namespace EnterTheOnegeon
                         //Change LATER for different enemy types
                         if(rng.Next(10) == 0)
                         {
-                            SpawnWideBoi(RandPoint());
+                            SpawnWideBoi(RandPoint(true));
                             curWavePoints -= 3;
                         }
                         else
                         {
-                            SpawnTestEnemy(RandPoint());
+                            SpawnTestEnemy(RandPoint(false));
                             curWavePoints -= 1;
                         }
                     }
                     else
                     {
-                        SpawnTestEnemy(RandPoint());
+                        SpawnTestEnemy(RandPoint(false));
                         curWavePoints -= 1;
                     }
                 }
@@ -156,6 +156,7 @@ namespace EnterTheOnegeon
 
             }
         }
+
         public void Draw(SpriteBatch sb, SpriteFont font)
         {
             foreach (TestEnemy en in testEnemyList)
@@ -163,23 +164,29 @@ namespace EnterTheOnegeon
                 en.Draw(sb);
             }
             //Score
-            sb.DrawString(font,
-                        String.Format("Score: {0}", score),
-                        new Vector2(-(int)camera.Transform.Translation.X + 1500,
-                            -(int)camera.Transform.Translation.Y + 70),
-                        Color.White);
+            sb.DrawString(
+                font,
+                String.Format("Score: {0}", score),
+                new Vector2(
+                    -(int)camera.Transform.Translation.X + 1500,
+                    -(int)camera.Transform.Translation.Y + 70),
+                Color.White);
             //Time to next wave
-            sb.DrawString(font,
-                        String.Format("Next wave: {0:F3}", waveTime),
-                        new Vector2(-(int)camera.Transform.Translation.X + 800,
-                            -(int)camera.Transform.Translation.Y + 100),
-                        Color.White);
+            sb.DrawString(
+                font,
+                String.Format("Next wave: {0:F3}", waveTime),
+                new Vector2(
+                    -(int)camera.Transform.Translation.X + 800,
+                    -(int)camera.Transform.Translation.Y + 100),
+                Color.White);
             //Total time in top right
-            sb.DrawString(font,
-                        String.Format("Total Time: {0:F3}", timer),
-                        new Vector2(-(int)camera.Transform.Translation.X + 1500,
-                            -(int)camera.Transform.Translation.Y + 100),
-                        Color.White);
+            sb.DrawString(
+                font,
+                String.Format("Total Time: {0:F3}", timer),
+                new Vector2(
+                    -(int)camera.Transform.Translation.X + 1500,
+                    -(int)camera.Transform.Translation.Y + 100),
+                Color.White);
 
         }
 
@@ -195,17 +202,20 @@ namespace EnterTheOnegeon
         public void SpawnTestEnemy(Point pos)
         {
             testEnemyList.Add(
-                    new TestEnemy(testEnemyAsset,
+                    new TestEnemy(
+                        testEnemyAsset,
                         new Rectangle(
                             pos,
                             new Point(50,50)),
                         1)); //Health
         }
+
         //Delete this later
         public void SpawnWideBoi(Point pos)
         {
             testEnemyList.Add(
-                    new TestEnemy(testEnemyAsset,
+                    new TestEnemy(
+                        testEnemyAsset,
                         new Rectangle(
                             pos,
                             new Point(150, 100)),
@@ -213,7 +223,7 @@ namespace EnterTheOnegeon
         }
 
         // Gets a random point off screen
-        public Point RandPoint()
+        public Point RandPoint(bool isWideBoi)
         {
             int randX;
             int randY;
@@ -223,17 +233,25 @@ namespace EnterTheOnegeon
             {
                 randY = rng.Next(0 - testEnemyAsset.Height, graphics.GraphicsDevice.Viewport.Height);
                 randX = rng.Next(2);
-                // enemy spawns east of viewport
+                // enemy spawns on the east wall
                 if (randX == 1)
                 {
-                    randX = graphics.GraphicsDevice.Viewport.Width;
+                    if (isWideBoi)
+                    {
+                        // dungeon.png width (scaled x2) - east wall thickness (scaled 2x) - wideboi width
+                        randX = 1920 * 2 - 96 * 2 - 150;
+                    }
+                    else
+                    {
+                        // dungeon.png width (scaled x2) - east wall thickness (scaled 2x) - enemy width
+                        randX = 1920 * 2 - 96 * 2 - 50;
+                    }
                 }
                 // enemy spawns west of viewport
                 else
                 {
-                    // 50 is the height of the enemy object, the height of the object !=
-                    // the height of the sprite.
-                    randX = 0 - 50;
+                    // west wall width (scaled x2)
+                    randX = 0 + 96*2;
                 }
             }
             //enemy comes in from top or bottom
@@ -244,14 +262,14 @@ namespace EnterTheOnegeon
                 // enemy spawns south of viewport 
                 if (randY == 1)
                 {
-                    randY = graphics.GraphicsDevice.Viewport.Height;
+                    // dungeon.png height (scaled x2) - south wall thickness (scaled 2x) - enemy height
+                    randY = 1088*2 - 32*2 - 50;
                 }
                 // enemy spawns north of viewport
                 else
                 {
-                    // 50 is the height of the enemy object, the height of the object !=
-                    // the height of the sprite.
-                    randY = 0 - 50;
+                    // north wall height (scaled x2)
+                    randY = 0 + 96*2;
                 }
             }
             return new Point(randX, randY);

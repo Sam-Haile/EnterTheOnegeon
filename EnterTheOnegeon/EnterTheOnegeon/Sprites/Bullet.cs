@@ -103,10 +103,10 @@ namespace EnterTheOnegeon
             get 
             {
                   return passes > 0 &&
-                    rectangle.Y > 0 + 100 &&
-                    rectangle.X > 0 + 100 &&
-                    rectangle.Y < 2176 - 50 &&
-                    rectangle.X < 3840 - 250;
+                    rectangle.Y > 0 + 96*2 &&
+                    rectangle.X > 0 + 96*2 &&
+                    rectangle.Y < 2176 - 32*2 &&
+                    rectangle.X < 3840 - 96*2;
             }
         }
 
@@ -126,7 +126,7 @@ namespace EnterTheOnegeon
                 /* Original
                 rectangle.X = (int)(spawnX + (trajectory.X * 1000 * timer / speed));
                 rectangle.Y = (int)(spawnY + (trajectory.Y * 1000 * timer / speed));
-                 */
+                */
                 int arbConst = 100;
                 rectangle.X = (int)(spawnX + (trajectory.X * arbConst * timer * speed));
                 rectangle.Y = (int)(spawnY + (trajectory.Y * arbConst * timer * speed));
