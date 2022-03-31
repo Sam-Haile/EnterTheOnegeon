@@ -69,7 +69,6 @@ namespace EnterTheOnegeon
         EnemyManager enemyManager;
 
         // text/font fields
-        SpriteFont verdana;
         SpriteFont fipps;
 
         //background fields
@@ -131,7 +130,6 @@ namespace EnterTheOnegeon
             enemyManager = new EnemyManager(_graphics, enemyAsset);
 
             // load font
-            verdana = Content.Load<SpriteFont>("Verdana15");
             fipps = Content.Load<SpriteFont>("fipps15");
 
             // load button texture and create all buttons
