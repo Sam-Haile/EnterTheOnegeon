@@ -264,6 +264,7 @@ namespace EnterTheOnegeon
                 {
                     if (isWideBoi)
                     {
+                        // dungeon.png height (scaled x2) - south wall thickness (scaled 2x) - wideboi height
                         randY = 1088 * 2 - 32 * 2 - 100;
                     }
                     else

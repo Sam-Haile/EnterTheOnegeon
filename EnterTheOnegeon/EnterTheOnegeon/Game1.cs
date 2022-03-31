@@ -322,7 +322,7 @@ namespace EnterTheOnegeon
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.MediumPurple);
+            GraphicsDevice.Clear(new Color(174, 135, 137));
 
             _spriteBatch.Begin(transformMatrix: camera.Transform);
 
