@@ -208,7 +208,12 @@ namespace EnterTheOnegeon
 
 
                     // players movement
-                    player.Update(gameTime);
+                    player.Update(
+                        gameTime, 
+                        _mState, 
+                        _prevMState, 
+                        _currentKbState,
+                        _prevKbState);
 
                     // cameras movement
                     camera.Follow(player);
@@ -550,5 +555,6 @@ namespace EnterTheOnegeon
             }
             return new Point(randX, randY);
         }
+
     }
 }

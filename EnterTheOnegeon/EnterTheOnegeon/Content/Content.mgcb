@@ -116,10 +116,3 @@
 /processorParam:TextureFormat=Color
 /build:Untitled.png;enemy1.png
 
-#begin Verdana15.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Verdana15.spritefont
-

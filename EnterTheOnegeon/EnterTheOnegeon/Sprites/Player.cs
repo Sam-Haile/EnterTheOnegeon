@@ -61,33 +61,35 @@ namespace EnterTheOnegeon
             
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, MouseState mState, MouseState prevMState, KeyboardState kState, KeyboardState prevKState)
         {
             invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
-            Move();
+            Move(kState);
+            if (mState.RightButton == ButtonState.Pressed)
+            {
+                //Parry();
+            }
         }
 
         /// <summary>
         /// ToDo: Keyboard input
         /// </summary>
-        public void Move()
+        public void Move(KeyboardState kState)
         {
-            KeyboardState keypress = Keyboard.GetState();
-
             // speed at which player moves is subject to change
-            if (keypress.IsKeyDown(Keys.W))
+            if (kState.IsKeyDown(Keys.W))
             {
                 rectangle.Y -= speed;
             }
-            if (keypress.IsKeyDown(Keys.A))
+            if (kState.IsKeyDown(Keys.A))
             {
                 rectangle.X -= speed;
             }
-            if (keypress.IsKeyDown(Keys.S))
+            if (kState.IsKeyDown(Keys.S))
             {
                 rectangle.Y += speed;
             }
-            if (keypress.IsKeyDown(Keys.D))
+            if (kState.IsKeyDown(Keys.D))
             {
                 rectangle.X += speed;
             }
@@ -116,9 +118,10 @@ namespace EnterTheOnegeon
 
         public void Parry(GameObject other)
         {
-            //foreach ()
+            // if player is colliding with any TestEnemy
+            // foreach ()
             {
-                if (CollideWith(other))
+                //if (CollideWith(b))
                 {
                     bulletCount += 1;
                 }
