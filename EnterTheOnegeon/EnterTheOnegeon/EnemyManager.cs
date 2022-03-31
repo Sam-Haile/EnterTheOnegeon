@@ -262,8 +262,15 @@ namespace EnterTheOnegeon
                 // enemy spawns south of viewport 
                 if (randY == 1)
                 {
-                    // dungeon.png height (scaled x2) - south wall thickness (scaled 2x) - enemy height
-                    randY = 1088*2 - 32*2 - 50;
+                    if (isWideBoi)
+                    {
+                        randY = 1088 * 2 - 32 * 2 - 100;
+                    }
+                    else
+                    {
+                        // dungeon.png height (scaled x2) - south wall thickness (scaled 2x) - enemy height
+                        randY = 1088 * 2 - 32 * 2 - 50;
+                    }
                 }
                 // enemy spawns north of viewport
                 else
