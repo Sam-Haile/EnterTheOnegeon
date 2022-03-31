@@ -161,6 +161,7 @@ namespace EnterTheOnegeon
 
             _prevKbState = _currentKbState;
             _currentKbState = Keyboard.GetState();
+            _prevMState = _mState;
             _mState = Mouse.GetState();
 
             switch (gameState)
@@ -301,7 +302,7 @@ namespace EnterTheOnegeon
                 #endregion
             }
 
-            //dev shortcuts
+            #region Debug hotkeys
             if (Keyboard.GetState().IsKeyDown(Keys.D1))
             {
                 gameState = GameState.Title;
@@ -314,8 +315,7 @@ namespace EnterTheOnegeon
             {
                 gameState = GameState.Score;
             }
-
-            _prevMState = _mState;
+            #endregion
 
             base.Update(gameTime);
         }
