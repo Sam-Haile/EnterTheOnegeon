@@ -6,10 +6,14 @@ using System.Collections.Generic;
 
 /*
  * TO DO: 
- * >IMPLEMENT FIPPS FONT (https://www.dafont.com/fipps.font)
  * > Add parry mechanic (bullet can be stationary for now)
- * > Bullet stats and manager class
- * > Collision detection for the stage
+ *      - I'm thinking if we want an animated walk cycle, we could cut the player 
+ *      sprite in half.  Doing this will allow us to animate the legs walking 
+ *      (bottom half) independently from the arms parrying (top half)
+ *      - Or we could just make two walk animations, one while not parrying and 
+ *      one while parrying
+ * > Bullet stats and manager class (Nelson working on this)
+ * > Collision detection for the stage (Patrick will do this)
  * > Add a real debug mode
  */
 
