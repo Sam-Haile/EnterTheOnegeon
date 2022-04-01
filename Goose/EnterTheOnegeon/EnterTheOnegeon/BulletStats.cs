@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace EnterTheOnegeon.Sprites
+namespace EnterTheOnegeon
 {
     /// <summary>
     /// Holds the stats of the bullet
