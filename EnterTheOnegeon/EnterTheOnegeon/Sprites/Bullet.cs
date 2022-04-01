@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using EnterTheOnegeon.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,7 +16,7 @@ namespace EnterTheOnegeon
         private int speed;
 
         /// <summary> second the bullet was created </summary>
-        private double timeCreated;
+        //private double timeCreated;
 
         /// <summary> time the bullet has been alive </summary>
         private double timer;
@@ -54,7 +55,8 @@ namespace EnterTheOnegeon
         {
             speed = spd;
 
-            timeCreated = gameTime.TotalGameTime.TotalSeconds;
+            //timeCreated = gameTime.TotalGameTime.TotalSeconds;
+            timer = 0;
 
             spawnX = rectangle.X;
             spawnY = rectangle.Y;
@@ -73,7 +75,8 @@ namespace EnterTheOnegeon
         {
             speed = spd;
 
-            timeCreated = gameTime.TotalGameTime.TotalSeconds;
+            //timeCreated = gameTime.TotalGameTime.TotalSeconds;
+            timer = 0;
 
             spawnX = rectangle.X;
             spawnY = rectangle.Y;
@@ -122,7 +125,7 @@ namespace EnterTheOnegeon
             if (this.Active)
             {
                 // Sets timer to amount of time bullet has been alive
-                timer = gameTime.TotalGameTime.TotalSeconds - timeCreated;
+                timer += gameTime.ElapsedGameTime.TotalSeconds;
                 /* Original
                 rectangle.X = (int)(spawnX + (trajectory.X * 1000 * timer / speed));
                 rectangle.Y = (int)(spawnY + (trajectory.Y * 1000 * timer / speed));
@@ -140,14 +143,23 @@ namespace EnterTheOnegeon
                 base.Draw(sb);
             }
         }
-
-        /*
-         * Make it take a bulletStats struct to essentially do what a constructor does
-         * For object pooling purposes
-        public void ResetBullet(BulletStats bStats)
+        /// <summary>
+        /// Resets a bullet 
+        /// </summary>
+        /// <param name="spaX">Spawning x pos</param>
+        /// <param name="spaY">Spawning y pos</param>
+        /// <param name="posToMove">Where to go</param>
+        /// <param name="bStats"></param>
+        public void ResetBullet(int spaX, int spaY, Vector2 posToMove, BulletStats bStats)
         {
-
+            spawnX = spaX;
+            spawnY = spaY;
+            trajectory = VectorToPosition(posToMove);
+            trajectory.Normalize();
+            timer = 0;
+            speed = bStats.Speed;
+            passes = bStats.Passes;
         }
-        */
+        
     }
 }
