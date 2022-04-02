@@ -12,6 +12,7 @@ namespace EnterTheOnegeon
     /// </summary>
     public struct BulletStats
     {
+        //fields
         private int size;
         private double speed;
         private int passes;
@@ -45,5 +46,13 @@ namespace EnterTheOnegeon
             set { size = value; }
         }
 
+        //Overloaded the + operator
+        //Adding bullet stats together results in combining the stats
+        public static BulletStats operator +(BulletStats a, BulletStats b)
+            => new BulletStats(
+                a.Size + b.Size,
+                a.Speed + b.Speed,
+                a.Passes + b.Passes,
+                a.Damage + b.Damage);
     }
 }

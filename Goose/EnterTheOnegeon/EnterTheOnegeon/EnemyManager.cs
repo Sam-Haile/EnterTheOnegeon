@@ -19,6 +19,7 @@ namespace EnterTheOnegeon
     /// </summary>
     class EnemyManager
     {
+        private double UpgradeTime = 20;
         //fields
         private Random rng;
         private GraphicsDeviceManager graphics;
@@ -75,13 +76,20 @@ namespace EnterTheOnegeon
         {
             timer += gameTime.ElapsedGameTime.TotalSeconds;
             waveTime -= gameTime.ElapsedGameTime.TotalSeconds;
-            
+            if (UpgradeTime > 0)
+                UpgradeTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            else if(UpgradeTime < -1)
+            { }
+            else if(UpgradeTime < 0)
+            {
+            }
+
             //Every time a wave is spawned
             //Resets the countdown to next wave
             //Spawns an amount of enemies according to the amount of wave points availible
             //Might move this to a method of some sort
             //UpdateWave();
-            if(waveTime <= 0)
+            if (waveTime <= 0)
             {
                 if (timer < 20)
                     waveTime = 5;
@@ -186,6 +194,16 @@ namespace EnterTheOnegeon
                 new Vector2(
                     -(int)camera.Transform.Translation.X + 1500,
                     -(int)camera.Transform.Translation.Y + 100),
+                Color.White);
+
+            //Temporary Upgrade text
+            //Replace with shop text later
+            sb.DrawString(
+                font,
+                String.Format("Upgrade happening in {0:F3}s", UpgradeTime),
+                new Vector2(
+                    -(int)camera.Transform.Translation.X + 700,
+                    -(int)camera.Transform.Translation.Y + 70),
                 Color.White);
 
         }
