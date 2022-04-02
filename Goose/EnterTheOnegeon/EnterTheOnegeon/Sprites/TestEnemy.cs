@@ -25,14 +25,9 @@ namespace EnterTheOnegeon
         /// <returns></returns>
         public override bool CollideWith(GameObject other)
         {
-            if (this.Position.Intersects(other.Position))
-            {
-                return true;
-            }
-            else
-            {
+            if (!Active)
                 return false;
-            }
+            return base.CollideWith(other);
         }
 
         /// <summary>

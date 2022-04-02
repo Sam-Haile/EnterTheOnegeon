@@ -20,6 +20,9 @@ namespace EnterTheOnegeon
         private double invTime;
         private double invTimer;
 
+        //The stats of the bullet the player will shoot
+        private BulletStats bStats;
+
         public Player(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
             speed = 6;
@@ -28,6 +31,9 @@ namespace EnterTheOnegeon
             hp = 4;
             invTime = 3;
             invTimer = 0;
+
+            //Size, Speed, Num of Passes, Damage(not used yet)
+            bStats = new BulletStats(10, 5, 1, 1);
         }
 
         public int BulletCount
@@ -49,6 +55,12 @@ namespace EnterTheOnegeon
         public double IFrameTimeLeft
         {
             get { return invTimer; }
+        }
+
+        public BulletStats BStats
+        {
+            get { return bStats; }
+            set { bStats = value; }
         }
 
         public void TakeDamage(int damage)

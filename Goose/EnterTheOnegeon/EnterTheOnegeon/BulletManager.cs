@@ -33,14 +33,52 @@ namespace EnterTheOnegeon
             }*/
         }
 
-        public void Update(GameTime gameTime, Player player)
+        public void Update(GameTime gameTime, MouseState mState, MouseState prevMState, Player player, EnemyManager eManager)
         {
+            //Creating player bullets when clicking
+            if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
+            {
+                GetPlayerBullet().Reset(
+                            player.CenterX - player.BStats.Size / 2,
+                            player.CenterY - player.BStats.Size / 2,
+                        new Vector2(
+                            mState.X - camera.Transform.Translation.X,
+                            mState.Y - camera.Transform.Translation.Y),
+                        player.BStats);
+
+                player.BulletCount--;
+            }
+        }
+
+        private void UpdateAndRemoveBullets(GameTime gameTime, EnemyManager eManager)
+        {
+            foreach (Bullet b in pBullets)
+            {
+                b.Update(gameTime);
+                foreach (TestEnemy en in eManager.GetTestEnemies())
+                {
+                    if (b.CollideWith(en))
+                    {
+                        b.HitEnemy(en);
+                    }
+                }
+            }
 
         }
         public void Draw(SpriteBatch sb, SpriteFont font)
         {
         }
 
-        //Helping method to get the first inactive bullet
+        //Helping method to get the first inactive player bullet
+        //Returns null if none are inactive
+        public Bullet GetPlayerBullet()
+        {
+            for(int i = 0; i < pBullets.Count; i++)
+            {
+                if (pBullets[i].Active == false)
+                    return pBullets[i];
+            }
+            return null;
+        }
     }
 }

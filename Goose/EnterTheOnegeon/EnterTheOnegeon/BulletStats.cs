@@ -12,11 +12,12 @@ namespace EnterTheOnegeon
     /// </summary>
     public struct BulletStats
     {
+        private int size;
         private int speed;
         private int passes;
         private int damage;
-        private int size;
-        public BulletStats(int spd, int numPasses, int dmg, int size)// int lifetime
+
+        public BulletStats(int size, int spd, int numPasses, int dmg)// int lifetime
         {
             speed = spd;
             passes = numPasses;

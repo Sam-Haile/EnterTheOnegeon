@@ -134,6 +134,14 @@ namespace EnterTheOnegeon
                 base.Draw(sb);
             }
         }
+
+        //Overriding so that when bullets are inactive they don't collide with anything
+        public override bool CollideWith(GameObject other)
+        {
+            if (!Active)
+                return false;
+            return base.CollideWith(other);
+        }
         /// <summary>
         /// Resets(Spawns) an inactive bullet
         /// </summary>
