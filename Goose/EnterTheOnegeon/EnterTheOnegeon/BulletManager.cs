@@ -35,6 +35,7 @@ namespace EnterTheOnegeon
 
         public void Update(GameTime gameTime, MouseState mState, MouseState prevMState, Player player, EnemyManager eManager)
         {
+            #region "Creating" bullets on each click
             //Creating player bullets when clicking
             if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
             {
@@ -45,13 +46,10 @@ namespace EnterTheOnegeon
                             mState.X - camera.Transform.Translation.X,
                             mState.Y - camera.Transform.Translation.Y),
                         player.BStats);
-
                 player.BulletCount--;
             }
-        }
-
-        private void UpdateAndRemoveBullets(GameTime gameTime, EnemyManager eManager)
-        {
+            #endregion
+            #region Updating the player bullets
             foreach (Bullet b in pBullets)
             {
                 b.Update(gameTime);
@@ -63,10 +61,15 @@ namespace EnterTheOnegeon
                     }
                 }
             }
-
+            #endregion
         }
-        public void Draw(SpriteBatch sb, SpriteFont font)
+
+        public void Draw(SpriteBatch sb/*, SpriteFont font*/)
         {
+            foreach (Bullet b in pBullets)
+            {
+                b.Draw(sb);
+            }
         }
 
         //Helping method to get the first inactive player bullet
