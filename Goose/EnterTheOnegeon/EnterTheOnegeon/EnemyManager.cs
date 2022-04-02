@@ -19,7 +19,11 @@ namespace EnterTheOnegeon
     /// </summary>
     class EnemyManager
     {
+        /// <summary>
+        /// AT THE TOP
+        /// </summary>
         private double UpgradeTime = 20;
+
         //fields
         private Random rng;
         private GraphicsDeviceManager graphics;
@@ -76,6 +80,8 @@ namespace EnterTheOnegeon
         {
             timer += gameTime.ElapsedGameTime.TotalSeconds;
             waveTime -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            //Temp upgrade
             if (UpgradeTime > 0)
                 UpgradeTime -= gameTime.ElapsedGameTime.TotalSeconds;
             else if(UpgradeTime < -1)
