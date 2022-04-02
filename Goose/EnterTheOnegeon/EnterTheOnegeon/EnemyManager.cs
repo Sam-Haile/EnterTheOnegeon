@@ -82,6 +82,8 @@ namespace EnterTheOnegeon
             { }
             else if(UpgradeTime < 0)
             {
+                player.BStats += new BulletStats(50, 3, 1, 0);
+                UpgradeTime = -2;
             }
 
             //Every time a wave is spawned
