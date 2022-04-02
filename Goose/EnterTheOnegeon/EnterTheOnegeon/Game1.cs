@@ -65,11 +65,13 @@ namespace EnterTheOnegeon
 
         // bullet fields
         Texture2D bulletAsset;
-        List<Bullet> bulletList;
+        BulletManager bulletManager;
 
         // enemy fields
         Texture2D enemyAsset;
         EnemyManager enemyManager;
+
+
 
         // text/font fields
         SpriteFont fipps;
@@ -126,7 +128,7 @@ namespace EnterTheOnegeon
 
             //Loading for bullets
             bulletAsset = Content.Load<Texture2D>("Bullet");
-            bulletList = new List<Bullet>();
+            bulletManager = new BulletManager(bulletAsset);
 
             // loading enemy and initializing a list
             enemyAsset = Content.Load<Texture2D>("badguy");
@@ -171,7 +173,7 @@ namespace EnterTheOnegeon
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(1910, 1550, 32, 64));
-                    bulletList = new List<Bullet>();
+                    bulletManager = new BulletManager(bulletAsset);
                     enemyManager = new EnemyManager(_graphics, enemyAsset);
                     totalGameTime = 0;
                     tempTime = 0;
@@ -220,7 +222,7 @@ namespace EnterTheOnegeon
 
                     // cameras movement
                     camera.Follow(player);
-
+                    /*
                     // bullet spawning when mouse clicked
                     if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
                     {
@@ -239,11 +241,12 @@ namespace EnterTheOnegeon
                                 5));
 
                         player.BulletCount--;
-                    }
+                    }*/
 
                     // enemy spawning and updating
                     enemyManager.Update(gameTime, player);
-
+                    bulletManager.Update(gameTime, _mState, _prevMState, player, enemyManager);
+                    /*
                     //Bullets testing
                     foreach (Bullet b in bulletList)
                     {
@@ -263,7 +266,7 @@ namespace EnterTheOnegeon
                     {
                         if (!bulletList[i].Active)
                             bulletList.RemoveAt(i);
-                    }
+                    }*/
 
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
@@ -392,11 +395,7 @@ namespace EnterTheOnegeon
                             400 - (int)camera.Transform.Translation.X,
                             100 - (int)camera.Transform.Translation.Y),
                         Color.White);
-
-                    foreach (Bullet b in bulletList)
-                    {
-                        b.Draw(_spriteBatch);
-                    }
+                    bulletManager.Draw(_spriteBatch);
 
                     //Drawing the line from player to cursor
                     for (int i = 0; i < 20; i++)

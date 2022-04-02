@@ -21,8 +21,9 @@ namespace EnterTheOnegeon
         public BulletManager(Texture2D bulletAsset)
         {
             //this.bulletAsset = bulletAsset;
+            pBullets = new List<Bullet>();
             //Adding inactive bullets, this is the cap on the amount of bullets on screen
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 5; i++)
             {
                 pBullets.Add(new Bullet(bulletAsset, new Rectangle(0, 0, 1, 1)));
             }
@@ -35,18 +36,22 @@ namespace EnterTheOnegeon
 
         public void Update(GameTime gameTime, MouseState mState, MouseState prevMState, Player player, EnemyManager eManager)
         {
+            camera.Follow(player);
             #region "Creating" bullets on each click
             //Creating player bullets when clicking
             if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
             {
-                GetPlayerBullet().Reset(
+                if(GetPlayerBullet() != null)
+                {
+                    GetPlayerBullet().Reset(
                             player.CenterX - player.BStats.Size / 2,
                             player.CenterY - player.BStats.Size / 2,
                         new Vector2(
                             mState.X - camera.Transform.Translation.X,
                             mState.Y - camera.Transform.Translation.Y),
                         player.BStats);
-                player.BulletCount--;
+                    player.BulletCount--;
+                }
             }
             #endregion
             #region Updating the player bullets

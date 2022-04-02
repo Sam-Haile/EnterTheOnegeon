@@ -35,6 +35,7 @@ namespace EnterTheOnegeon
 
             speed = 1;
             timer = 0;
+            passes = 0;
             trajectory = new Vector2();
         }
 
