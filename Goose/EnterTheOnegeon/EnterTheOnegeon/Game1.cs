@@ -12,7 +12,7 @@ using System.Collections.Generic;
  *      (bottom half) independently from the arms parrying (top half)
  *      - Or we could just make two walk animations, one while not parrying and 
  *      one while parrying
- * > Bullet stats and manager class (Nelson working on this)
+ * > Bullet stats and manager class (Nelson working on this) 
  * > Add a real debug mode
  */
 
@@ -210,8 +210,6 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Score;
                     }
-
-
                     // players movement
                     player.Update(
                         gameTime, 
@@ -222,51 +220,11 @@ namespace EnterTheOnegeon
 
                     // cameras movement
                     camera.Follow(player);
-                    /*
-                    // bullet spawning when mouse clicked
-                    if (_mState.LeftButton == ButtonState.Pressed && _prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
-                    {
-                        bulletList.Add(
-                            new Bullet(
-                                bulletAsset, 
-                                new Rectangle(
-                                    player.CenterX - bulletAsset.Width / 2, 
-                                    player.CenterY - bulletAsset.Height / 2, 
-                                    10, 
-                                    10),
-                                gameTime, 
-                                new Vector2(
-                                    _mState.X - camera.Transform.Translation.X, 
-                                    _mState.Y - camera.Transform.Translation.Y), 
-                                5));
-
-                        player.BulletCount--;
-                    }*/
 
                     // enemy spawning and updating
                     enemyManager.Update(gameTime, player);
                     bulletManager.Update(gameTime, _mState, _prevMState, player, enemyManager);
-                    /*
-                    //Bullets testing
-                    foreach (Bullet b in bulletList)
-                    {
-                        b.Update(gameTime);
-                        foreach(TestEnemy en in enemyManager.GetTestEnemies())
-                        {
-                            if(b.CollideWith(en))
-                            {
-                                b.HitEnemy(en);
-                            }
-                        }
-                    }
 
-                    // Remove bullets after they have killed set amount of enemies
-                    // (see "passed" field in bullet.cs)
-                    for (int i = bulletList.Count - 1; i >= 0; i--)
-                    {
-                        if (!bulletList[i].Active)
-                            bulletList.RemoveAt(i);
-                    }*/
 
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
