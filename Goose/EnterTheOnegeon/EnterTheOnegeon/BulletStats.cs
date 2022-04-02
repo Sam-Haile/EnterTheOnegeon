@@ -15,11 +15,13 @@ namespace EnterTheOnegeon
         private int speed;
         private int passes;
         private int damage;
-        public BulletStats(int spd, int numPasses, int dmg)// int lifetime
+        private int size;
+        public BulletStats(int spd, int numPasses, int dmg, int size)// int lifetime
         {
             speed = spd;
             passes = numPasses;
             damage = dmg;
+            this.size = size;
         }
         public int Speed 
         {
@@ -35,6 +37,11 @@ namespace EnterTheOnegeon
         {
             get { return damage; }
             set { damage = value; }
+        }
+        public int Size
+        {
+            get { return size; }
+            set { size = value; }
         }
 
     }

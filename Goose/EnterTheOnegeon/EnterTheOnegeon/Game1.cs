@@ -266,17 +266,6 @@ namespace EnterTheOnegeon
                             bulletList.RemoveAt(i);
                     }
 
-                    /*// Remove enemies that are shot
-                    for (int i = enemyList.Count - 1; i >= 0; i--)
-                    {
-                        if (!enemyList[i].Active)
-                        {
-                            enemyList.RemoveAt(i);
-                            score += 100;
-                        }
-                            
-                    }*/
-
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
                     tempTime += gameTime.ElapsedGameTime.TotalSeconds;
@@ -376,28 +365,8 @@ namespace EnterTheOnegeon
 
                     // Player
                     player.Draw(_spriteBatch);
-
-                    /*foreach(Enemy en in enemyList)
-                    {
-                        en.Draw(_spriteBatch);
-                    }*/
+                    // Enemy manager draws all enemies, score and time
                     enemyManager.Draw(_spriteBatch, fipps);
-
-                    //Showing some of the player stuff temporarily
-                    /*// Score UI
-                    _spriteBatch.DrawString(
-                        fipps,
-                        String.Format("Score: {0}", score),
-                        new Vector2(350, 10),
-                        Color.White);
-
-                    // Timer UI
-                    _spriteBatch.DrawString(
-                        fipps,
-                        String.Format("Time Elapsed: {0:F3}", totalGameTime),
-                        new Vector2(580, 10),
-                        Color.White);*/
-
                     // Bullet UI
                     _spriteBatch.Draw(
                         bulletAsset, 
@@ -424,19 +393,6 @@ namespace EnterTheOnegeon
                             400 - (int)camera.Transform.Translation.X,
                             100 - (int)camera.Transform.Translation.Y),
                         Color.White);
-
-                    // Show  1st enemy position
-                    /*if(enemyList.Count > 0)
-                    {
-                        _spriteBatch.DrawString(
-                            fipps,
-                            String.Format("Enemy: {0}, {1}", enemyList[0].X, enemyList[0].Y),
-                            new Vector2(
-                                350,
-                                60),
-                            Color.White);
-                    }
-                    */
 
                     foreach (Bullet b in bulletList)
                     {
@@ -514,7 +470,8 @@ namespace EnterTheOnegeon
             base.Draw(gameTime);
         }
 
-
+        #region Randpoint unused 
+        /*
         // Gets a random point off screen
         public Point RandPoint()
         {
@@ -559,6 +516,7 @@ namespace EnterTheOnegeon
             }
             return new Point(randX, randY);
         }
-
+        */
+        #endregion
     }
 }

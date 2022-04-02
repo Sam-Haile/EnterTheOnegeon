@@ -29,17 +29,14 @@ namespace EnterTheOnegeon
         /// <summary> the Y coordinates of bullet's spawn location </summary>
         private int spawnY;
 
-        // Constructor
-        // Parameterized
-        // SHOULD DELETE LATER AFTER TESTING
-        // MAYBE NOT DELETE AND IT CAN BE USED FOR CREATING AN INACTIVE BULLET
-        //public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
-        //{
-        //    
-        //    speed = 1;
-        //    timer = 3;
-        //    trajectory = new Vector2();
-        //}
+        //Creates inactive bullets
+        public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
+        {
+
+            speed = 1;
+            timer = 0;
+            trajectory = new Vector2();
+        }
 
         /// <summary>
         /// Creates a bullet using the 5 params
@@ -85,15 +82,6 @@ namespace EnterTheOnegeon
             trajectory = VectorToPosition(posToMoveTo);
             trajectory.Normalize();
         }
-
-        /*
-         * Delete the other constructors after implementing this
-         * Instead of having so many params use only a bulletstats struct to instantiate all the fields we would need
-        public Bullet(Texture2D sprite, Rectangle rectangle, BulletStats bStats) : base(sprite, rectangle)
-        {
-            speed = bStats.Speed etc.
-        }
-        */
 
 
         /// <summary>
@@ -143,14 +131,15 @@ namespace EnterTheOnegeon
             }
         }
         /// <summary>
-        /// Resets a bullet 
+        /// Resets(Spawns) an inactive bullet
         /// </summary>
         /// <param name="spaX">Spawning x pos</param>
         /// <param name="spaY">Spawning y pos</param>
         /// <param name="posToMove">Where to go</param>
-        /// <param name="bStats"></param>
-        public void ResetBullet(int spaX, int spaY, Vector2 posToMove, BulletStats bStats)
+        /// <param name="bStats">The stats</param>
+        public void Reset(int spaX, int spaY, Vector2 posToMove, BulletStats bStats)
         {
+            rectangle = new Rectangle(spaX, spaY, bStats.Size, bStats.Size);
             spawnX = spaX;
             spawnY = spaY;
             trajectory = VectorToPosition(posToMove);
