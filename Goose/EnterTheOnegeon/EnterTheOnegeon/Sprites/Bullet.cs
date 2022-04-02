@@ -86,16 +86,20 @@ namespace EnterTheOnegeon
 
         /// <summary>
         /// Property that returns true when the bullet can pass through more enemies
-        /// Bullets despawn when 100 pixels offscreen in any direction
+        /// Bullets despawn when they collide with any wall
         /// </summary>
         public bool Active
         {
             get 
             {
                   return passes > 0 &&
+                    // North wall
                     rectangle.Y > 0 + 96*2 &&
+                    // West wall
                     rectangle.X > 0 + 96*2 &&
+                    // East wall
                     rectangle.Y < 2176 - 32*2 &&
+                    // South wall
                     rectangle.X < 3840 - 96*2;
             }
         }

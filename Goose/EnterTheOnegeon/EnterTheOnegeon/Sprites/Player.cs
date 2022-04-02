@@ -93,6 +93,24 @@ namespace EnterTheOnegeon
             {
                 rectangle.X += speed;
             }
+
+            // Keeps player inside of the map
+            if (rectangle.Y < 0 + 96 * 2) // North
+            {
+                rectangle.Y = 96 * 2;
+            }
+            else if (rectangle.Y > 2176 - 32 * 2 - 64) // South
+            {
+                rectangle.Y = 2176 - 32 * 2 - 64;
+            }
+            if (rectangle.X < 0 + 96 * 2) // West
+            {
+                rectangle.X = 96 * 2;
+            }
+            else if(rectangle.X > 3840 - 96 * 2 - 32) // East
+            {
+                rectangle.X = 3840 - 96 * 2 - 32;
+            }
         }
 
         //Overriding draw to draw a hp bar as well

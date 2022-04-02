@@ -13,7 +13,6 @@ using System.Collections.Generic;
  *      - Or we could just make two walk animations, one while not parrying and 
  *      one while parrying
  * > Bullet stats and manager class (Nelson working on this)
- * > Collision detection for the stage (Patrick will do this)
  * > Add a real debug mode
  */
 
