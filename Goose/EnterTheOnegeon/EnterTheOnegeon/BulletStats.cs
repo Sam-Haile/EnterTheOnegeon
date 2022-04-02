@@ -13,18 +13,18 @@ namespace EnterTheOnegeon
     public struct BulletStats
     {
         private int size;
-        private int speed;
+        private double speed;
         private int passes;
         private int damage;
 
-        public BulletStats(int size, int spd, int numPasses, int dmg)// int lifetime
+        public BulletStats(int size, double spd, int numPasses, int dmg)// int lifetime
         {
             speed = spd;
             passes = numPasses;
             damage = dmg;
             this.size = size;
         }
-        public int Speed 
+        public double Speed 
         {
             get { return speed; }
             set { speed = value; }

@@ -12,7 +12,7 @@ using System.Collections.Generic;
  *      (bottom half) independently from the arms parrying (top half)
  *      - Or we could just make two walk animations, one while not parrying and 
  *      one while parrying
- * > Bullet stats and manager class (Nelson working on this) 
+ * > Shop/Shop enemies/Upgrades (Nelson)
  * > Add a real debug mode
  */
 

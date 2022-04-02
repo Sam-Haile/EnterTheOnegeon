@@ -12,7 +12,7 @@ namespace EnterTheOnegeon
         private Vector2 trajectory;
 
         /// <summary> seconds taken to travel from player to trajectory</summary>
-        private int speed;
+        private double speed;
 
         /// <summary> second the bullet was created </summary>
         //private double timeCreated;
