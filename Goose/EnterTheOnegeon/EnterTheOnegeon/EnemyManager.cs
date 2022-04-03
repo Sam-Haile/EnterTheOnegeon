@@ -184,33 +184,33 @@ namespace EnterTheOnegeon
                 font,
                 String.Format("Score: {0}", score),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 1680,
+                    -(int)camera.Transform.Translation.X + 1500,
                     -(int)camera.Transform.Translation.Y + 70),
                 Color.White);
             //Time to next wave
             sb.DrawString(
                 font,
-                String.Format("Next wave: {0:F0}", waveTime),
+                String.Format("Next wave: {0:F3}", waveTime),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 820,
-                    -(int)camera.Transform.Translation.Y + 120),
+                    -(int)camera.Transform.Translation.X + 800,
+                    -(int)camera.Transform.Translation.Y + 100),
                 Color.White);
             //Total time in top right
             sb.DrawString(
                 font,
-                String.Format("Total Time: {0:F0}", timer),
+                String.Format("Total Time: {0:F3}", timer),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 1603,
-                    -(int)camera.Transform.Translation.Y + 120),
+                    -(int)camera.Transform.Translation.X + 1500,
+                    -(int)camera.Transform.Translation.Y + 100),
                 Color.White);
 
             //Temporary Upgrade text
             //Replace with shop text later
             sb.DrawString(
                 font,
-                String.Format("Upgrade  in {0:F0}s", UpgradeTime),
+                String.Format("Upgrade happening in {0:F3}s", UpgradeTime),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 800,
+                    -(int)camera.Transform.Translation.X + 700,
                     -(int)camera.Transform.Translation.Y + 70),
                 Color.White);
 

@@ -16,9 +16,9 @@ namespace EnterTheOnegeon
     {
         // Fields
         private SpriteFont font;
-        public Texture2D buttText;
+        private Texture2D buttText;
         private string text;
-        public Vector2 textPos;
+        private Vector2 textPos;
         private Rectangle buttRect;
         private Color textColor;
 
@@ -28,13 +28,6 @@ namespace EnterTheOnegeon
             get { return buttRect; }
         }
         
-        public Texture2D Texture
-        {
-            get { return buttText; }
-            set { value = buttText; }
-        }
-
-
         // Constructor
         public Button(SpriteFont fnt, Texture2D buttonText, string name, Rectangle buttonRect, Color textColour)
         {
