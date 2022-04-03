@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
-    
+
     public enum EManagerState
     {
         Waves,
@@ -84,9 +84,9 @@ namespace EnterTheOnegeon
             //Temp upgrade
             if (UpgradeTime > 0)
                 UpgradeTime -= gameTime.ElapsedGameTime.TotalSeconds;
-            else if(UpgradeTime < -1)
+            else if (UpgradeTime < -1)
             { }
-            else if(UpgradeTime < 0)
+            else if (UpgradeTime < 0)
             {
                 player.BStats += new BulletStats(50, 3, 1, 0);
                 UpgradeTime = -2;
@@ -107,14 +107,14 @@ namespace EnterTheOnegeon
                     waveTime = 3;
                 //Spawn the amount of enemies using the amount of wave points availible
                 int curWavePoints = wavePoints;
-                while(curWavePoints > 0)
+                while (curWavePoints > 0)
                 {
                     //when there is enough points it will do checks for spawning which type of enemy
-                    if(curWavePoints >= 3)
+                    if (curWavePoints >= 3)
                     {
                         //10% chance to spawn wide dude
                         //Change LATER for different enemy types
-                        if(rng.Next(10) == 0)
+                        if (rng.Next(10) == 0)
                         {
                             SpawnWideBoi(RandPoint(true));
                             curWavePoints -= 3;
@@ -153,7 +153,7 @@ namespace EnterTheOnegeon
                 if (testEnemyList[i].CollideWith(player))
                     testEnemyList[i].HitPlayer(player);
                 //Checking each enemy with each other
-                for (int j = i+1; j < testEnemyList.Count; j++)
+                for (int j = i + 1; j < testEnemyList.Count; j++)
                 {
                     if (testEnemyList[i].CollideWith(testEnemyList[j]))
                         testEnemyList[i].MoveAwayFrom(testEnemyList[j]);
@@ -184,33 +184,33 @@ namespace EnterTheOnegeon
                 font,
                 String.Format("Score: {0}", score),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 1500,
+                    -(int)camera.Transform.Translation.X + 1680,
                     -(int)camera.Transform.Translation.Y + 70),
                 Color.White);
             //Time to next wave
             sb.DrawString(
                 font,
-                String.Format("Next wave: {0:F3}", waveTime),
+                String.Format("Next wave: {0:F0}", waveTime),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 800,
-                    -(int)camera.Transform.Translation.Y + 100),
+                    -(int)camera.Transform.Translation.X + 820,
+                    -(int)camera.Transform.Translation.Y + 120),
                 Color.White);
             //Total time in top right
             sb.DrawString(
                 font,
-                String.Format("Total Time: {0:F3}", timer),
+                String.Format("Total Time: {0:F0}", timer),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 1500,
-                    -(int)camera.Transform.Translation.Y + 100),
+                    -(int)camera.Transform.Translation.X + 1603,
+                    -(int)camera.Transform.Translation.Y + 120),
                 Color.White);
 
             //Temporary Upgrade text
             //Replace with shop text later
             sb.DrawString(
                 font,
-                String.Format("Upgrade happening in {0:F3}s", UpgradeTime),
+                String.Format("Upgrade  in {0:F0}s", UpgradeTime),
                 new Vector2(
-                    -(int)camera.Transform.Translation.X + 700,
+                    -(int)camera.Transform.Translation.X + 800,
                     -(int)camera.Transform.Translation.Y + 70),
                 Color.White);
 
@@ -220,7 +220,7 @@ namespace EnterTheOnegeon
         {
             Draw(sb, font);
         }
-        
+
         /// <summary>
         /// Spawns a test enemy at the given point
         /// </summary>
@@ -232,7 +232,7 @@ namespace EnterTheOnegeon
                         testEnemyAsset,
                         new Rectangle(
                             pos,
-                            new Point(50,50)),
+                            new Point(50, 50)),
                         1)); //Health
         }
 
@@ -277,7 +277,7 @@ namespace EnterTheOnegeon
                 else
                 {
                     // west wall width (scaled x2)
-                    randX = 0 + 96*2;
+                    randX = 0 + 96 * 2;
                 }
             }
             //enemy comes in from top or bottom
@@ -303,7 +303,7 @@ namespace EnterTheOnegeon
                 else
                 {
                     // north wall height (scaled x2)
-                    randY = 0 + 96*2;
+                    randY = 0 + 96 * 2;
                 }
             }
             return new Point(randX, randY);

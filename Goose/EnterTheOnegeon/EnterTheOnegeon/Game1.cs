@@ -13,7 +13,6 @@ using System.Collections.Generic;
  *      - Or we could just make two walk animations, one while not parrying and 
  *      one while parrying
  * > Shop/Shop enemies/Upgrades (Nelson)
- * > Add a real debug mode
  */
 
 
@@ -25,6 +24,11 @@ namespace EnterTheOnegeon
         Title,
         Game,
         Score
+    }
+
+    enum DebugMode
+    {
+        On, Off
     }
 
     /// <summary>
@@ -58,7 +62,7 @@ namespace EnterTheOnegeon
         int score;
 
         Random random = new Random();
-        
+
         // player fields
         Texture2D playerAsset;
         Player player;
@@ -86,6 +90,12 @@ namespace EnterTheOnegeon
         Button strtButt;
         Button menuButt;
         Button quitButt;
+        Button debugButt;
+
+        // debug mode fields
+        DebugMode debug;
+        Texture2D buttonOn;
+        Texture2D buttonOff;
 
         public Game1()
         {
@@ -101,6 +111,7 @@ namespace EnterTheOnegeon
             base.Initialize();
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
+            debug = DebugMode.Off;
             _graphics.ApplyChanges();
             IsMouseVisible = true;
         }
@@ -137,26 +148,36 @@ namespace EnterTheOnegeon
             // load font
             fipps = Content.Load<SpriteFont>("fipps15");
 
+            buttonOn = Content.Load<Texture2D>("buttonOn");
+            buttonOff = Content.Load<Texture2D>("buttonOff");
+
             // load button texture and create all buttons
             T_Button = Content.Load<Texture2D>("T_Button");
             strtButt = new Button(
-                fipps, 
-                T_Button, 
-                "Start", 
-                new Rectangle(30, screenHeight - 90, 150, 75), 
+                fipps,
+                T_Button,
+                "Start",
+                new Rectangle(30, screenHeight - 130, 150, 75),
                 Color.Gold);
             quitButt = new Button(
-                fipps, 
-                T_Button, 
-                "Quit", 
-                new Rectangle(screenWidth - 180, screenHeight - 90, 150, 75), Color.Gold);
+                fipps,
+                T_Button,
+                "Quit",
+                new Rectangle(screenWidth - 180, screenHeight - 130, 150, 75), Color.Gold);
             menuButt = new Button(
-                fipps, 
-                T_Button, 
-                "Menu", 
-                new Rectangle(30, screenHeight - 90, 150, 75), 
+                fipps,
+                T_Button,
+                "Menu",
+                new Rectangle(30, screenHeight - 90, 150, 75),
                 Color.Gold);
-
+            debugButt = new Button(
+                fipps,
+                buttonOff,
+                "Debug",
+                new Rectangle(screenWidth - 120, 50, 50, 50),
+                Color.Gold);
+            // modify "Debug" text location
+            debugButt.textPos.X = screenWidth - 250;
         }
 
         protected override void Update(GameTime gameTime)
@@ -180,41 +201,70 @@ namespace EnterTheOnegeon
                     score = 0;
 
                     // Start button clicked
-                    if (_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width && 
-                        _mState.X > strtButt.ButtRect.X && 
-                        _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height && 
-                        _mState.Y > strtButt.ButtRect.Y && 
-                        _mState.LeftButton == ButtonState.Released && 
+                    if (_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width &&
+                        _mState.X > strtButt.ButtRect.X &&
+                        _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height &&
+                        _mState.Y > strtButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
                         _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Game;
+                    }
+                    else if (_currentKbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Game;
                     }
 
                     // Quit clicked
-                    else if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && 
-                        _mState.X > quitButt.ButtRect.X && 
-                        _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && 
-                        _mState.Y > quitButt.ButtRect.Y && 
-                        _mState.LeftButton == ButtonState.Released && 
+                    else if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width &&
+                        _mState.X > quitButt.ButtRect.X &&
+                        _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height &&
+                        _mState.Y > quitButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
                         _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         Exit();
                     }
+
+                    // Debug clicked
+                    else if (_mState.X < debugButt.ButtRect.X + debugButt.ButtRect.Width &&
+                        _mState.X > debugButt.ButtRect.X &&
+                        _mState.Y < debugButt.ButtRect.Y + debugButt.ButtRect.Height &&
+                        _mState.Y > debugButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
+                        _prevMState.LeftButton == ButtonState.Pressed &&
+                        debug == DebugMode.Off)
+                    {
+                        debug = DebugMode.On;
+                    }
+
+                    // Debug clicked again
+                    else if (_mState.X < debugButt.ButtRect.X + debugButt.ButtRect.Width &&
+                        _mState.X > debugButt.ButtRect.X &&
+                        _mState.Y < debugButt.ButtRect.Y + debugButt.ButtRect.Height &&
+                        _mState.Y > debugButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
+                        _prevMState.LeftButton == ButtonState.Pressed &&
+                        debug == DebugMode.On)
+                    {
+                        debug = DebugMode.Off;
+                    }
+
                     break;
                 #endregion
                 #region Game State
                 case GameState.Game:
 
                     // Scoreboard when player dies
-                    if(!player.Active)
+                    if (!player.Active)
                     {
                         gameState = GameState.Score;
                     }
                     // players movement
                     player.Update(
-                        gameTime, 
-                        _mState, 
-                        _prevMState, 
+                        gameTime,
+                        _mState,
+                        _prevMState,
                         _currentKbState,
                         _prevKbState);
 
@@ -229,45 +279,60 @@ namespace EnterTheOnegeon
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;
                     tempTime += gameTime.ElapsedGameTime.TotalSeconds;
+
+                    // if debug mode is on
+                    if (debug == DebugMode.On)
+                    {
+                        // infinite bullets and health
+                        player.BulletCount = 100;
+                        player.Health = 4;
+                    }
+
+                    // if debug mode is off return stats to normal
+                    if (debug == DebugMode.Off)
+                    {
+                        player.BulletCount = player.BulletCount;
+                        player.Health = player.Health;
+                    }
                     break;
                 #endregion
                 #region Scoreboard State
                 case GameState.Score:
                     // quit button pressed
-                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width && 
-                        _mState.X > quitButt.ButtRect.X && 
-                        _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height && 
-                        _mState.Y > quitButt.ButtRect.Y && 
-                        _mState.LeftButton == ButtonState.Released && 
+                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width &&
+                        _mState.X > quitButt.ButtRect.X &&
+                        _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height &&
+                        _mState.Y > quitButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
                         _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         Exit();
                     }
 
                     // menu button pressed
-                    else if (_mState.X < menuButt.ButtRect.X + menuButt.ButtRect.Width && 
-                        _mState.X > menuButt.ButtRect.X && 
-                        _mState.Y < menuButt.ButtRect.Y + menuButt.ButtRect.Height && 
-                        _mState.Y > menuButt.ButtRect.Y && 
-                        _mState.LeftButton == ButtonState.Released && 
+                    else if (_mState.X < menuButt.ButtRect.X + menuButt.ButtRect.Width &&
+                        _mState.X > menuButt.ButtRect.X &&
+                        _mState.Y < menuButt.ButtRect.Y + menuButt.ButtRect.Height &&
+                        _mState.Y > menuButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
                         _prevMState.LeftButton == ButtonState.Pressed)
                     {
                         gameState = GameState.Title;
                     }
                     break;
-                #endregion
+                    #endregion
             }
 
             #region Debug hotkeys
-            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            if (Keyboard.GetState().IsKeyDown(Keys.D1) && debug == DebugMode.On)
             {
                 gameState = GameState.Title;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            else if (Keyboard.GetState().IsKeyDown(Keys.D2) && debug == DebugMode.On)
             {
                 gameState = GameState.Game;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            else if (Keyboard.GetState().IsKeyDown(Keys.D3) && debug == DebugMode.On)
             {
                 gameState = GameState.Score;
             }
@@ -287,40 +352,37 @@ namespace EnterTheOnegeon
             _spriteBatch2.Begin();
 
             // switch to control what is being drawn to the screen at each part of our fsm
-            switch (gameState)      
+            switch (gameState)
             {
+
                 #region Title State
-                case GameState.Title:       
+                case GameState.Title:
                     _spriteBatch2.Draw(
-                        coverArt, 
+                        coverArt,
                         new Rectangle(
                             0,
-                            0, 
-                            1920, 
+                            0,
+                            1920,
                             1080),
                         Color.White);
 
                     strtButt.Draw(_spriteBatch2);
                     quitButt.Draw(_spriteBatch2);
+                    debugButt.Draw(_spriteBatch2);
 
-                    _spriteBatch.DrawString(
-                        fipps,
-                        "ENTER THE ONEGEON",
-                        new Vector2(-540, -150),
-                        Color.White);
                     break;
                 #endregion
                 #region Game State
 
-                case GameState.Game:        
+                case GameState.Game:
                     // Game background
                     _spriteBatch.Draw(
-                        dungeon, 
+                        dungeon,
                         new Rectangle(
                             0,
                             0,
                             3840,
-                            2176), 
+                            2176),
                         Color.White);
 
                     // Player
@@ -329,30 +391,23 @@ namespace EnterTheOnegeon
                     enemyManager.Draw(_spriteBatch, fipps);
                     // Bullet UI
                     _spriteBatch.Draw(
-                        bulletAsset, 
+                        bulletAsset,
                         new Rectangle(
-                            400 - (int)camera.Transform.Translation.X, 
-                            70 - (int)camera.Transform.Translation.Y, 
-                            30, 
-                            30), 
+                            100 - (int)camera.Transform.Translation.X,
+                            70 - (int)camera.Transform.Translation.Y,
+                            30,
+                            30),
                         Color.White);
 
                     _spriteBatch.DrawString(
                         fipps,
                         String.Format("x{0}", player.BulletCount),
                         new Vector2(
-                            440 - (int)camera.Transform.Translation.X,
+                            140 - (int)camera.Transform.Translation.X,
                             65 - (int)camera.Transform.Translation.Y),
                         Color.White);
 
-                    // Player iframes
-                    _spriteBatch.DrawString(
-                        fipps,
-                        String.Format("Iframe time: {0:F3}", player.IFrameTimeLeft),
-                        new Vector2(
-                            400 - (int)camera.Transform.Translation.X,
-                            100 - (int)camera.Transform.Translation.Y),
-                        Color.White);
+
                     bulletManager.Draw(_spriteBatch);
 
                     //Drawing the line from player to cursor
@@ -362,22 +417,22 @@ namespace EnterTheOnegeon
                             dungeon,
 
                             new Rectangle(
-                                player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20), 
-                                player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20), 
-                                4, 
-                                4), 
+                                player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20),
+                                player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20),
+                                4,
+                                4),
                             Color.Black);
                     }
                     break;
                 #endregion
                 #region Scoreboard State
-                case GameState.Score:       
+                case GameState.Score:
                     _spriteBatch2.Draw(
-                        scoreBoard, 
+                        scoreBoard,
                         new Rectangle(
-                           0,0,
-                            screenWidth, 
-                            screenHeight), 
+                           0, 0,
+                            screenWidth,
+                            screenHeight),
                         Color.White);
 
                     _spriteBatch.DrawString(
@@ -385,40 +440,121 @@ namespace EnterTheOnegeon
                         enemyManager.Score.ToString(),
                         new Vector2(
                             screenWidth / 2 - camera.Transform.Translation.X,
-                            screenHeight / 2 - camera.Transform.Translation.Y), 
+                            screenHeight / 2 - camera.Transform.Translation.Y),
                         Color.White);
 
                     menuButt.Draw(_spriteBatch2);
 
                     quitButt.Draw(_spriteBatch2);
                     break;
-                #endregion
+                    #endregion
 
             }
 
-            #region Debug hotkey text
-            _spriteBatch.DrawString(
-                fipps,
-                "Press 1 for menu",
-                new Vector2(-(int)camera.Transform.Translation.X + 10,
-                            -(int)camera.Transform.Translation.Y + 40),
-                Color.White);
+            switch (debug)
+            {
+                // light up button
+                // display hotkeys for moving states
+                case DebugMode.On:
+                    if (gameState == GameState.Title)
+                    {
+                        debugButt.buttText = buttonOn;
+                        #region Debug hotkey text
+                        _spriteBatch2.DrawString(
+                            fipps,
+                            "Press 1 for menu",
+                            new Vector2(100,
+                                        200),
+                            Color.White);
 
-            _spriteBatch.DrawString(
-                fipps,
-                "Press 2 for game",
-                new Vector2(-(int)camera.Transform.Translation.X + 10,
-                            -(int)camera.Transform.Translation.Y + 70),
-                Color.White);
+                        _spriteBatch2.DrawString(
+                            fipps,
+                            "Press 2 for game",
+                            new Vector2(100,
+                                        240),
+                            Color.White);
 
-            _spriteBatch.DrawString(
-                fipps,
-                "Press 3 for score",
-                new Vector2(-(int)camera.Transform.Translation.X + 10,
-                            -(int)camera.Transform.Translation.Y + 100),
-                Color.White);
+                        _spriteBatch2.DrawString(
+                            fipps,
+                            "Press 3 for score",
+                            new Vector2(100,
+                                        280),
+                            Color.White);
 
-            #endregion
+                        #endregion
+
+                    }
+                    if (gameState == GameState.Game)
+                    {
+                        // Player iframes
+                        _spriteBatch.DrawString(
+                            fipps,
+                            String.Format("Iframe time: {0:F3}", player.IFrameTimeLeft),
+                            new Vector2(
+                                100 - (int)camera.Transform.Translation.X,
+                                100 - (int)camera.Transform.Translation.Y),
+                            Color.White);
+
+                        #region Debug hotkey text
+                        _spriteBatch.DrawString(
+                            fipps,
+                            "Press 1 for menu",
+                            new Vector2(-(int)camera.Transform.Translation.X + 100,
+                                        -(int)camera.Transform.Translation.Y + 200),
+                            Color.White);
+
+                        _spriteBatch.DrawString(
+                            fipps,
+                            "Press 2 for game",
+                            new Vector2(-(int)camera.Transform.Translation.X + 100,
+                                        -(int)camera.Transform.Translation.Y + 240),
+                            Color.White);
+
+                        _spriteBatch.DrawString(
+                            fipps,
+                            "Press 3 for score",
+                            new Vector2(-(int)camera.Transform.Translation.X + 100,
+                                        -(int)camera.Transform.Translation.Y + 280),
+                            Color.White);
+
+                        #endregion
+                    }
+                    if (gameState == GameState.Score)
+                    {
+                        #region Debug hotkey text
+                        _spriteBatch2.DrawString(
+                            fipps,
+                            "Press 1 for menu",
+                            new Vector2(100,
+                                        200),
+                            Color.White);
+
+                        _spriteBatch2.DrawString(
+                            fipps,
+                            "Press 2 for game",
+                            new Vector2(100,
+                                        240),
+                            Color.White);
+
+                        _spriteBatch2.DrawString(
+                            fipps,
+                            "Press 3 for score",
+                            new Vector2(100,
+                                        280),
+                            Color.White);
+
+                        #endregion
+                    }
+
+                    break;
+                case DebugMode.Off:
+                    if (gameState == GameState.Title)
+                    {
+                        debugButt.buttText = buttonOff;
+                    }
+                    break;
+
+            }
 
             _spriteBatch.End();
             _spriteBatch2.End();
