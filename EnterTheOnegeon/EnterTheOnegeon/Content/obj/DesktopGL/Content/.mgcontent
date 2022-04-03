@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/badguy.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/Bullet.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/CoverArt.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/dungeon.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/fipps15.spritefont</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/player.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/scoreBoard.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/T_Button.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/Untitled.png</File>
+    <File>C:/Users/Samha/Desktop/106GroupGame/EnterTheOnegeon/EnterTheOnegeon/Content/Verdana15.spritefont</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File>enemy1.png</File>
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

@@ -42,6 +42,12 @@ namespace EnterTheOnegeon
             set { bulletCount = value; }
         }
 
+        public int Health
+        {
+            get { return hp; }
+            set { hp = value; }
+        }
+
         public bool Active
         {
             get { return hp > 0; }
