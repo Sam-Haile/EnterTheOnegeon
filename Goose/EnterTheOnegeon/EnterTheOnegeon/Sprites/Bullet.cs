@@ -35,7 +35,6 @@ namespace EnterTheOnegeon
         public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
 
-            speed = 1;
             timer = 0;
             passes = 0;
             damage = 0;

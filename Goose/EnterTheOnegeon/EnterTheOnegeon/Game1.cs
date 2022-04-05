@@ -504,7 +504,6 @@ namespace EnterTheOnegeon
                     }
                     break;
                 #endregion
-
                 #region Scoreboard State
                 case GameState.Score:
                     _spriteBatch2.Draw(
