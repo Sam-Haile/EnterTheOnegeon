@@ -16,6 +16,8 @@ namespace EnterTheOnegeon
         /// </summary>
         protected int health;
 
+        protected int maxHealth;
+
         /// <summary>
         /// Actual X value of the enemy
         /// </summary>
@@ -36,9 +38,15 @@ namespace EnterTheOnegeon
             set { health = value; }
         }
 
+        public int MaxHealth
+        {
+            get { return maxHealth; }
+        }
+
         public Enemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle)
         {
             this.health = health;
+            maxHealth = health;
         }
 
 

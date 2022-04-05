@@ -31,7 +31,7 @@ namespace EnterTheOnegeon
 
             maxH = 4;
             hp = maxH;
-            invTime = 3;
+            invTime = 0.5;
             invTimer = 0;
 
             //Size, Speed, Num of Passes, Damage(not used yet)
