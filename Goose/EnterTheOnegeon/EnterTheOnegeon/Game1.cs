@@ -64,7 +64,6 @@ namespace EnterTheOnegeon
         //Temp Game fields
         double totalGameTime;
         double tempTime;
-        int score;
 
         Random random = new Random();
 
@@ -112,7 +111,6 @@ namespace EnterTheOnegeon
         protected override void Initialize()
         {
             totalGameTime = 0;
-            score = 0;
             base.Initialize();
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
@@ -203,7 +201,6 @@ namespace EnterTheOnegeon
                     enemyManager = new EnemyManager(_graphics, enemyAsset);
                     totalGameTime = 0;
                     tempTime = 0;
-                    score = 0;
 
                     // Start button clicked
                     if (_mState.X < strtButt.ButtRect.X + strtButt.ButtRect.Width &&

@@ -15,6 +15,7 @@ namespace EnterTheOnegeon
         private int bulletCount;
         //temp hp
         private int hp;
+        private int maxH;
 
         //Invincibility frames
         private double invTime;
@@ -27,8 +28,9 @@ namespace EnterTheOnegeon
         {
             speed = 6;
             bulletCount = 15;
-            //temp hp
-            hp = 4;
+
+            maxH = 4;
+            hp = maxH;
             invTime = 3;
             invTimer = 0;
 
@@ -149,7 +151,19 @@ namespace EnterTheOnegeon
             Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
             tempTexture.SetData(new Color[] { Color.White });
             sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, rectangle.Width, 5), Color.Red);
-            sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, (int)(rectangle.Width * (double)hp / 4), 5), Color.LimeGreen);
+            sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, (int)(rectangle.Width * ((double)hp / maxH)), 5), Color.LimeGreen);
+        }
+
+        /// <summary>
+        /// Adds the stats in the param to the player's stats
+        /// </summary>
+        /// <param name="bs">Bullet's stats</param>
+        public void ApplyUpgrade(int hp, int spd, BulletStats bs)
+        {
+            this.hp += hp;
+            maxH += hp;
+            speed += spd;
+            bStats += bs;
         }
 
         public void Parry(GameObject other)

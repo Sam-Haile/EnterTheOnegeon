@@ -22,6 +22,7 @@ namespace EnterTheOnegeon
         public int Health 
         {
             get { return health; }
+            set { health = value; }
         }
 
         public Enemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle)
