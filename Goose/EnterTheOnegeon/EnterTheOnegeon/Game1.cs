@@ -181,7 +181,7 @@ namespace EnterTheOnegeon
                 fipps,
                 T_Button,
                 "Menu",
-                new Rectangle(30, screenHeight - 90, 150, 75),
+                new Rectangle(30, screenHeight - 130, 150, 75),
                 Color.Gold);
             debugButt = new Button(
                 fipps,
@@ -484,6 +484,7 @@ namespace EnterTheOnegeon
                     }
                     break;
                 #endregion
+
                 #region Scoreboard State
                 case GameState.Score:
                     _spriteBatch2.Draw(
