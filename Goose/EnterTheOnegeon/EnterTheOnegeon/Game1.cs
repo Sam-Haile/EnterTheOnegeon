@@ -15,7 +15,6 @@ using System.Collections.Generic;
  * > Positioning and making the shop look better
  * > Upgrade for invincibility timer and contact damage
  * > Add iframes for enemies
- * > Very big bullets start not shooting properly
  *
  * 
  * Not a TODO, but useful stuff
@@ -182,7 +181,7 @@ namespace EnterTheOnegeon
                 fipps,
                 T_Button,
                 "Menu",
-                new Rectangle(30, screenHeight - 90, 150, 75),
+                new Rectangle(30, screenHeight - 130, 150, 75),
                 Color.Gold);
             debugButt = new Button(
                 fipps,
@@ -507,6 +506,7 @@ namespace EnterTheOnegeon
                     }
                     break;
                 #endregion
+
                 #region Scoreboard State
                 case GameState.Score:
                     _spriteBatch2.Draw(

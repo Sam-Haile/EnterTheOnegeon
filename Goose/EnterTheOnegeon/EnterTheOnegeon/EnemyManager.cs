@@ -173,6 +173,8 @@ namespace EnterTheOnegeon
                     
                     if(TotalEnemyCount == 0)
                     {
+                        timeToShop = 0;
+                        timeToWave = 5;
                         currState = EManagerState.Shop;
                     }
                     break;
