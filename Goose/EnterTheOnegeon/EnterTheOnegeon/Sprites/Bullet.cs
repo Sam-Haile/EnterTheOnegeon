@@ -38,54 +38,9 @@ namespace EnterTheOnegeon
             speed = 1;
             timer = 0;
             passes = 0;
+            damage = 0;
             trajectory = new Vector2();
         }
-
-        /// <summary>
-        /// Creates a bullet using the 5 params
-        /// </summary>
-        /// <param name="sprite">The asset</param>
-        /// <param name="rectangle">Currently the hitbox, asset dimensions, and intial postion</param>
-        /// <param name="posToMoveTo">Point where you want the bullet to move to</param>
-        /// <param name="spd">seconds it will take the bullet to travel 1000 pixels</param>
-        /// <param name="time">Time on the screen</param>
-        public Bullet(Texture2D sprite, Rectangle rectangle, GameTime gameTime, Vector2 posToMoveTo, int spd) 
-            : base(sprite, rectangle)
-        {
-            speed = spd;
-
-            //timeCreated = gameTime.TotalGameTime.TotalSeconds;
-            timer = 0;
-
-            spawnX = rectangle.X;
-            spawnY = rectangle.Y;
-
-            passes = 1; // no piercing enemies
-
-            trajectory = VectorToPosition(posToMoveTo);
-            trajectory.Normalize();
-        }
-
-        /// <summary>
-        /// Same thing as other constructor just with the extra variable
-        /// </summary>
-        public Bullet(Texture2D sprite, Rectangle rectangle, GameTime gameTime, Vector2 posToMoveTo, int spd, 
-           int pass) : base(sprite, rectangle)
-        {
-            speed = spd;
-
-            //timeCreated = gameTime.TotalGameTime.TotalSeconds;
-            timer = 0;
-
-            spawnX = rectangle.X;
-            spawnY = rectangle.Y;
-
-            passes = pass;
-
-            trajectory = VectorToPosition(posToMoveTo);
-            trajectory.Normalize();
-        }
-
 
         /// <summary>
         /// Property that returns true when the bullet can pass through more enemies
@@ -111,13 +66,13 @@ namespace EnterTheOnegeon
         public void HitEnemy(Enemy enem)
         {
             passes--;
-            enem.TakeDamage(1);
+            enem.TakeDamage(damage);
         }
 
         public void HitPlayer(Player player)
         {
             passes--;
-            player.TakeDamage(1);
+            player.TakeDamage(damage);
         }
 
         public void Update(GameTime gameTime)
@@ -169,6 +124,7 @@ namespace EnterTheOnegeon
             timer = 0;
             speed = bStats.Speed;
             passes = bStats.Passes;
+            damage = bStats.Damage;
         }
         
     }
