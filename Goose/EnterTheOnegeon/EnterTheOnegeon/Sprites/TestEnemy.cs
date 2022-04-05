@@ -35,7 +35,8 @@ namespace EnterTheOnegeon
         /// </summary>
         public void Move()
         {
-            Vector2 direction = this.VectorToPosition(playerPos);
+            // Moves to center of player, not upper left
+            Vector2 direction = this.VectorToPosition(new Vector2(playerPos.X + 16, playerPos.Y +32));
             
             if(direction.Length() > 0)
                 direction.Normalize();
