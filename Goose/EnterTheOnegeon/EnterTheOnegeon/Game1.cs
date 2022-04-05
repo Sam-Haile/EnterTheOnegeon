@@ -12,7 +12,11 @@ using System.Collections.Generic;
  *      (bottom half) independently from the arms parrying (top half)
  *      - Or we could just make two walk animations, one while not parrying and 
  *      one while parrying
- * > Shop/Shop enemies/Upgrades (Nelson)
+ * > Positioning and making the shop look better
+ * > Upgrade for invincibility timer and contact damage
+ * > Add iframes for enemies
+ * > Very big bullets start not shooting properly
+ *
  * 
  * Not a TODO, but useful stuff
  * 3840, 2176 <-- dimensions of the dungeon
