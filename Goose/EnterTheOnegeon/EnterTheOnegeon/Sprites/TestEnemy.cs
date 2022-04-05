@@ -16,6 +16,8 @@ namespace EnterTheOnegeon
         {
             speed = 2;
             playerPos = new Vector2();
+            posX = rectangle.X;
+            posY = rectangle.Y;
         }
 
         /// <summary>
@@ -39,10 +41,18 @@ namespace EnterTheOnegeon
             Vector2 direction = this.VectorToPosition(new Vector2(playerPos.X + 16, playerPos.Y +32));
             
             if(direction.Length() > 0)
+            {
                 direction.Normalize();
+            }
 
-            rectangle.X += (int) (Math.Round(direction.X * speed));
-            rectangle.Y += (int) (Math.Round(direction.Y * speed));
+            posX += direction.X * speed;
+            posY += direction.Y * speed;
+
+            rectangle.X = (int)(Math.Round(posX));
+            rectangle.Y = (int)(Math.Round(posY));
+
+            //rectangle.X += (int) (Math.Round(direction.X * speed));
+            //rectangle.Y += (int) (Math.Round(direction.Y * speed));
         }
 
         public void Update(Player p)

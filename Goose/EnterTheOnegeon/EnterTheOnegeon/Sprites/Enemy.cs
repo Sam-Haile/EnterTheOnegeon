@@ -17,6 +17,17 @@ namespace EnterTheOnegeon
         protected int health;
 
         /// <summary>
+        /// Actual X value of the enemy
+        /// </summary>
+        protected float posX;
+
+        /// <summary>
+        /// Actual Y value of the enemy
+        /// </summary>
+        protected float posY;
+
+
+        /// <summary>
         /// returns enemies health
         /// </summary>
         public int Health 
