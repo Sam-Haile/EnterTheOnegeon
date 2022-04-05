@@ -11,7 +11,8 @@ namespace EnterTheOnegeon
     public enum EManagerState
     {
         Waves,
-        Shop
+        Shop,
+        WaveToShop
     }
     /// <summary>
     /// This class handles all the enemies
@@ -19,16 +20,17 @@ namespace EnterTheOnegeon
     /// </summary>
     class EnemyManager
     {
-        /// <summary>
-        /// AT THE TOP
-        /// </summary>
-        private double UpgradeTime = 20;
-
         //fields
         private Random rng;
         private GraphicsDeviceManager graphics;
         private double timer;
-        private double waveTime;
+
+        private double timeToShop;
+
+        private double ShopTime; //Prob need to rename the variable
+        //To rename hightlight it and select "rename"
+
+        private double timeToWave;
         private int wavePoints;
         private int score;
         protected Camera camera = new Camera();
@@ -38,15 +40,20 @@ namespace EnterTheOnegeon
         private Texture2D testEnemyAsset;
         //private List<Enemy2> enemy2List;
 
+        private EManagerState currState;
+
         /// <summary>
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
         /// </summary>
         public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite)
         {
+            currState = EManagerState.Waves;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
-            waveTime = 5;
+            ShopTime = 10;
+            timeToShop = ShopTime; //LATER: CHANGE TO LONGER TIME USING ShopTime
+            timeToWave = 5;
             wavePoints = 5;
             testEnemyList = new List<TestEnemy>();
             testEnemyAsset = testSprite;
@@ -78,65 +85,59 @@ namespace EnterTheOnegeon
         /// </summary>
         public void Update(GameTime gameTime, Player player)
         {
-            timer += gameTime.ElapsedGameTime.TotalSeconds;
-            waveTime -= gameTime.ElapsedGameTime.TotalSeconds;
-
-            //Temp upgrade
-            if (UpgradeTime > 0)
-                UpgradeTime -= gameTime.ElapsedGameTime.TotalSeconds;
-            else if (UpgradeTime < -1)
-            { }
-            else if (UpgradeTime < 0)
+            switch (currState)
             {
-                player.BStats += new BulletStats(50, 3, 1, 0);
-                UpgradeTime = -2;
-            }
+                case EManagerState.Waves:
+                    timer += gameTime.ElapsedGameTime.TotalSeconds;
+                    timeToWave -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            //Every time a wave is spawned
-            //Resets the countdown to next wave
-            //Spawns an amount of enemies according to the amount of wave points availible
-            //Might move this to a method of some sort
-            //UpdateWave();
-            if (waveTime <= 0)
-            {
-                if (timer < 20)
-                    waveTime = 5;
-                else if (timer < 40)
-                    waveTime = 4;
-                else
-                    waveTime = 3;
-                //Spawn the amount of enemies using the amount of wave points availible
-                int curWavePoints = wavePoints;
-                while (curWavePoints > 0)
-                {
-                    //when there is enough points it will do checks for spawning which type of enemy
-                    if (curWavePoints >= 3)
+
+                    //Every time a wave is spawned
+                    //Resets the countdown to next wave
+                    //Spawns an amount of enemies according to the amount of wave points availible
+                    //Might move this to a method of some sort
+                    //UpdateWave();
+                    if (timeToWave <= 0)
                     {
-                        //10% chance to spawn wide dude
-                        //Change LATER for different enemy types
-                        if (rng.Next(10) == 0)
-                        {
-                            SpawnWideBoi(RandPoint(true));
-                            curWavePoints -= 3;
-                        }
+                        if (timer < 20)
+                            timeToWave = 5;
+                        else if (timer < 40)
+                            timeToWave = 4;
                         else
+                            timeToWave = 3;
+                        //Spawn the amount of enemies using the amount of wave points availible
+                        int curWavePoints = wavePoints;
+                        while (curWavePoints > 0)
                         {
-                            SpawnTestEnemy(RandPoint(false));
-                            curWavePoints -= 1;
+                            //when there is enough points it will do checks for spawning which type of enemy
+                            if (curWavePoints >= 3)
+                            {
+                                //10% chance to spawn wide dude
+                                //Change LATER for different enemy types
+                                if (rng.Next(10) == 0)
+                                {
+                                    SpawnWideBoi(RandPoint(true));
+                                    curWavePoints -= 3;
+                                }
+                                else
+                                {
+                                    SpawnTestEnemy(RandPoint(false));
+                                    curWavePoints -= 1;
+                                }
+                            }
+                            else
+                            {
+                                SpawnTestEnemy(RandPoint(false));
+                                curWavePoints -= 1;
+                            }
                         }
+                        //Every wave gets harder
+                        wavePoints += 1;
                     }
-                    else
-                    {
-                        SpawnTestEnemy(RandPoint(false));
-                        curWavePoints -= 1;
-                    }
-                }
-                //Every wave gets harder
-                wavePoints += 1;
+                    UpdateTestEnemy(player);
+                    break;
             }
-            UpdateTestEnemy(player);
             camera.Follow(player);
-
         }
         //public void DebugUpdate()
 
@@ -175,9 +176,30 @@ namespace EnterTheOnegeon
 
         public void Draw(SpriteBatch sb, SpriteFont font)
         {
-            foreach (TestEnemy en in testEnemyList)
+            switch(currState)
             {
-                en.Draw(sb);
+                case EManagerState.Waves:
+                    foreach (TestEnemy en in testEnemyList)
+                    {
+                        en.Draw(sb);
+                    }
+                    //Time to next wave
+                    sb.DrawString(
+                        font,
+                        String.Format("Next wave: {0:F0}", timeToWave),
+                        new Vector2(
+                            -(int)camera.Transform.Translation.X + 820,
+                            -(int)camera.Transform.Translation.Y + 70),
+                        Color.White);
+                    //Time until the "shop" (prob rename it) appears
+                    sb.DrawString(
+                        font,
+                        String.Format("Shop in {0:F0}s", timeToShop),
+                        new Vector2(
+                            -(int)camera.Transform.Translation.X + 820,
+                            -(int)camera.Transform.Translation.Y + 120),
+                        Color.White);
+                    break;
             }
             //Score
             sb.DrawString(
@@ -187,33 +209,14 @@ namespace EnterTheOnegeon
                     -(int)camera.Transform.Translation.X + 1680,
                     -(int)camera.Transform.Translation.Y + 70),
                 Color.White);
-            //Time to next wave
-            sb.DrawString(
-                font,
-                String.Format("Next wave: {0:F0}", waveTime),
-                new Vector2(
-                    -(int)camera.Transform.Translation.X + 820,
-                    -(int)camera.Transform.Translation.Y + 120),
-                Color.White);
             //Total time in top right
             sb.DrawString(
                 font,
-                String.Format("Total Time: {0:F0}", timer),
+                String.Format("Total Time: {0:F0}s", timer),
                 new Vector2(
                     -(int)camera.Transform.Translation.X + 1603,
                     -(int)camera.Transform.Translation.Y + 120),
                 Color.White);
-
-            //Temporary Upgrade text
-            //Replace with shop text later
-            sb.DrawString(
-                font,
-                String.Format("Upgrade  in {0:F0}s", UpgradeTime),
-                new Vector2(
-                    -(int)camera.Transform.Translation.X + 800,
-                    -(int)camera.Transform.Translation.Y + 70),
-                Color.White);
-
         }
 
         public void DebugDraw(SpriteBatch sb, SpriteFont font)
