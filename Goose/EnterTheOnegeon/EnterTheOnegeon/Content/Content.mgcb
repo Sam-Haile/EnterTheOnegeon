@@ -92,6 +92,18 @@
 /processorParam:TextureFormat=Compressed
 /build:fipps15.spritefont
 
+#begin Pause.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pause.png
+
 #begin player.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -127,6 +139,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:T_Button.png
+
+#begin titleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:titleFont.spritefont
 
 #begin Untitled.png
 /importer:TextureImporter

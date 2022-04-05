@@ -32,7 +32,9 @@ namespace EnterTheOnegeon
     {
         Title,
         Game,
-        Score
+        Score,
+        Help,
+        Pause
     }
 
     enum DebugMode
@@ -87,11 +89,13 @@ namespace EnterTheOnegeon
 
         // text/font fields
         SpriteFont fipps;
+        SpriteFont titleFont;
 
         //background fields
         Texture2D dungeon;
         Texture2D coverArt;
         Texture2D scoreBoard;
+        Texture2D pause;
 
         // button fields
         Texture2D T_Button;
@@ -99,6 +103,7 @@ namespace EnterTheOnegeon
         Button menuButt;
         Button quitButt;
         Button debugButt;
+        Button helpButt;
 
         // debug mode fields
         DebugMode debug;
@@ -137,6 +142,7 @@ namespace EnterTheOnegeon
             coverArt = Content.Load<Texture2D>("coverArt");
             dungeon = Content.Load<Texture2D>("dungeon");
             scoreBoard = Content.Load<Texture2D>("scoreBoard");
+            pause = Content.Load<Texture2D>("Pause");
 
             // initialize player and its asset
             playerAsset = Content.Load<Texture2D>("player");
@@ -154,6 +160,7 @@ namespace EnterTheOnegeon
 
             // load font
             fipps = Content.Load<SpriteFont>("fipps15");
+            titleFont = Content.Load<SpriteFont>("titleFont");
 
             buttonOn = Content.Load<Texture2D>("buttonOn");
             buttonOff = Content.Load<Texture2D>("buttonOff");
@@ -183,6 +190,13 @@ namespace EnterTheOnegeon
                 "Debug",
                 new Rectangle(screenWidth - 120, 50, 50, 50),
                 Color.Gold);
+            helpButt = new Button(
+                fipps,
+                T_Button,
+                "Controls",
+                new Rectangle((screenWidth / 2) - 75,screenHeight - 130, 150, 75),
+                Color.Gold
+                );
             // modify "Debug" text location
             debugButt.textPos.X = screenWidth - 250;
         }
@@ -256,6 +270,16 @@ namespace EnterTheOnegeon
                         debug = DebugMode.Off;
                     }
 
+                    // Help Clicked
+                    else if (_mState.X < helpButt.ButtRect.X + helpButt.ButtRect.Width &&
+                        _mState.X > helpButt.ButtRect.X &&
+                        _mState.Y < helpButt.ButtRect.Y + helpButt.ButtRect.Height &&
+                        _mState.Y > helpButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
+                        _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Help;
+                    }
                     break;
                 #endregion
                 #region Game State
@@ -300,6 +324,10 @@ namespace EnterTheOnegeon
                         player.BulletCount = player.BulletCount;
                         player.Health = player.Health;
                     }
+                    if (_currentKbState.IsKeyUp(Keys.Escape) && _prevKbState.IsKeyDown(Keys.Escape))
+                    {
+                        gameState = GameState.Pause;
+                    }
                     break;
                 #endregion
                 #region Scoreboard State
@@ -325,8 +353,32 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Title;
                     }
+                    
                     break;
-                    #endregion
+                #endregion
+                #region Help State
+                case GameState.Help:
+                    // menu button pressed
+                    if (_mState.X < menuButt.ButtRect.X + menuButt.ButtRect.Width &&
+                        _mState.X > menuButt.ButtRect.X &&
+                        _mState.Y < menuButt.ButtRect.Y + menuButt.ButtRect.Height &&
+                        _mState.Y > menuButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
+                        _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Title;
+                    }
+
+                    break;
+                #endregion
+                #region Pause State
+                case GameState.Pause:
+                    if (_currentKbState.IsKeyUp(Keys.Escape) && _prevKbState.IsKeyDown(Keys.Escape))
+                    {
+                        gameState = GameState.Game;
+                    }
+                    break;
+                #endregion
             }
 
             #region Debug hotkeys
@@ -375,7 +427,7 @@ namespace EnterTheOnegeon
                     strtButt.Draw(_spriteBatch2);
                     quitButt.Draw(_spriteBatch2);
                     debugButt.Draw(_spriteBatch2);
-
+                    helpButt.Draw(_spriteBatch2);
                     break;
                 #endregion
                 #region Game State
@@ -455,8 +507,110 @@ namespace EnterTheOnegeon
 
                     quitButt.Draw(_spriteBatch2);
                     break;
-                    #endregion
+                #endregion
+                #region Help State
+                case GameState.Help:
+                    _spriteBatch2.Draw(
+                        coverArt,
+                        new Rectangle(
+                            0,
+                            0,
+                            1920,
+                            1080),
+                        Color.White);
+                    _spriteBatch2.Draw(
+                        pause,
+                        new Rectangle(
+                            0,
+                            0,
+                            1920,
+                            1080),
+                            Color.White);
+                    _spriteBatch2.DrawString(
+                        titleFont,
+                        "CONTROLS",
+                        new Vector2(20, 20),
+                        Color.Gold
+                        );
+                    _spriteBatch2.DrawString(
+                        fipps,
+                        "WASD- Movement (W = up, A = left, S = down, D = right)",
+                        new Vector2(20, 200),
+                        Color.White
+                        );
+                    _spriteBatch2.DrawString(
+                        fipps,
+                        "Left Click - Shoot",
+                        new Vector2(20, 300),
+                        Color.White
+                        );
+                    _spriteBatch2.DrawString(
+                        fipps,
+                        "Right Click - Parry (to be added)",
+                        new Vector2(20, 400),
+                        Color.White
+                        );
+                    _spriteBatch2.DrawString(
+                        fipps,
+                        "Escape - Pause/Play",
+                        new Vector2(20, 500),
+                        Color.White
+                        );
+                    menuButt.Draw(_spriteBatch2);
 
+                    break;
+                #endregion
+                #region Pause State
+                // draw the game with the pause sprite overlaid but none of the updates for game will
+                // be going on, so nothing will move
+                case GameState.Pause:
+                    _spriteBatch.Draw(
+                        dungeon,
+                        new Rectangle(
+                            0,
+                            0,
+                            3840,
+                            2176),
+                        Color.White);
+
+
+                    // Enemy manager draws all enemies, score and time
+                    enemyManager.Draw(_spriteBatch, fipps);
+
+                    // Player
+                    player.Draw(_spriteBatch);
+                    // Bullet UI
+                    _spriteBatch.Draw(
+                        bulletAsset,
+                        new Rectangle(
+                            100 - (int)camera.Transform.Translation.X,
+                            70 - (int)camera.Transform.Translation.Y,
+                            30,
+                            30),
+                        Color.White);
+
+                    _spriteBatch.DrawString(
+                        fipps,
+                        String.Format("x{0}", player.BulletCount),
+                        new Vector2(
+                            140 - (int)camera.Transform.Translation.X,
+                            65 - (int)camera.Transform.Translation.Y),
+                        Color.White);
+
+
+                    bulletManager.Draw(_spriteBatch);
+                    //Drawing pause overlay
+                    _spriteBatch2.Draw(
+                       pause,
+                       new Rectangle(
+                           0,
+                           0,
+                           1920,
+                           1080),
+                           Color.White);
+
+                    break;
+                #endregion
             }
 
             switch (debug)
