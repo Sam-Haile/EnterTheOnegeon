@@ -517,8 +517,8 @@ namespace EnterTheOnegeon
                             screenHeight),
                         Color.White);
 
-                    _spriteBatch.DrawString(
-                        fipps,
+                    _spriteBatch2.DrawString(
+                        titleFont,
                         enemyManager.Score.ToString(),
                         new Vector2(
                             screenWidth / 2 - camera.Transform.Translation.X,
