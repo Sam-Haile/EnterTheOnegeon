@@ -84,8 +84,6 @@ namespace EnterTheOnegeon
         Texture2D enemyAsset;
         EnemyManager enemyManager;
 
-
-
         // text/font fields
         SpriteFont fipps;
         SpriteFont titleFont;
@@ -216,7 +214,7 @@ namespace EnterTheOnegeon
                 #region Title State
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
-                    player = new Player(playerAsset, new Rectangle(1910, 1550, 32, 64));
+                    player = new Player(playerAsset, new Rectangle(1904, 1536, 32, 64));
                     bulletManager = new BulletManager(bulletAsset);
                     enemyManager = new EnemyManager(_graphics, enemyAsset, player);
                     totalGameTime = 0;
@@ -759,6 +757,7 @@ namespace EnterTheOnegeon
                             new Vector2(-(int)camera.Transform.Translation.X + 100,
                                         -(int)camera.Transform.Translation.Y + 280),
                             Color.White);
+
 
                         #endregion
                     }
