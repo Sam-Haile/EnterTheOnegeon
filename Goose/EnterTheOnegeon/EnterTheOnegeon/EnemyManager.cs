@@ -20,18 +20,22 @@ namespace EnterTheOnegeon
     /// </summary>
     class EnemyManager
     {
+        /// <summary>
+        /// The exit box for shop
+        /// </summary>
+        private Rectangle exitBox;
         //fields
         private Random rng;
         private GraphicsDeviceManager graphics;
         private double timer;
 
         private double timeToShop;
-
         private double ShopTime; //Prob need to rename the variable
         //To rename hightlight it and select "rename"
 
         private double timeToWave;
         private int wavePoints;
+
         private int score;
         protected Camera camera = new Camera();
 
@@ -47,12 +51,13 @@ namespace EnterTheOnegeon
         /// </summary>
         public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite)
         {
-            currState = EManagerState.Waves;
+            exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
+            currState = EManagerState.Shop;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
             ShopTime = 10;
-            timeToShop = ShopTime; //LATER: CHANGE TO LONGER TIME USING ShopTime
+            timeToShop = 0; //LATER: CHANGE TO ShopTime
             timeToWave = 5;
             wavePoints = 5;
             testEnemyList = new List<TestEnemy>();
@@ -138,7 +143,8 @@ namespace EnterTheOnegeon
                     //Transition the state and reset some variables
                     if (timeToShop < 0)
                     {
-                        timeToShop = timeToShop + 10;
+                        //Will be used as time to consectively stand on a box to left the shop
+                        timeToShop = 0;
                         timeToWave = 5;
                         currState = EManagerState.WaveToShop;
                     }
@@ -156,6 +162,27 @@ namespace EnterTheOnegeon
                     }
                     break;
                 case EManagerState.Shop:
+                    //going to reuse variable as timer variable
+                    //Controlling the exit box logic here
+                    //When the player was and is in the box
+                    if (player.Position.Intersects(exitBox))
+                    {
+                        timeToShop += gameTime.ElapsedGameTime.TotalSeconds;
+                    }
+                    else if (timeToShop > 0)
+                    {
+                        timeToShop -= gameTime.ElapsedGameTime.TotalSeconds;
+                    }
+                    else if(timeToShop < 0)
+                        timeToShop = 0;
+                    //When the player has stood long enough on it
+                    if (timeToShop > 3)
+                    {
+                        //actually reseting now
+                        timeToShop = ShopTime;
+                        timeToWave = 5;
+                        currState = EManagerState.Waves;
+                    }
                     break;
             }
             camera.Follow(player);
@@ -255,18 +282,26 @@ namespace EnterTheOnegeon
                     sb.DrawString(
                         font,
                         String.Format("Destroy them to gain their power"),
-                        new Vector2(3840/2-100, 2176/2),
+                        new Vector2(-(int)camera.Transform.Translation.X + 820,
+                            -(int)camera.Transform.Translation.Y + 120),
                         Color.White);
 
                     //Some temporary exit text
                     sb.DrawString(
                         font,
-                        String.Format("Exit -->"),
-                        new Vector2(3840 / 2, 2176 / 2 + 20),
+                        String.Format("Exit --------------------------->"),
+                        new Vector2(3840 / 2, 2176 / 2 + 100),
                         Color.White);
                     //Drawing the exit box
                     Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
                     tempTexture.SetData(new Color[] { Color.White });
+                    sb.Draw(tempTexture, exitBox, Color.Gray);
+                    sb.Draw(tempTexture, new Rectangle(exitBox.X, exitBox.Y, (int)(exitBox.Width * (timeToShop / 3)), exitBox.Height), Color.DarkBlue);
+                    sb.DrawString(
+                        font,
+                        String.Format("Stand here to exit"),
+                        new Vector2(exitBox.X-50, exitBox.Y),
+                        Color.White);
                     break;
             }
             //Score
