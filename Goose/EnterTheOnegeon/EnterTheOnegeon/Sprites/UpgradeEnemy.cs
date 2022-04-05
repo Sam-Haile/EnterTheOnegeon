@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace EnterTheOnegeon.Sprites
+namespace EnterTheOnegeon
 {
     public delegate void OnDeathUpgrade(int s, int h, BulletStats bs);
     class UpgradeEnemy : Enemy
@@ -43,7 +43,7 @@ namespace EnterTheOnegeon.Sprites
             if(this.Active)
             {
                 health -= damage;
-                if (health < 0)
+                if (health <= 0)
                 {
                     if (OnDeath != null)
                         OnDeath(speed, hp, bStats);
@@ -51,17 +51,16 @@ namespace EnterTheOnegeon.Sprites
             }
         }
 
-        /// <summary>
-        /// For now it will draw the stats of upgrade
-        /// And it does not currently use the texture2D
-        /// </summary>
-        public override void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, SpriteFont font)
         {
-            if(this.Active)
+            if (this.Active)
             {
                 Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
                 tempTexture.SetData(new Color[] { Color.White });
-                sb.Draw(tempTexture, this.rectangle, Color.Blue);
+                sb.Draw(tempTexture, this.rectangle, Color.Aqua);
+                sb.DrawString(font, string.Format("x{0}", health), new Vector2(CenterX-20, CenterY-10), Color.Black);
+                sb.DrawString(font, bStats.ToString(), new Vector2(X, CenterY+ 20), Color.Black);
+                sb.DrawString(font, string.Format("{0}, {1}", hp, speed), new Vector2(X, CenterY - 40), Color.Black);
             }
         }
 
@@ -72,8 +71,10 @@ namespace EnterTheOnegeon.Sprites
         /// <param name="hp">Hp up points</param>
         /// <param name="spd">Spd up point</param>
         /// <param name="bStats">Bullet stats points</param>
-        public void Reset(int health, int hp, int spd, BulletStats bStats)
+        public void Reset(int x, int y, int health, int hp, int spd, BulletStats bStats)
         {
+            this.rectangle.X = x;
+            this.rectangle.Y = y;
             this.Health = health;
             this.hp = hp;
             speed = spd;

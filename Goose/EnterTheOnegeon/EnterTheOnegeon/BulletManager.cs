@@ -86,6 +86,14 @@ namespace EnterTheOnegeon
                         b.HitEnemy(en);
                     }
                 }
+                //Added upgrade enemies
+                foreach (UpgradeEnemy en in eManager.UpgradeEnemies)
+                {
+                    if (b.CollideWith(en))
+                    {
+                        b.HitEnemy(en);
+                    }
+                }
             }
             #endregion
             #region Updating the enemy bullets

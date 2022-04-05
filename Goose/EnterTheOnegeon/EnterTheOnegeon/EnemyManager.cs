@@ -43,21 +43,22 @@ namespace EnterTheOnegeon
         private List<TestEnemy> testEnemyList;
         private Texture2D testEnemyAsset;
         //private List<Enemy2> enemy2List;
+        private List<UpgradeEnemy> upgradeEnemyList;
 
         private EManagerState currState;
 
         /// <summary>
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
         /// </summary>
-        public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite)
+        public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite, Player player)
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
-            currState = EManagerState.Shop;
+            currState = EManagerState.Waves;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
-            ShopTime = 10;
-            timeToShop = 0; //LATER: CHANGE TO ShopTime
+            ShopTime = 30;
+            timeToShop = ShopTime;
             timeToWave = 5;
             wavePoints = 5;
             testEnemyList = new List<TestEnemy>();
@@ -66,6 +67,15 @@ namespace EnterTheOnegeon
             {
                 testEnemyList.Add(new TestEnemy(testSprite, new Rectangle(), 0));
             }*/
+
+            upgradeEnemyList = new List<UpgradeEnemy>();
+            //fill with inactive ones
+            //two for now
+            for(int i = 0; i < 2; i++)
+            {
+                upgradeEnemyList.Add(new UpgradeEnemy(testSprite, new Rectangle(0, 0, 150, 150)));
+                upgradeEnemyList[i].OnDeath += player.ApplyUpgrade;
+            }
         }
 
         public int TotalEnemyCount
@@ -81,10 +91,15 @@ namespace EnterTheOnegeon
         {
             get { return timer; }
         }
+        public List<UpgradeEnemy> UpgradeEnemies
+        {
+            get { return upgradeEnemyList; }
+        }
         public List<TestEnemy> GetTestEnemies()
         {
             return testEnemyList;
         }
+        
         /// <summary>
         /// Handles updating all the enemies and the spawning of them
         /// </summary>
@@ -162,6 +177,25 @@ namespace EnterTheOnegeon
                     }
                     break;
                 case EManagerState.Shop:
+                    //populating shop
+                    //only two right now
+                    for(int i = 0; i < upgradeEnemyList.Count; i++)
+                    {
+                        if(!upgradeEnemyList[i].Active)
+                        {
+                            //Planning to have one for each stat
+                            if(i == 0)
+                            {
+                                //position, cost, hp up, spd up, bullet
+                                upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2- 300, 5, 1, 2, new BulletStats(0, 0, 0, 0));
+                            }
+                            else if(i == 1)
+                            {
+                                //position, cost, hp up,spd up, bullet
+                                upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2 +300, 7, 0, 0, new BulletStats(20, 5, 2, 0));
+                            }
+                        }
+                    }
                     //going to reuse variable as timer variable
                     //Controlling the exit box logic here
                     //When the player was and is in the box
@@ -181,6 +215,9 @@ namespace EnterTheOnegeon
                         //actually reseting now
                         timeToShop = ShopTime;
                         timeToWave = 5;
+                        //clear the shop enemies
+                        foreach (UpgradeEnemy upEn in upgradeEnemyList)
+                            upEn.Health = 0;
                         currState = EManagerState.Waves;
                     }
                     break;
@@ -264,7 +301,12 @@ namespace EnterTheOnegeon
                     break;
                 
                 case EManagerState.Shop:
-                    //TODO: help position these
+                    //drawing the upgrade guys
+                    foreach (UpgradeEnemy upEn in upgradeEnemyList)
+                    {
+                        upEn.Draw(sb, font);
+                    }
+                    //TODO: position these
                     /*
                     This one above
                     sb.DrawString(
@@ -281,7 +323,7 @@ namespace EnterTheOnegeon
                     */
                     sb.DrawString(
                         font,
-                        String.Format("Destroy them to gain their power"),
+                        String.Format("Gain power by breaking"),
                         new Vector2(-(int)camera.Transform.Translation.X + 820,
                             -(int)camera.Transform.Translation.Y + 120),
                         Color.White);
@@ -302,6 +344,7 @@ namespace EnterTheOnegeon
                         String.Format("Stand here to exit"),
                         new Vector2(exitBox.X-50, exitBox.Y),
                         Color.White);
+
                     break;
             }
             //Score
@@ -321,7 +364,6 @@ namespace EnterTheOnegeon
                     -(int)camera.Transform.Translation.Y + 120),
                 Color.White);
         }
-
         public void DebugDraw(SpriteBatch sb, SpriteFont font)
         {
             Draw(sb, font);
