@@ -59,7 +59,6 @@ namespace EnterTheOnegeon
             }
             /*TEMPORARY SPAWNING OF ENEMY BULLETS AT THE TOP LEFT OF DUNGEON
              * 
-             */
             tempTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if(tempTimer > 0.5)
             {
@@ -73,6 +72,7 @@ namespace EnterTheOnegeon
                         new BulletStats(20, 4, 1, 1));
                 }
             }
+             */
 
             //Don't need to remove inactive bullets
             #region Updating the player bullets
@@ -93,7 +93,6 @@ namespace EnterTheOnegeon
                     if (b.CollideWith(en))
                     {
                         b.HitEnemy(en);
-                        player.BulletCount++;
                     }
                 }
             }

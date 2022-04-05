@@ -16,6 +16,12 @@ namespace EnterTheOnegeon
         /// </summary>
         protected int health;
 
+        protected int maxHealth;
+
+        //Invincibility frames
+        protected double invTime;
+        protected double invTimer;
+
         /// <summary>
         /// Actual X value of the enemy
         /// </summary>
@@ -36,9 +42,17 @@ namespace EnterTheOnegeon
             set { health = value; }
         }
 
+        public int MaxHealth
+        {
+            get { return maxHealth; }
+        }
+
         public Enemy(Texture2D sprite, Rectangle rectangle, int health) : base(sprite, rectangle)
         {
             this.health = health;
+            maxHealth = health;
+            invTime = 0.5;
+            invTimer = 0;
         }
 
 
@@ -52,7 +66,20 @@ namespace EnterTheOnegeon
 
         public virtual void TakeDamage(int damage)
         {
-            health -= damage;
+            if(invTimer <= 0)
+            {
+                health -= damage;
+            }
+        }
+        public void Update(GameTime gameTime)
+        {
+            if(this.Active)
+            {
+                if (invTimer > 0)
+                {
+                    invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                }
+            }
         }
 
         public virtual void HitPlayer(Player player)
