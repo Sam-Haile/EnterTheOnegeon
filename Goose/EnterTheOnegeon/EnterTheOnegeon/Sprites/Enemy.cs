@@ -19,6 +19,7 @@ namespace EnterTheOnegeon
         protected int maxHealth;
 
         //Invincibility frames
+        //Unused
         protected double invTime;
         protected double invTimer;
 
@@ -51,7 +52,7 @@ namespace EnterTheOnegeon
         {
             this.health = health;
             maxHealth = health;
-            invTime = 0.5;
+            invTime = 0;
             invTimer = 0;
         }
 
