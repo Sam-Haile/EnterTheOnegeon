@@ -13,6 +13,11 @@ using System.Collections.Generic;
  *      - Or we could just make two walk animations, one while not parrying and 
  *      one while parrying
  * > Shop/Shop enemies/Upgrades (Nelson)
+ * 
+ * Not a TODO, but useful stuff
+ * 3840, 2176 <-- dimensions of the dungeon
+ * BulletStats can be added to another BulletStats and also there's a tostring for it
+ * BulletStats constructor, size, spd, passes, dmg
  */
 
 
@@ -385,10 +390,12 @@ namespace EnterTheOnegeon
                             2176),
                         Color.White);
 
-                    // Player
-                    player.Draw(_spriteBatch);
+                    
                     // Enemy manager draws all enemies, score and time
                     enemyManager.Draw(_spriteBatch, fipps);
+
+                    // Player
+                    player.Draw(_spriteBatch);
                     // Bullet UI
                     _spriteBatch.Draw(
                         bulletAsset,

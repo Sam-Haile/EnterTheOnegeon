@@ -90,7 +90,7 @@ namespace EnterTheOnegeon
                 case EManagerState.Waves:
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     timeToWave -= gameTime.ElapsedGameTime.TotalSeconds;
-
+                    timeToShop -= gameTime.ElapsedGameTime.TotalSeconds;
 
                     //Every time a wave is spawned
                     //Resets the countdown to next wave
@@ -135,6 +135,27 @@ namespace EnterTheOnegeon
                         wavePoints += 1;
                     }
                     UpdateTestEnemy(player);
+                    //Transition the state and reset some variables
+                    if (timeToShop < 0)
+                    {
+                        timeToShop = timeToShop + 10;
+                        timeToWave = 5;
+                        currState = EManagerState.WaveToShop;
+                    }
+                    break;
+                //Transition from wave to shop
+                //Wait for all enemies to die
+                //NOT ADDED, but can add later to delete enemies if needed
+                case EManagerState.WaveToShop:
+                    timer += gameTime.ElapsedGameTime.TotalSeconds;
+                    UpdateTestEnemy(player);
+                    
+                    if(TotalEnemyCount == 0)
+                    {
+                        currState = EManagerState.Shop;
+                    }
+                    break;
+                case EManagerState.Shop:
                     break;
             }
             camera.Follow(player);
@@ -199,6 +220,53 @@ namespace EnterTheOnegeon
                             -(int)camera.Transform.Translation.X + 820,
                             -(int)camera.Transform.Translation.Y + 120),
                         Color.White);
+                    break;
+                case EManagerState.WaveToShop:
+                    foreach (TestEnemy en in testEnemyList)
+                    {
+                        en.Draw(sb);
+                    }
+                    //Some message to clear the enemies
+                    sb.DrawString(
+                        font,
+                        String.Format("{0} enemies remaining", this.TotalEnemyCount),
+                        new Vector2(
+                            -(int)camera.Transform.Translation.X + 820,
+                            -(int)camera.Transform.Translation.Y + 120),
+                        Color.White);
+                    break;
+                
+                case EManagerState.Shop:
+                    //TODO: help position these
+                    /*
+                    This one above
+                    sb.DrawString(
+                        font,
+                        String.Format("Player Upgrades"),
+                        new Vector2(0, 0),
+                        Color.White);
+                    This one below
+                    sb.DrawString(
+                        font,
+                        String.Format("Bullet Upgrades"),
+                        new Vector2(0, 0),
+                        Color.White);
+                    */
+                    sb.DrawString(
+                        font,
+                        String.Format("Destroy them to gain their power"),
+                        new Vector2(3840/2-100, 2176/2),
+                        Color.White);
+
+                    //Some temporary exit text
+                    sb.DrawString(
+                        font,
+                        String.Format("Exit -->"),
+                        new Vector2(3840 / 2, 2176 / 2 + 20),
+                        Color.White);
+                    //Drawing the exit box
+                    Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
+                    tempTexture.SetData(new Color[] { Color.White });
                     break;
             }
             //Score

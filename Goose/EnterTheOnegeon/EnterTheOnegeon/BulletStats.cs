@@ -46,6 +46,13 @@ namespace EnterTheOnegeon
             set { size = value; }
         }
 
+        public override string ToString()
+        {
+            //might use later
+            //return String.Format("Siz: {0} Spd: {1} Pir: {2} Dmg: {3}", size, speed, passes, damage);
+            return String.Format("{0}, {1}, {2}, {3}", size, speed, passes, damage);
+        }
+
         //Overloaded the + operator
         //Adding bullet stats together results in combining the stats
         public static BulletStats operator +(BulletStats a, BulletStats b)
