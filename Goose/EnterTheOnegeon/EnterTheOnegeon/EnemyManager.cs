@@ -136,7 +136,7 @@ namespace EnterTheOnegeon
                                 //Change LATER for different enemy types
                                 if (rng.Next(10) == 0)
                                 {
-                                    SpawnWideBoi(RandPoint(true));
+                                    SpawnGargoyle(RandPoint(true));
                                     curWavePoints -= 3;
                                 }
                                 else
@@ -387,7 +387,7 @@ namespace EnterTheOnegeon
         }
 
         //Delete this later
-        public void SpawnWideBoi(Point pos)
+        public void SpawnGargoyle(Point pos)
         {
             testEnemyList.Add(
                     new TestEnemy(
@@ -399,7 +399,7 @@ namespace EnterTheOnegeon
         }
 
         // Gets a random point off screen
-        public Point RandPoint(bool isWideBoi)
+        public Point RandPoint(bool isGargoyle)
         {
             int randX;
             int randY;
@@ -412,9 +412,9 @@ namespace EnterTheOnegeon
                 // enemy spawns on the east wall
                 if (randX == 1)
                 {
-                    if (isWideBoi)
+                    if (isGargoyle)
                     {
-                        // dungeon.png width (scaled x2) - east wall thickness (scaled 2x) - wideboi width
+                        // dungeon.png width (scaled x2) - east wall thickness (scaled 2x) - Gargoyle width
                         randX = 1920 * 2 - 96 * 2 - 150;
                     }
                     else
@@ -438,9 +438,9 @@ namespace EnterTheOnegeon
                 // enemy spawns south of viewport 
                 if (randY == 1)
                 {
-                    if (isWideBoi)
+                    if (isGargoyle)
                     {
-                        // dungeon.png height (scaled x2) - south wall thickness (scaled 2x) - wideboi height
+                        // dungeon.png height (scaled x2) - south wall thickness (scaled 2x) - Gargoyle height
                         randY = 1088 * 2 - 32 * 2 - 100;
                     }
                     else

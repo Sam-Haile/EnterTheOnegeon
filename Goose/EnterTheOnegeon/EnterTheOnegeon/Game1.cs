@@ -755,6 +755,7 @@ namespace EnterTheOnegeon
                                         -(int)camera.Transform.Translation.Y + 280),
                             Color.White);
 
+
                         #endregion
                     }
                     if (gameState == GameState.Score)
