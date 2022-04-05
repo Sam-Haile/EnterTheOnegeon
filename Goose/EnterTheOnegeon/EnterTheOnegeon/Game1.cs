@@ -659,13 +659,13 @@ namespace EnterTheOnegeon
                     _spriteBatch2.DrawString(
                        titleFont,
                        "Pause",
-                       new Vector2(20, 20),
+                       new Vector2(20, 50),
                        Color.Gold
                        );
                     _spriteBatch2.DrawString(
                        fipps,
                        "Press the Escape key to resume",
-                       new Vector2(20, 135),
+                       new Vector2(20, 170),
                        Color.White
                        );
                     _spriteBatch2.DrawString(
@@ -721,9 +721,9 @@ namespace EnterTheOnegeon
                 // light up button
                 // display hotkeys for moving states
                 case DebugMode.On:
+                    debugButt.buttText = buttonOn;
                     if (gameState == GameState.Title)
                     {
-                        debugButt.buttText = buttonOn;
                         #region Debug hotkey text
                         _spriteBatch2.DrawString(
                             fipps,
@@ -814,10 +814,7 @@ namespace EnterTheOnegeon
 
                     break;
                 case DebugMode.Off:
-                    if (gameState == GameState.Title)
-                    {
-                        debugButt.buttText = buttonOff;
-                    }
+                    debugButt.buttText = buttonOff;
                     break;
 
             }
