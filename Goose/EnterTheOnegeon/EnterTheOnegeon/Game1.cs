@@ -154,7 +154,7 @@ namespace EnterTheOnegeon
             bulletManager = new BulletManager(bulletAsset);
 
             // loading enemy and initializing a list
-            enemyAsset = Content.Load<Texture2D>("badguy");
+            enemyAsset = Content.Load<Texture2D>("Enemy");
             enemyManager = new EnemyManager(_graphics, enemyAsset, player);
 
             // load font
@@ -181,7 +181,7 @@ namespace EnterTheOnegeon
                 fipps,
                 T_Button,
                 "Menu",
-                new Rectangle(30, screenHeight - 90, 150, 75),
+                new Rectangle(30, screenHeight - 130, 150, 75),
                 Color.Gold);
             debugButt = new Button(
                 fipps,
@@ -323,6 +323,7 @@ namespace EnterTheOnegeon
                         player.BulletCount = player.BulletCount;
                         player.Health = player.Health;
                     }
+                    // enter the pause state if escape is pressed
                     if (_currentKbState.IsKeyUp(Keys.Escape) && _prevKbState.IsKeyDown(Keys.Escape))
                     {
                         gameState = GameState.Pause;
@@ -375,6 +376,27 @@ namespace EnterTheOnegeon
                     if (_currentKbState.IsKeyUp(Keys.Escape) && _prevKbState.IsKeyDown(Keys.Escape))
                     {
                         gameState = GameState.Game;
+                    }
+
+                    // menu button pressed
+                    else if (_mState.X < menuButt.ButtRect.X + menuButt.ButtRect.Width &&
+                        _mState.X > menuButt.ButtRect.X &&
+                        _mState.Y < menuButt.ButtRect.Y + menuButt.ButtRect.Height &&
+                        _mState.Y > menuButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
+                        _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        gameState = GameState.Title;
+                    }
+                    // quit button pressed
+                    if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width &&
+                        _mState.X > quitButt.ButtRect.X &&
+                        _mState.Y < quitButt.ButtRect.Y + quitButt.ButtRect.Height &&
+                        _mState.Y > quitButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
+                        _prevMState.LeftButton == ButtonState.Pressed)
+                    {
+                        Exit();
                     }
                     break;
                 #endregion
@@ -484,6 +506,7 @@ namespace EnterTheOnegeon
                     }
                     break;
                 #endregion
+
                 #region Scoreboard State
                 case GameState.Score:
                     _spriteBatch2.Draw(
@@ -607,7 +630,61 @@ namespace EnterTheOnegeon
                            1920,
                            1080),
                            Color.White);
-
+                    _spriteBatch2.DrawString(
+                       titleFont,
+                       "Pause",
+                       new Vector2(20, 20),
+                       Color.Gold
+                       );
+                    _spriteBatch2.DrawString(
+                       fipps,
+                       "Press the Escape key to resume",
+                       new Vector2(20, 135),
+                       Color.White
+                       );
+                    _spriteBatch2.DrawString(
+                       titleFont,
+                       "Player Stats",
+                       new Vector2(20, 200),
+                       Color.Gold
+                       );
+                    _spriteBatch2.DrawString(
+                       fipps,
+                       "Damage: " + player.BStats.Damage.ToString(),
+                       new Vector2(20, 350),
+                       Color.White
+                       );
+                    _spriteBatch2.DrawString(
+                       fipps,
+                       "Bullet Speed: " + player.BStats.Speed.ToString(),
+                       new Vector2(20, 400),
+                       Color.White
+                       );
+                    _spriteBatch2.DrawString(
+                       fipps,
+                       "Bullet Size: " + player.BStats.Size.ToString(),
+                       new Vector2(20, 450),
+                       Color.White
+                       );
+                    _spriteBatch2.DrawString(
+                       fipps,
+                       "Penetration: " + player.BStats.Passes.ToString(),
+                       new Vector2(20, 500),
+                       Color.White
+                       );
+                    _spriteBatch2.DrawString(
+                       fipps,
+                       "Player Speed: " + player.Speed,
+                       new Vector2(20, 550),
+                       Color.White
+                       );
+                    _spriteBatch2.DrawString(
+                       fipps,
+                       "Player Health: " + player.Health + "/" + player.MaxHealth,
+                       new Vector2(20, 600),
+                       Color.White
+                       );
+                    menuButt.Draw(_spriteBatch2);
                     break;
                 #endregion
             }

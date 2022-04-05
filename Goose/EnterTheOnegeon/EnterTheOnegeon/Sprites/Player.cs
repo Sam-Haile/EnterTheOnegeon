@@ -50,6 +50,11 @@ namespace EnterTheOnegeon
             set { hp = value; }
         }
 
+        public int MaxHealth
+        {
+            get { return maxH; }
+        }
+
         public bool Active
         {
             get { return hp > 0; }
