@@ -161,11 +161,13 @@ namespace EnterTheOnegeon
         /// <param name="bStats">The stats</param>
         public void Reset(int spaX, int spaY, Vector2 posToMove, BulletStats bStats)
         {
-            rectangle = new Rectangle(spaX-bStats.Size / 2, spaY - bStats.Size / 2, bStats.Size, bStats.Size);
+            rectangle = new Rectangle(spaX, spaY, bStats.Size, bStats.Size);
             spawnX = spaX;
             spawnY = spaY;
             trajectory = VectorToPosition(posToMove);
             trajectory.Normalize();
+            rectangle.X = spaX - bStats.Size / 2;
+            rectangle.Y = spaY - bStats.Size / 2;
             timer = 0;
             speed = bStats.Speed;
             passes = bStats.Passes;

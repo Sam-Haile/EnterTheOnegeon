@@ -15,7 +15,6 @@ using System.Collections.Generic;
  * > Positioning and making the shop look better
  * > Upgrade for invincibility timer and contact damage
  * > Add iframes for enemies
- * > Very big bullets start not shooting properly
  *
  * 
  * Not a TODO, but useful stuff
