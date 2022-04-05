@@ -66,8 +66,8 @@ namespace EnterTheOnegeon
                 if (GetEnemyBullet() != null)
                 {
                     GetEnemyBullet().Reset(
-                            300,
-                            300,
+                            290,
+                            290,
                         new Vector2(301,300),
                         new BulletStats(20, 4, 1, 1));
                 }
