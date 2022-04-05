@@ -44,18 +44,19 @@ namespace EnterTheOnegeon
             {
                 direction.Normalize();
             }
-
+            /*
             posX += direction.X * speed;
             posY += direction.Y * speed;
 
             rectangle.X = (int)(Math.Round(posX));
             rectangle.Y = (int)(Math.Round(posY));
+            */
 
-            //rectangle.X += (int) (Math.Round(direction.X * speed));
-            //rectangle.Y += (int) (Math.Round(direction.Y * speed));
+            rectangle.X += (int) (Math.Round(direction.X * speed));
+            rectangle.Y += (int) (Math.Round(direction.Y * speed));
         }
 
-        public void Update(Player p)
+        public void Update(Player p, GameTime gameTime)
         {
             playerPos = p.PositionV;
             this.Move();

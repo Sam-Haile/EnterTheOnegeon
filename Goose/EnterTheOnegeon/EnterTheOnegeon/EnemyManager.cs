@@ -154,7 +154,7 @@ namespace EnterTheOnegeon
                         //Every wave gets harder
                         wavePoints += 1;
                     }
-                    UpdateTestEnemy(player);
+                    UpdateTestEnemy(player, gameTime);
                     //Transition the state and reset some variables
                     if (timeToShop < 0)
                     {
@@ -169,7 +169,7 @@ namespace EnterTheOnegeon
                 //NOT ADDED, but can add later to delete enemies if needed
                 case EManagerState.WaveToShop:
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
-                    UpdateTestEnemy(player);
+                    UpdateTestEnemy(player, gameTime);
                     
                     if(TotalEnemyCount == 0)
                     {
@@ -231,13 +231,13 @@ namespace EnterTheOnegeon
         /// <summary>
         /// Updates all the TestEnemies
         /// </summary>
-        private void UpdateTestEnemy(Player player)
+        private void UpdateTestEnemy(Player player, GameTime gameTime)
         {
             //Updating each enemy and checking the collision
             //As well as making sure they don't overlap
             for (int i = 0; i < testEnemyList.Count; i++)
             {
-                testEnemyList[i].Update(player);
+                testEnemyList[i].Update(player, gameTime);
                 if (testEnemyList[i].CollideWith(player))
                     testEnemyList[i].HitPlayer(player);
                 //Checking each enemy with each other

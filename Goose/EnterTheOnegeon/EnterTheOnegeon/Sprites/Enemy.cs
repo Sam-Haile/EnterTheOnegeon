@@ -18,6 +18,10 @@ namespace EnterTheOnegeon
 
         protected int maxHealth;
 
+        //Invincibility frames
+        private double invTime;
+        private double invTimer;
+
         /// <summary>
         /// Actual X value of the enemy
         /// </summary>
@@ -47,6 +51,8 @@ namespace EnterTheOnegeon
         {
             this.health = health;
             maxHealth = health;
+            invTime = 0.5;
+            invTimer = 0;
         }
 
 
@@ -60,7 +66,10 @@ namespace EnterTheOnegeon
 
         public virtual void TakeDamage(int damage)
         {
-            health -= damage;
+            if(invTime <= 0)
+            {
+                health -= damage;
+            }
         }
 
         public virtual void HitPlayer(Player player)

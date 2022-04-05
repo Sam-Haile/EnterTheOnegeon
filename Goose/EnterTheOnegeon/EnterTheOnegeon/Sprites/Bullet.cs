@@ -68,12 +68,10 @@ namespace EnterTheOnegeon
         /// </summary>
         /// <param name="enem"></param>
         /// <returns>true</returns>
-        public bool HitEnemy(Enemy enem)
+        public void HitEnemy(Enemy enem)
         {
             passes--;
             enem.TakeDamage(damage);
-            return true;
-            
         }
 
         public void HitPlayer(Player player)

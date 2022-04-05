@@ -93,7 +93,6 @@ namespace EnterTheOnegeon
                     if (b.CollideWith(en))
                     {
                         b.HitEnemy(en);
-                        player.BulletCount++;
                     }
                 }
             }
