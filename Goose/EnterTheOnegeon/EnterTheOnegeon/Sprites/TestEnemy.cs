@@ -59,7 +59,6 @@ namespace EnterTheOnegeon
 
         public void Update(Player p, GameTime gameTime)
         {
-            base.Update(gameTime);
             playerPos = p.PositionV;
             this.Move();
         }
