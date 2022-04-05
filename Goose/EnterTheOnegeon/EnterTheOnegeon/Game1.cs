@@ -289,6 +289,7 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Score;
                     }
+
                     // players movement
                     player.Update(
                         gameTime,
@@ -303,7 +304,6 @@ namespace EnterTheOnegeon
                     // enemy spawning and updating
                     enemyManager.Update(gameTime, player);
                     bulletManager.Update(gameTime, _mState, _prevMState, player, enemyManager);
-
 
                     //Adding to the timer
                     totalGameTime += gameTime.ElapsedGameTime.TotalSeconds;

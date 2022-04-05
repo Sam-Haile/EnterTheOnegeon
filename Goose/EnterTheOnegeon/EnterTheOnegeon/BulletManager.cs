@@ -84,6 +84,7 @@ namespace EnterTheOnegeon
                     if (b.CollideWith(en))
                     {
                         b.HitEnemy(en);
+                        player.BulletCount++;
                     }
                 }
                 //Added upgrade enemies
@@ -92,6 +93,7 @@ namespace EnterTheOnegeon
                     if (b.CollideWith(en))
                     {
                         b.HitEnemy(en);
+                        player.BulletCount++;
                     }
                 }
             }
