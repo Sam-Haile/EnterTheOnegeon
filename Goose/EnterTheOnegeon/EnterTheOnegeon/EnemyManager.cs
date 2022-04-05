@@ -197,7 +197,6 @@ namespace EnterTheOnegeon
                                 upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2 +300, 7, 0, 0, new BulletStats(20, 7, 2, 0));
                             }
                         }
-                        upgradeEnemyList[i].Update(gameTime);
                     }
                     //going to reuse variable as timer variable
                     //Controlling the exit box logic here
