@@ -153,7 +153,7 @@ namespace EnterTheOnegeon
         }
         /// <summary>
         /// Resets(Spawns) an inactive bullet
-        /// Use the center for where you spawn it
+        /// Use the top right for where you spawn it
         /// </summary>
         /// <param name="spaX">Spawning x pos</param>
         /// <param name="spaY">Spawning y pos</param>
@@ -166,8 +166,6 @@ namespace EnterTheOnegeon
             spawnY = spaY;
             trajectory = VectorToPosition(posToMove);
             trajectory.Normalize();
-            rectangle.X = spaX - bStats.Size / 2;
-            rectangle.Y = spaY - bStats.Size / 2;
             timer = 0;
             speed = bStats.Speed;
             passes = bStats.Passes;
