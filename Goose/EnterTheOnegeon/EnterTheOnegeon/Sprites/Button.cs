@@ -61,6 +61,5 @@ namespace EnterTheOnegeon
                 textPos,
                 textColor);
         }
-
     }
 }
