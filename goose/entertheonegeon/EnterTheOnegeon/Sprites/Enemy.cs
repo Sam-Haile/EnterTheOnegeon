@@ -19,6 +19,7 @@ namespace EnterTheOnegeon
         protected int maxHealth;
 
         //Invincibility frames
+        //Unused
         protected double invTime;
         protected double invTimer;
 
@@ -66,7 +67,20 @@ namespace EnterTheOnegeon
 
         public virtual void TakeDamage(int damage)
         {
+            if(invTimer <= 0)
+            {
                 health -= damage;
+            }
+        }
+        public void Update(GameTime gameTime)
+        {
+            if(this.Active)
+            {
+                if (invTimer > 0)
+                {
+                    invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                }
+            }
         }
 
         public virtual void HitPlayer(Player player)
