@@ -109,6 +109,9 @@ namespace EnterTheOnegeon
         Texture2D buttonOn;
         Texture2D buttonOff;
 
+        // Text size for centering
+        Vector2 textSize;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -332,6 +335,8 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Scoreboard State
                 case GameState.Score:
+                    textSize = titleFont.MeasureString(enemyManager.Score.ToString());
+
                     // quit button pressed
                     if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width &&
                         _mState.X > quitButt.ButtRect.X &&
@@ -521,8 +526,8 @@ namespace EnterTheOnegeon
                         titleFont,
                         enemyManager.Score.ToString(),
                         new Vector2(
-                            screenWidth / 2 - camera.Transform.Translation.X,
-                            screenHeight / 2 - camera.Transform.Translation.Y),
+                            screenWidth / 2 - textSize.X,
+                            screenHeight / 2),
                         Color.White);
 
                     menuButt.Draw(_spriteBatch2);
