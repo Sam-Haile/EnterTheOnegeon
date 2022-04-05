@@ -255,7 +255,6 @@ namespace EnterTheOnegeon
                     testEnemyList.RemoveAt(i);
                     //Stuff that happens when an enemy dies
                     score += 100;
-                    player.BulletCount++;
                 }
 
             }
