@@ -19,8 +19,8 @@ namespace EnterTheOnegeon
         protected int maxHealth;
 
         //Invincibility frames
-        private double invTime;
-        private double invTimer;
+        protected double invTime;
+        protected double invTimer;
 
         /// <summary>
         /// Actual X value of the enemy
@@ -66,9 +66,19 @@ namespace EnterTheOnegeon
 
         public virtual void TakeDamage(int damage)
         {
-            if(invTime <= 0)
+            if(invTimer <= 0)
             {
                 health -= damage;
+            }
+        }
+        public void Update(GameTime gameTime)
+        {
+            if(this.Active)
+            {
+                if (invTimer > 0)
+                {
+                    invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+                }
             }
         }
 

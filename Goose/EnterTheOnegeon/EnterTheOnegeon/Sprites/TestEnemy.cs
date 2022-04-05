@@ -44,10 +44,11 @@ namespace EnterTheOnegeon
             {
                 direction.Normalize();
             }
-            /*
+            /* 
             posX += direction.X * speed;
             posY += direction.Y * speed;
 
+            //If they teleport then they stack
             rectangle.X = (int)(Math.Round(posX));
             rectangle.Y = (int)(Math.Round(posY));
             */
@@ -58,6 +59,7 @@ namespace EnterTheOnegeon
 
         public void Update(Player p, GameTime gameTime)
         {
+            base.Update(gameTime);
             playerPos = p.PositionV;
             this.Move();
         }
