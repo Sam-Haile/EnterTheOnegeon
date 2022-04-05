@@ -62,11 +62,18 @@ namespace EnterTheOnegeon
             }
         }
 
-        //Whenever this  bullet hits an enemy decrement number of passes and make the enemy take damage
-        public void HitEnemy(Enemy enem)
+        /// <summary>
+        /// Whenever this  bullet hits an enemy decrement number of passes and make 
+        /// the enemy take damage.
+        /// </summary>
+        /// <param name="enem"></param>
+        /// <returns>true</returns>
+        public bool HitEnemy(Enemy enem)
         {
             passes--;
             enem.TakeDamage(damage);
+            return true;
+            
         }
 
         public void HitPlayer(Player player)
