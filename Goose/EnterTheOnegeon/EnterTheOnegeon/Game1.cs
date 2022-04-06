@@ -188,7 +188,7 @@ namespace EnterTheOnegeon
                 fipps,
                 buttonOff,
                 "Debug",
-                new Rectangle(screenWidth - 120, 50, 50, 50),
+                new Rectangle(20 , 10, 50, 50),
                 Color.Gold);
             helpButt = new Button(
                 fipps,
@@ -198,7 +198,7 @@ namespace EnterTheOnegeon
                 Color.Gold
                 );
             // modify "Debug" text location
-            debugButt.textPos.X = screenWidth - 250;
+            debugButt.textPos.X = 75;
         }
 
         protected override void Update(GameTime gameTime)
@@ -401,7 +401,31 @@ namespace EnterTheOnegeon
                     {
                         Exit();
                     }
+                    // Debug clicked
+                    else if (_mState.X < debugButt.ButtRect.X + debugButt.ButtRect.Width &&
+                             _mState.X > debugButt.ButtRect.X &&
+                             _mState.Y < debugButt.ButtRect.Y + debugButt.ButtRect.Height &&
+                             _mState.Y > debugButt.ButtRect.Y &&
+                             _mState.LeftButton == ButtonState.Released &&
+                             _prevMState.LeftButton == ButtonState.Pressed &&
+                             debug == DebugMode.Off)
+                    {
+                        debug = DebugMode.On;
+                    }
+
+                    // Debug clicked again
+                    else if (_mState.X < debugButt.ButtRect.X + debugButt.ButtRect.Width &&
+                        _mState.X > debugButt.ButtRect.X &&
+                        _mState.Y < debugButt.ButtRect.Y + debugButt.ButtRect.Height &&
+                        _mState.Y > debugButt.ButtRect.Y &&
+                        _mState.LeftButton == ButtonState.Released &&
+                        _prevMState.LeftButton == ButtonState.Pressed &&
+                        debug == DebugMode.On)
+                    {
+                        debug = DebugMode.Off;
+                    }
                     break;
+
                 #endregion
             }
 
@@ -523,7 +547,7 @@ namespace EnterTheOnegeon
                         titleFont,
                         enemyManager.Score.ToString(),
                         new Vector2(
-                            screenWidth / 2 - textSize.X,
+                            screenWidth / 2 - textSize.X / 2,
                             screenHeight / 2),
                         Color.White);
 
@@ -635,13 +659,13 @@ namespace EnterTheOnegeon
                     _spriteBatch2.DrawString(
                        titleFont,
                        "Pause",
-                       new Vector2(20, 20),
+                       new Vector2(20, 50),
                        Color.Gold
                        );
                     _spriteBatch2.DrawString(
                        fipps,
                        "Press the Escape key to resume",
-                       new Vector2(20, 135),
+                       new Vector2(20, 170),
                        Color.White
                        );
                     _spriteBatch2.DrawString(
@@ -687,6 +711,7 @@ namespace EnterTheOnegeon
                        Color.White
                        );
                     menuButt.Draw(_spriteBatch2);
+                    debugButt.Draw(_spriteBatch2);
                     break;
                 #endregion
             }
@@ -696,9 +721,9 @@ namespace EnterTheOnegeon
                 // light up button
                 // display hotkeys for moving states
                 case DebugMode.On:
+                    debugButt.buttText = buttonOn;
                     if (gameState == GameState.Title)
                     {
-                        debugButt.buttText = buttonOn;
                         #region Debug hotkey text
                         _spriteBatch2.DrawString(
                             fipps,
@@ -789,10 +814,7 @@ namespace EnterTheOnegeon
 
                     break;
                 case DebugMode.Off:
-                    if (gameState == GameState.Title)
-                    {
-                        debugButt.buttText = buttonOff;
-                    }
+                    debugButt.buttText = buttonOff;
                     break;
 
             }
