@@ -57,7 +57,7 @@ namespace EnterTheOnegeon
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
-            ShopTime = 30;
+            ShopTime = 20;
             timeToShop = ShopTime;
             timeToWave = 5;
             wavePoints = 5;
@@ -214,13 +214,17 @@ namespace EnterTheOnegeon
                             else if (i == 4)
                             {
                                 //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2 - 400, 2176 / 2 + 300, 5, 0, 0, new BulletStats(0, 0, 1, 0));
+                                upgradeEnemyList[i].Reset(3840 / 2 - 400, 2176 / 2 + 300, 
+                                    10*player.BStats.Passes //COST INCREASES BY THE STAT
+                                    , 0, 0, new BulletStats(0, 0, 1, 0));
                             }
                             //Upgrades bullet damage
                             else if (i == 5)
                             {
                                 //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2 - 200, 2176 / 2 + 300, 5, 0, 0, new BulletStats(0, 0, 0, 1));
+                                upgradeEnemyList[i].Reset(3840 / 2 - 200, 2176 / 2 + 300,
+                                    10 * player.BStats.Damage
+                                    , 0, 0, new BulletStats(0, 0, 0, 1));
                             }
 
                             else if(i == 100)
@@ -247,6 +251,7 @@ namespace EnterTheOnegeon
                     if (timeToShop > 3)
                     {
                         //actually reseting now
+                        ShopTime += 10;
                         timeToShop = ShopTime;
                         timeToWave = 5;
                         //clear the shop enemies
