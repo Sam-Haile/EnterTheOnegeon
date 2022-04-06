@@ -34,7 +34,7 @@ namespace EnterTheOnegeon
             invTime = 0.5;
             invTimer = 0;
 
-            //Size, Speed, Num of Passes, Damage(not used yet)
+            //Size, Speed, Num of Passes, Damage
             bStats = new BulletStats(10, 7, 1, 1);
         }
 

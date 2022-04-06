@@ -8,14 +8,13 @@ namespace EnterTheOnegeon
 {
     class Bullet : GameObject 
     {
+        /// <summary> Things that were alreay hit by the bullet </summary>
+        private List<GameObject> hitObjects;
         /// <summary> coordinates of a point 1000 pixels in the direction of the mouse cursor </summary>
         private Vector2 trajectory;
 
         /// <summary> seconds taken to travel from player to trajectory</summary>
         private double speed;
-
-        /// <summary> second the bullet was created </summary>
-        //private double timeCreated;
 
         /// <summary> time the bullet has been alive </summary>
         private double timer;
@@ -35,8 +34,8 @@ namespace EnterTheOnegeon
         public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
             // Bullets are created with *zero* stats
-            // When a bullet is reset via Reset() being called in BulletManager, it gets
-            // stats
+            // When a bullet is reset via Reset() being called in BulletManager, it gets stats
+            hitObjects = new List<GameObject>();
         }
 
         /// <summary>
@@ -68,12 +67,14 @@ namespace EnterTheOnegeon
         public void HitEnemy(Enemy enem)
         {
             passes--;
+            hitObjects.Add(enem);
             enem.TakeDamage(damage);
         }
 
         public void HitPlayer(Player player)
         {
             passes--;
+            hitObjects.Add(player);
             player.TakeDamage(damage);
         }
 
@@ -106,16 +107,22 @@ namespace EnterTheOnegeon
         }
 
         //Overriding so that when bullets are inactive they don't collide with anything
+        //And if they hit an object it doesn't not register
         public override bool CollideWith(GameObject other)
         {
             if (!Active)
                 return false;
+            foreach(GameObject gob in hitObjects)
+            {
+                if (gob == other)
+                    return false;
+            }
             return base.CollideWith(other);
         }
 
         /// <summary>
         /// Resets(Spawns) an inactive bullet
-        /// Use the top right for where you spawn it
+        /// Use the center for where you spawn it
         /// </summary>
         /// <param name="spaX">Spawning x pos</param>
         /// <param name="spaY">Spawning y pos</param>
@@ -123,7 +130,8 @@ namespace EnterTheOnegeon
         /// <param name="bStats">The stats</param>
         public void Reset(int spaX, int spaY, Vector2 posToMove, BulletStats bStats)
         {
-            rectangle = new Rectangle(spaX, spaY, bStats.Size, bStats.Size);
+            hitObjects.Clear();
+            rectangle = new Rectangle(spaX-bStats.Size/2, spaY- bStats.Size/2, bStats.Size, bStats.Size);
             spawnX = spaX;
             spawnY = spaY;
             trajectory = VectorToPosition(posToMove);

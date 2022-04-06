@@ -56,8 +56,8 @@ namespace EnterTheOnegeon
                 if(GetPlayerBullet() != null)
                 {
                     GetPlayerBullet().Reset(
-                            player.CenterX - player.BStats.Size / 2,
-                            player.CenterY - player.BStats.Size / 2,
+                            player.CenterX,
+                            player.CenterY,
                         new Vector2(
                             mState.X - camera.Transform.Translation.X,
                             mState.Y - camera.Transform.Translation.Y),
@@ -74,8 +74,8 @@ namespace EnterTheOnegeon
                 if (GetEnemyBullet() != null)
                 {
                     GetEnemyBullet().Reset(
-                            290,
-                            290,
+                            300,
+                            300,
                         new Vector2(301,300),
                         new BulletStats(20, 4, 1, 1));
                 }
