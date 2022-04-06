@@ -99,7 +99,7 @@ namespace EnterTheOnegeon
         {
             get
             {
-                return new Vector2(rectangle.X, rectangle.Y);
+                return new Vector2(this.CenterX, this.CenterY);
             }
         }
 
