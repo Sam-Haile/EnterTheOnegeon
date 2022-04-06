@@ -71,7 +71,7 @@ namespace EnterTheOnegeon
             upgradeEnemyList = new List<UpgradeEnemy>();
             //fill with inactive ones
             //two for now
-            for(int i = 0; i < 2; i++)
+            for(int i = 0; i < 8; i++)
             {
                 upgradeEnemyList.Add(new UpgradeEnemy(testSprite, new Rectangle(0, 0, 150, 150)));
                 upgradeEnemyList[i].OnDeath += player.ApplyUpgrade;
@@ -186,12 +186,44 @@ namespace EnterTheOnegeon
                         if(!upgradeEnemyList[i].Active)
                         {
                             //Planning to have one for each stat
+                            //Upgrades hp
                             if(i == 0)
                             {
                                 //position, cost, hp up, spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2- 300, 5, 1, 2, new BulletStats(0, 0, 0, 0));
+                                upgradeEnemyList[i].Reset(3840 / 2- 300, 2176 / 2- 300, 5, 1, 0, new BulletStats(0, 0, 0, 0));
                             }
-                            else if(i == 1)
+                            //Upgrades spd
+                            else if (i == 1)
+                            {
+                                //position, cost, hp up,spd up, bullet
+                                upgradeEnemyList[i].Reset(3840 / 2 - 100, 2176 / 2 - 300, 5, 0, 1, new BulletStats(0, 0, 0, 0));
+                            }
+                            //Upgrades bullet size
+                            else if (i == 2)
+                            {
+                                //position, cost, hp up,spd up, bullet
+                                upgradeEnemyList[i].Reset(3840 / 2 - 800, 2176 / 2 + 300, 5, 0, 0, new BulletStats(10, 0, 0, 0));
+                            }
+                            //Upgrades bullet spd
+                            else if (i == 3)
+                            {
+                                //position, cost, hp up,spd up, bullet
+                                upgradeEnemyList[i].Reset(3840 / 2 - 600, 2176 / 2 + 300, 5, 0, 0, new BulletStats(0, 1, 0, 0));
+                            }
+                            //Upgrades bullet pierce
+                            else if (i == 4)
+                            {
+                                //position, cost, hp up,spd up, bullet
+                                upgradeEnemyList[i].Reset(3840 / 2 - 400, 2176 / 2 + 300, 5, 0, 0, new BulletStats(0, 0, 1, 0));
+                            }
+                            //Upgrades bullet damage
+                            else if (i == 5)
+                            {
+                                //position, cost, hp up,spd up, bullet
+                                upgradeEnemyList[i].Reset(3840 / 2 - 200, 2176 / 2 + 300, 5, 0, 0, new BulletStats(0, 0, 0, 1));
+                            }
+
+                            else if(i == 100)
                             {
                                 //position, cost, hp up,spd up, bullet
                                 upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2 +300, 7, 0, 0, new BulletStats(20, 7, 2, 0));
@@ -306,6 +338,21 @@ namespace EnterTheOnegeon
                     foreach (UpgradeEnemy upEn in upgradeEnemyList)
                     {
                         upEn.Draw(sb, font);
+                    }
+                    for(int i = 0; i < upgradeEnemyList.Count; i++)
+                    {
+                        if (i == 0)
+                            sb.DrawString(font, "HP UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                        if (i == 1)
+                            sb.DrawString(font, "SPD UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                        if (i == 2)
+                            sb.DrawString(font, "BUL SIZE UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                        if (i == 3)
+                            sb.DrawString(font, "BUL SPD UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                        if (i == 4)
+                            sb.DrawString(font, "PIERCE UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                        if (i == 5)
+                            sb.DrawString(font, "DMG UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
                     }
                     //TODO: position these
                     /*
