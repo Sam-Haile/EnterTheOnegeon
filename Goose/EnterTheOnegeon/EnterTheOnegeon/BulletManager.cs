@@ -38,6 +38,14 @@ namespace EnterTheOnegeon
             }
         }
 
+        /// <summary>
+        /// Handles player bullet creation, and the updating of player and enemy bullets
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="mState"></param>
+        /// <param name="prevMState"></param>
+        /// <param name="player"></param>
+        /// <param name="eManager"></param>
         public void Update(GameTime gameTime, MouseState mState, MouseState prevMState, Player player, EnemyManager eManager)
         {
             camera.Follow(player);
@@ -110,6 +118,10 @@ namespace EnterTheOnegeon
             #endregion
         }
 
+        /// <summary>
+        /// Draws each active bullet in pBullets and eBullets
+        /// </summary>
+        /// <param name="sb"></param>
         public void Draw(SpriteBatch sb/*, SpriteFont font*/)
         {
             foreach (Bullet b in pBullets)
@@ -118,8 +130,11 @@ namespace EnterTheOnegeon
                 b.Draw(sb);
         }
 
-        //Helping method to get the first inactive player bullet
-        //Returns null if none are inactive
+        /// <summary>
+        /// Helping method to get the first inactive player bullet
+        /// </summary>
+        /// <returns>First inactive bullet in pBullets, or null of there are no inactive 
+        /// bullets</returns>
         public Bullet GetPlayerBullet()
         {
             for(int i = 0; i < pBullets.Count; i++)
@@ -130,8 +145,11 @@ namespace EnterTheOnegeon
             return null;
         }
 
-        //Helping method to get the first inactive enemy bullet
-        //Returns null if none are inactive
+        /// <summary>
+        /// Helping method to get the first inactive enemy bullet
+        /// </summary>
+        /// <returns>First inactive bullet in eBullets, or null of there are no inactive 
+        /// bullets</returns>
         public Bullet GetEnemyBullet()
         {
             for (int i = 0; i < eBullets.Count; i++)

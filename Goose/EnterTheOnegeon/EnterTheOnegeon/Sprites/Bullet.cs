@@ -34,11 +34,9 @@ namespace EnterTheOnegeon
         //Creates inactive bullets
         public Bullet(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
-
-            timer = 0;
-            passes = 0;
-            damage = 0;
-            trajectory = new Vector2();
+            // Bullets are created with *zero* stats
+            // When a bullet is reset via Reset() being called in BulletManager, it gets
+            // stats
         }
 
         /// <summary>
@@ -97,6 +95,10 @@ namespace EnterTheOnegeon
             }
         }
 
+        /// <summary>
+        /// Draws this bullet if it is active
+        /// </summary>
+        /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
             if(this.Active)
@@ -112,6 +114,7 @@ namespace EnterTheOnegeon
                 return false;
             return base.CollideWith(other);
         }
+
         /// <summary>
         /// Resets(Spawns) an inactive bullet
         /// Use the top right for where you spawn it
