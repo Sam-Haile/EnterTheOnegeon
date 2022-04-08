@@ -132,8 +132,8 @@ namespace EnterTheOnegeon
         {
             hitObjects.Clear();
             rectangle = new Rectangle(spaX-bStats.Size/2, spaY- bStats.Size/2, bStats.Size, bStats.Size);
-            spawnX = spaX;
-            spawnY = spaY;
+            spawnX = spaX - bStats.Size / 2;
+            spawnY = spaY - bStats.Size / 2;
             trajectory = VectorToPosition(posToMove);
             trajectory.Normalize();
             timer = 0;

@@ -7,12 +7,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
-
     public enum EManagerState
     {
         Waves,
         Shop,
         WaveToShop
+    }
+    /// <summary> All the different enemies </summary>
+    public enum EnemyNames
+    {
+        Gargoyle,
+        BigGargoyle,
+        Other
     }
     /// <summary>
     /// This class handles all the enemies
@@ -20,6 +26,12 @@ namespace EnterTheOnegeon
     /// </summary>
     class EnemyManager
     {
+        //MODIFY THE SIZE OF ENEMIES HERE
+        //USE THOSE SIZES EVERYWHERE
+        #region Enemy size constants
+        //Gargoyles are square
+        private const int GargoyleSize = 50;
+        #endregion
         /// <summary>
         /// The exit box for shop
         /// </summary>
@@ -82,7 +94,6 @@ namespace EnterTheOnegeon
         {
             get { return testEnemyList.Count /*+ enemy2List.Count etc*/; }
         }
-
         public int Score
         {
             get { return score; }
@@ -154,6 +165,7 @@ namespace EnterTheOnegeon
                         //Every wave gets harder
                         wavePoints += 1;
                     }
+
                     UpdateTestEnemy(player, gameTime);
                     //Transition the state and reset some variables
                     if (timeToShop < 0)
