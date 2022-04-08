@@ -57,7 +57,7 @@ namespace EnterTheOnegeon
         }
 
 
-        public virtual bool Active
+        public override bool Active
         {
             get
             {

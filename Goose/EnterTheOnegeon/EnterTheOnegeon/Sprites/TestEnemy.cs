@@ -20,6 +20,7 @@ namespace EnterTheOnegeon
             posY = rectangle.Y;
         }
 
+        /* Does the same as gameobject's collidewith
         /// <summary>
         /// returns true if collsision is detected
         /// </summary>
@@ -31,6 +32,7 @@ namespace EnterTheOnegeon
                 return false;
             return base.CollideWith(other);
         }
+        */
 
         /// <summary>
         /// Movement testing for now

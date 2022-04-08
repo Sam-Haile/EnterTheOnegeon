@@ -178,7 +178,6 @@ namespace EnterTheOnegeon
                     break;
                 //Transition from wave to shop
                 //Wait for all enemies to die
-                //NOT ADDED, but can add later to delete enemies if needed
                 case EManagerState.WaveToShop:
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     UpdateTestEnemy(player, gameTime);
@@ -260,6 +259,7 @@ namespace EnterTheOnegeon
                     else if(timeToShop < 0)
                         timeToShop = 0;
                     //When the player has stood long enough on it
+                    //Transition out of shop
                     if (timeToShop > 3)
                     {
                         //actually reseting now
@@ -317,6 +317,10 @@ namespace EnterTheOnegeon
                     foreach (TestEnemy en in testEnemyList)
                     {
                         en.Draw(sb);
+                    }
+                    foreach (UpgradeEnemy upEn in upgradeEnemyList)
+                    {
+                        upEn.Draw(sb, font);
                     }
                     //Time to next wave
                     sb.DrawString(

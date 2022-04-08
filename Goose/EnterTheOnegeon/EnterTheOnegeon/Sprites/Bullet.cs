@@ -42,7 +42,7 @@ namespace EnterTheOnegeon
         /// Property that returns true when the bullet can pass through more enemies
         /// Bullets despawn when they collide with any wall
         /// </summary>
-        public bool Active
+        public override bool Active
         {
             get 
             {

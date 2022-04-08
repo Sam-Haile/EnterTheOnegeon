@@ -55,7 +55,7 @@ namespace EnterTheOnegeon
             get { return maxH; }
         }
 
-        public bool Active
+        public override bool Active
         {
             get { return hp > 0; }
         }

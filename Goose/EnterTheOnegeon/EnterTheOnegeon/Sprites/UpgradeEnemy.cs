@@ -29,12 +29,14 @@ namespace EnterTheOnegeon
             bStats = new BulletStats(0,0,0,0);
         }
 
+        /* Added Active to gameobject so this does nothing
         public override bool CollideWith(GameObject other)
         {
             if (!this.Active)
                 return false;
             return base.CollideWith(other);
-        }
+        }*/
+
         /// <summary>
         /// Overriding the Take damage to apply the OnDeath event
         /// </summary>

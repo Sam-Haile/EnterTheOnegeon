@@ -31,7 +31,7 @@ namespace EnterTheOnegeon
         public bool isRemoved = false;
 
 
-        
+        public abstract bool Active{ get; }
 
         /// <summary>
         /// "sprite" is the sprite drawn on screen representing GameObject, and "rectangle" is the 
@@ -121,6 +121,8 @@ namespace EnterTheOnegeon
         /// <returns>true if this object is collding with object "other"</returns>
         public virtual bool CollideWith(GameObject other)
         {
+            if (!this.Active || !other.Active)
+                return false;
             if (this.Position.Intersects(other.Position))
             {
                 return true;
