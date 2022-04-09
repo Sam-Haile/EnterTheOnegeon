@@ -19,10 +19,16 @@ namespace EnterTheOnegeon
 
         protected int maxHealth;
 
-        /*
-        //Invincibility frames
-        //Unused
-        protected double invTime;*/
+        /// <summary>
+        /// Speed of the enemy
+        /// </summary>
+        protected double speed;
+
+        /// <summary>
+        /// Contact damage of enemy
+        /// </summary>
+        protected int damage;
+
         /// <summary>
         /// Used for showing hit feedback, 
         /// </summary>
@@ -54,6 +60,8 @@ namespace EnterTheOnegeon
             this.health = health;
             maxHealth = health;
             velocity = new Vector2();
+            speed = 0;
+            damage = 0;
             //invTime = 0;
             hitTimer = 0;
         }
@@ -110,7 +118,7 @@ namespace EnterTheOnegeon
         public virtual void HitPlayer(Player player)
         {
             TakeDamage(1);
-            player.TakeDamage(1);
+            player.TakeDamage(damage);
         }
     }
 }
