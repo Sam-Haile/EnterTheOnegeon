@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 namespace EnterTheOnegeon
 {
+    public delegate void IncreaseScore(int score);
     /// <summary>
     /// The base class that every enemy type will inherit from
     /// </summary>
@@ -27,8 +28,12 @@ namespace EnterTheOnegeon
         /// </summary>
         protected double hitTimer;
         
-
+        /// <summary>
+        /// The velocity of the enemy
+        /// </summary>
         protected Vector2 velocity;
+
+        public event IncreaseScore OnDeathScore;
 
         /// <summary>
         /// returns enemies health
@@ -62,10 +67,18 @@ namespace EnterTheOnegeon
             }
         }
         
+        /// <summary>
+        /// Taking damage, but also the ondeathscore event activates when it dies
+        /// </summary>
         public virtual void TakeDamage(int damage)
         {
-            hitTimer = 0.5;
+            hitTimer = 0.3;
             health -= damage;
+            if (health <= 0)
+            {
+                if (OnDeathScore != null)
+                    OnDeathScore(100);
+            }
         }
 
         public virtual void Update(GameTime gameTime)
@@ -81,13 +94,16 @@ namespace EnterTheOnegeon
         /// </summary>
         public override void Draw(SpriteBatch sb)
         {
-            if(hitTimer > 0)
+            if(this.Active)
             {
-                sb.Draw(sprite, rectangle, Color.LightYellow);
-            }
-            else
-            {
-                base.Draw(sb);
+                if (hitTimer > 0)
+                {
+                    sb.Draw(sprite, rectangle, Color.Black);
+                }
+                else
+                {
+                    base.Draw(sb);
+                }
             }
         }
 

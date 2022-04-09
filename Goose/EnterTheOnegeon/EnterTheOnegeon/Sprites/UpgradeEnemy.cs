@@ -15,7 +15,7 @@ namespace EnterTheOnegeon
         private int hp;
         private BulletStats bStats;
 
-        public event OnDeathUpgrade OnDeath;
+        public event OnDeathUpgrade OnDeathUpgrade;
 
         /// <summary>
         /// Creates an inactive upgrade enemy
@@ -38,7 +38,8 @@ namespace EnterTheOnegeon
         }*/
 
         /// <summary>
-        /// Overriding the Take damage to apply the OnDeath event
+        /// Overriding the Take damage to apply the OnDeathUpgrade event
+        /// and also not applying OnDeathScore event
         /// </summary>
         public override void TakeDamage(int damage)
         {
@@ -47,8 +48,8 @@ namespace EnterTheOnegeon
                 health -= damage;
                 if (health <= 0)
                 {
-                    if (OnDeath != null)
-                        OnDeath(speed, hp, bStats);
+                    if (OnDeathUpgrade != null)
+                        OnDeathUpgrade(speed, hp, bStats);
                 }
             }
         }

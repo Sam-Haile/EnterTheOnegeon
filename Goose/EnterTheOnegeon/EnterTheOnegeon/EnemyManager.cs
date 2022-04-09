@@ -59,15 +59,14 @@ namespace EnterTheOnegeon
 
         //Have a separate list for each type of enemy
         private List<TestEnemy> testEnemyList;
-        private Texture2D testEnemyAsset;
+
+        private List<WalkEnemy> walkEnemyList;
+        private Texture2D GargoyleAsset;
         
-        private List<Enemy> enemyList;
 
         private List<UpgradeEnemy> upgradeEnemyList;
 
         private EManagerState currState;
-
-        private WalkEnemy walkerTest;
 
         /// <summary>
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
@@ -75,29 +74,34 @@ namespace EnterTheOnegeon
         public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite, Texture2D GargoyleSprite, Player player)
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
+
             currState = EManagerState.Waves;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
+            score = 0;
+
+            GargoyleAsset = GargoyleSprite;
+
             ShopTime = 20;
             timeToShop = ShopTime;
             timeToWave = 5;
             wavePoints = 5;
+
+
             testEnemyList = new List<TestEnemy>();
-            testEnemyAsset = GargoyleSprite;
-            /*for(int i = 0; i < 30; i++)
+            for(int i = 0; i < 0; i++)
             {
-                testEnemyList.Add(new TestEnemy(GargoyleSprite, new Rectangle(), 0));
-            }*/
-
-            enemyList = new List<Enemy>();
-            for(int i = 0; i < 30; i++)
-            {
-                enemyList.Add(new TestEnemy(GargoyleSprite, new Rectangle(), 0));
+                testEnemyList.Add(new TestEnemy(testSprite, new Rectangle(), 0));
             }
-            walkerTest = new WalkEnemy(testSprite, new Rectangle(300, 300, 300, 300), 4, 5);
 
-
+            //Making list of inactive walkers
+            walkEnemyList = new List<WalkEnemy>();
+            for (int i = 0; i < 50; i++) // Cap at 50
+            {
+                walkEnemyList.Add(new WalkEnemy(GargoyleSprite));
+                walkEnemyList[i].OnDeathScore += IncreaseScore;
+            }
 
             upgradeEnemyList = new List<UpgradeEnemy>();
             //fill with inactive ones
@@ -105,14 +109,32 @@ namespace EnterTheOnegeon
             for(int i = 0; i < 8; i++)
             {
                 upgradeEnemyList.Add(new UpgradeEnemy(GargoyleSprite, new Rectangle(0, 0, 150, 150)));
-                upgradeEnemyList[i].OnDeath += player.ApplyUpgrade;
+                upgradeEnemyList[i].OnDeathUpgrade += player.ApplyUpgrade;
             }
         }
 
+        private void IncreaseScore(int score)
+        {
+            this.score += score;
+        }
+
+        /// <summary>
+        /// Returns the total number of active enemies
+        /// </summary>
         public int TotalEnemyCount
         {
-            get { return testEnemyList.Count /*+ enemy2List.Count etc*/; }
+            get 
+            {
+                int total = 0;
+                foreach(WalkEnemy walke in walkEnemyList)
+                {
+                    if (walke.Active)
+                        total++;
+                }
+                return total; 
+            }
         }
+        #region Some Properties
         public int Score
         {
             get { return score; }
@@ -125,19 +147,65 @@ namespace EnterTheOnegeon
         {
             get { return upgradeEnemyList; }
         }
-        public List<TestEnemy> GetTestEnemies()
+        public List<TestEnemy> GetTestEnemies
         {
-            return testEnemyList;
+            get { return testEnemyList; }
         }
-        
+        public List<WalkEnemy> GetWalkEnemies
+        {
+            get { return walkEnemyList; }
+        }
+        #endregion
+
+        /// <summary>
+        /// TODO
+        /// Used for updating the waves
+        /// </summary>
+        public void UpdateWave()
+        {
+            if (timeToWave <= 0)
+            {
+                if (timer < 20)
+                    timeToWave = 5;
+                else if (timer < 40)
+                    timeToWave = 4;
+                else
+                    timeToWave = 3;
+                //Spawn the amount of enemies using the amount of wave points availible
+                int curWavePoints = wavePoints;
+                while (curWavePoints > 0)
+                {
+                    //when there is enough points it will do checks for spawning which type of enemy
+                    if (curWavePoints >= 3)
+                    {
+                        //10% chance to spawn wide dude
+                        //Change LATER for different enemy types
+                        if (rng.Next(10) == 0)
+                        {
+                            SpawnGargoyle();
+                            curWavePoints -= 3;
+                        }
+                        else
+                        {
+                            SpawnGargoyle();
+                            curWavePoints -= 1;
+                        }
+                    }
+                    else
+                    {
+                        SpawnGargoyle();
+                        curWavePoints -= 1;
+                    }
+                }
+                //Every wave gets harder
+                wavePoints += 1;
+            }
+        }
         /// <summary>
         /// Handles updating all the enemies and the spawning of them
         /// </summary>
         public void Update(GameTime gameTime, Player player)
         {
-            walkerTest.Update(player, gameTime);
-            if (walkerTest.CollideWith(player))
-                walkerTest.MoveAwayFrom(player);
             switch (currState)
             {
                 case EManagerState.Waves:
@@ -145,50 +213,12 @@ namespace EnterTheOnegeon
                     timeToWave -= gameTime.ElapsedGameTime.TotalSeconds;
                     timeToShop -= gameTime.ElapsedGameTime.TotalSeconds;
 
-                    //Every time a wave is spawned
-                    //Resets the countdown to next wave
-                    //Spawns an amount of enemies according to the amount of wave points availible
-                    //Might move this to a method of some sort
-                    //UpdateWave();
-                    if (timeToWave <= 0)
-                    {
-                        if (timer < 20)
-                            timeToWave = 5;
-                        else if (timer < 40)
-                            timeToWave = 4;
-                        else
-                            timeToWave = 3;
-                        //Spawn the amount of enemies using the amount of wave points availible
-                        int curWavePoints = wavePoints;
-                        while (curWavePoints > 0)
-                        {
-                            //when there is enough points it will do checks for spawning which type of enemy
-                            if (curWavePoints >= 3)
-                            {
-                                //10% chance to spawn wide dude
-                                //Change LATER for different enemy types
-                                if (rng.Next(10) == 0)
-                                {
-                                    SpawnGargoyle(RandPoint(true));
-                                    curWavePoints -= 3;
-                                }
-                                else
-                                {
-                                    SpawnTestEnemy(RandPoint(false));
-                                    curWavePoints -= 1;
-                                }
-                            }
-                            else
-                            {
-                                SpawnTestEnemy(RandPoint(false));
-                                curWavePoints -= 1;
-                            }
-                        }
-                        //Every wave gets harder
-                        wavePoints += 1;
-                    }
-
+                    //Spawn and update wave stuff 
+                    UpdateWave();
+                    //Update the enemies
                     UpdateTestEnemy(player, gameTime);
+                    UpdateWalkEnemies(player, gameTime);
+
                     //Transition the state and reset some variables
                     if (timeToShop < 0)
                     {
@@ -203,6 +233,7 @@ namespace EnterTheOnegeon
                 case EManagerState.WaveToShop:
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     UpdateTestEnemy(player, gameTime);
+                    UpdateWalkEnemies(player, gameTime);
                     
                     if(TotalEnemyCount == 0)
                     {
@@ -213,7 +244,7 @@ namespace EnterTheOnegeon
                     break;
                 case EManagerState.Shop:
                     //populating shop
-                    //only two right now
+                    //hardcoded
                     for(int i = 0; i < upgradeEnemyList.Count; i++)
                     {
                         if(!upgradeEnemyList[i].Active)
@@ -318,22 +349,24 @@ namespace EnterTheOnegeon
                         testEnemyList[i].MoveAwayFrom(testEnemyList[j]);
                 }
             }
-            //Removing the inactive enemies
-            for (int i = testEnemyList.Count - 1; i >= 0; i--)
+        }
+        private void UpdateWalkEnemies(Player player, GameTime gameTime)
+        {
+            for (int i = 0; i < walkEnemyList.Count; i++)
             {
-                if (!testEnemyList[i].Active)
+                walkEnemyList[i].Update(player, gameTime);
+                if (walkEnemyList[i].CollideWith(player))
+                    walkEnemyList[i].HitPlayer(player);
+                //Checking each enemy with each other
+                for (int j = i + 1; j < walkEnemyList.Count; j++)
                 {
-                    testEnemyList.RemoveAt(i);
-                    //Stuff that happens when an enemy dies
-                    score += 100;
+                    if (walkEnemyList[i].CollideWith(walkEnemyList[j]))
+                        walkEnemyList[i].MoveAwayFrom(walkEnemyList[j]);
                 }
-
             }
         }
-
         public void Draw(SpriteBatch sb, SpriteFont font)
         {
-            walkerTest.Draw(sb);
             switch(currState)
             {
                 case EManagerState.Waves:
@@ -341,10 +374,11 @@ namespace EnterTheOnegeon
                     {
                         en.Draw(sb);
                     }
-                    foreach (UpgradeEnemy upEn in upgradeEnemyList)
+                    foreach (WalkEnemy walke in walkEnemyList)
                     {
-                        upEn.Draw(sb, font);
+                        walke.Draw(sb);
                     }
+
                     //Time to next wave
                     sb.DrawString(
                         font,
@@ -366,6 +400,10 @@ namespace EnterTheOnegeon
                     foreach (TestEnemy en in testEnemyList)
                     {
                         en.Draw(sb);
+                    }
+                    foreach (WalkEnemy walke in walkEnemyList)
+                    {
+                        walke.Draw(sb);
                     }
                     //Some message to clear the enemies
                     sb.DrawString(
@@ -460,7 +498,92 @@ namespace EnterTheOnegeon
         {
             Draw(sb, font);
         }
+        //Spawns the type of enemy you want
+        private void SpawnEnemy(EnemyNames enemyType)
+        {
+            switch(enemyType)
+            {
+                case EnemyNames.Gargoyle:
+                    SpawnGargoyle();
 
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void SpawnGargoyle()
+        {
+            WalkEnemy spawn = GetWalkEnemy();
+            if (spawn != null)
+            {
+                spawn.Reset(new Rectangle(0,0, GargoyleSize, GargoyleSize), RandPoint(GargoyleSize, GargoyleSize), 2, 2);
+            }
+        }
+        /// <summary>
+        /// Helping method: gets the first inactive walk enemy
+        /// </summary>
+        private WalkEnemy GetWalkEnemy()
+        {
+            for (int i = 0; i < walkEnemyList.Count; i++)
+            {
+                if (walkEnemyList[i].Active == false)
+                    return walkEnemyList[i];
+            }
+            return null;
+        }
+        /// <summary>
+        /// Gets a random point from offscreen
+        /// </summary>
+        /// <param name="width">Width of the enemy</param>
+        /// <param name="height">Height of the enemy</param>
+        /// <returns></returns>
+        public Point RandPoint(int width, int height)
+        {
+            int randX;
+            int randY;
+            // 50/50 to decide to change x or y offscreen
+            //enemy comes in from left or right
+            if (rng.Next(2) > 0)
+            {
+                randY = rng.Next(0 - GargoyleAsset.Height, graphics.GraphicsDevice.Viewport.Height);
+                randX = rng.Next(2);
+                // enemy spawns on the east wall
+                if (randX == 1)
+                {
+                        // dungeon.png width (scaled x2) - east wall thickness (scaled 2x) - enemy width
+                        randX = 1920 * 2 - 96 * 2 - width;
+                }
+                // enemy spawns west of viewport
+                else
+                {
+                    // west wall width (scaled x2)
+                    randX = 0 + 96 * 2;
+                }
+            }
+            //enemy comes in from top or bottom
+            else
+            {
+                randX = rng.Next(0 - GargoyleAsset.Width, graphics.GraphicsDevice.Viewport.Width);
+                randY = rng.Next(2);
+                // enemy spawns south of viewport 
+                if (randY == 1)
+                {
+                        // dungeon.png height (scaled x2) - south wall thickness (scaled 2x) - enemy height
+                        randY = 1088 * 2 - 32 * 2 - height;
+                }
+                // enemy spawns north of viewport
+                else
+                {
+                    // north wall height (scaled x2)
+                    randY = 0 + 96 * 2;
+                }
+            }
+            return new Point(randX, randY);
+        }
+
+
+        #region Prob delete this, was replaced code
+        /* Replaced
         /// <summary>
         /// Spawns a test enemy at the given point
         /// </summary>
@@ -469,25 +592,26 @@ namespace EnterTheOnegeon
         {
             testEnemyList.Add(
                     new TestEnemy(
-                        testEnemyAsset,
+                        GargoyleAsset,
                         new Rectangle(
                             pos,
                             new Point(50, 50)),
                         1)); //Health
         }
-
+        
         //Delete this later
         public void SpawnGargoyle(Point pos)
         {
             testEnemyList.Add(
                     new TestEnemy(
-                        testEnemyAsset,
+                        GargoyleAsset,
                         new Rectangle(
                             pos,
                             new Point(150, 100)),
                         3)); //Health
-        }
+        }*/
 
+        /* Replaced
         // Gets a random point off screen
         public Point RandPoint(bool isGargoyle)
         {
@@ -497,7 +621,7 @@ namespace EnterTheOnegeon
             //enemy comes in from left or right
             if (rng.Next(2) > 0)
             {
-                randY = rng.Next(0 - testEnemyAsset.Height, graphics.GraphicsDevice.Viewport.Height);
+                randY = rng.Next(0 - GargoyleAsset.Height, graphics.GraphicsDevice.Viewport.Height);
                 randX = rng.Next(2);
                 // enemy spawns on the east wall
                 if (randX == 1)
@@ -523,7 +647,7 @@ namespace EnterTheOnegeon
             //enemy comes in from top or bottom
             else
             {
-                randX = rng.Next(0 - testEnemyAsset.Width, graphics.GraphicsDevice.Viewport.Width);
+                randX = rng.Next(0 - GargoyleAsset.Width, graphics.GraphicsDevice.Viewport.Width);
                 randY = rng.Next(2);
                 // enemy spawns south of viewport 
                 if (randY == 1)
@@ -548,5 +672,7 @@ namespace EnterTheOnegeon
             }
             return new Point(randX, randY);
         }
+        */
+        #endregion
     }
 }

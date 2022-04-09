@@ -67,9 +67,13 @@ namespace EnterTheOnegeon
            
         }
 
-        public void Reset(int hp, int speed)
+        public void Reset(Rectangle rect, Point spawnPos, int hp, int speed)
         {
-            this.speed = 3;
+            hitTimer = 0;
+            rectangle = rect;
+            actualX = spawnPos.X;
+            actualY = spawnPos.Y;
+            this.speed = speed;
             health = hp;
             maxHealth = hp;
         }
