@@ -85,6 +85,7 @@ namespace EnterTheOnegeon
         Texture2D enemyAsset;
         EnemyManager enemyManager;
 
+
         // text/font fields
         SpriteFont fipps;
         SpriteFont titleFont;
@@ -156,7 +157,7 @@ namespace EnterTheOnegeon
             bulletManager = new BulletManager(bulletAsset);
 
             // loading enemy and initializing a list
-            testerAsset = Content.Load<Texture2D>("badguy");
+            testerAsset = Content.Load<Texture2D>("SanicGuy");
             enemyAsset = Content.Load<Texture2D>("Enemy");
             enemyManager = new EnemyManager(_graphics, testerAsset, enemyAsset, player);
 

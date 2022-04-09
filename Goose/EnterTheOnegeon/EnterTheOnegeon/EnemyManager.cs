@@ -62,6 +62,8 @@ namespace EnterTheOnegeon
 
         private List<WalkEnemy> walkEnemyList;
         private Texture2D GargoyleAsset;
+
+        private Texture2D sanicAsset;
         
 
         private List<UpgradeEnemy> upgradeEnemyList;
@@ -82,6 +84,7 @@ namespace EnterTheOnegeon
             score = 0;
 
             GargoyleAsset = GargoyleSprite;
+            sanicAsset = testSprite;
 
             ShopTime = 20;
             timeToShop = ShopTime;
@@ -99,7 +102,7 @@ namespace EnterTheOnegeon
             walkEnemyList = new List<WalkEnemy>();
             for (int i = 0; i < 50; i++) // Cap at 50
             {
-                walkEnemyList.Add(new WalkEnemy(GargoyleSprite));
+                walkEnemyList.Add(new WalkEnemy(testSprite));
                 walkEnemyList[i].OnDeathScore += IncreaseScore;
             }
 
