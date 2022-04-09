@@ -127,18 +127,22 @@ namespace EnterTheOnegeon
             if (rectangle.Y < 0 + 96 * 2) // North
             {
                 rectangle.Y = 96 * 2;
+                actualY = 96 * 2;
             }
             else if (rectangle.Y > 2176 - 32 * 2 - 64) // South
             {
                 rectangle.Y = 2176 - 32 * 2 - 64;
+                actualY = 2176 - 32 * 2 - 64;
             }
             if (rectangle.X < 0 + 96 * 2) // West
             {
                 rectangle.X = 96 * 2;
+                actualX = 96 * 2;
             }
             else if (rectangle.X > 3840 - 96 * 2 - 32) // East
             {
                 rectangle.X = 3840 - 96 * 2 - 32;
+                actualX = 3840 - 96 * 2 - 32;
             }
         }
 
@@ -166,11 +170,13 @@ namespace EnterTheOnegeon
         /// <summary>
         /// Adds the stats in the param to the player's stats
         /// </summary>
+        /// <param name="spd">Speed</param>
+        /// <param name="hp">Max hp up</param>
         /// <param name="bs">Bullet's stats</param>
         public void ApplyUpgrade(int spd, int hp, BulletStats bs)
         {
             this.hp += hp;
-            //maxH += hp;
+            maxH += hp;
             speed += spd;
             bStats += bs;
         }

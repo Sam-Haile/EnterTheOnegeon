@@ -53,8 +53,8 @@ namespace EnterTheOnegeon
         {
             this.sprite = sprite;
             this.rectangle = rectangle;
-            actualX = X + rectangle.Width;
-            actualY = Y + rectangle.Height;
+            actualX = X + rectangle.Width/2;
+            actualY = Y + rectangle.Height/2;
         }
 
 
@@ -124,6 +124,17 @@ namespace EnterTheOnegeon
         public virtual void Draw(SpriteBatch sb)
         {
             sb.Draw(sprite, rectangle, Color.White);
+        }
+
+        //TODO Replace most of the movement controls and stuff to move actualX and actualY around
+        // Then only call update rectangle pos at the end of every update method
+        /// <summary>
+        /// Updates the rectangle x and y to the actual X and Y with the offset to the corner
+        /// </summary>
+        protected virtual void UpdateRectanglePos()
+        {
+            rectangle.X = (int)Math.Round(actualX - rectangle.Width / 2);
+            rectangle.Y = (int)Math.Round(actualY - rectangle.Height / 2);
         }
 
         /// <summary>

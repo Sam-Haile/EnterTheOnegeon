@@ -58,14 +58,19 @@ namespace EnterTheOnegeon
                 actualY += velocity.Y;
 
                 //Need to adjust rectangle 
-                rectangle.X = (int)(Math.Round(actualX) - rectangle.Width/2);
-                rectangle.Y = (int)(Math.Round(actualY) - rectangle.Height/2);
+                base.UpdateRectanglePos();
+
                 //Also update the hitTime
                 base.Update(gameTime);
             }
            
         }
 
+        /// <summary>
+        /// Spawns the enemy at the given center point
+        /// </summary>
+        /// <param name="spawnPos"></param>
+        /// <param name="enemyStats"></param>
         public void Reset(Point spawnPos, EnemyStats enemyStats)
         {
             hitTimer = 0;

@@ -11,7 +11,8 @@ namespace EnterTheOnegeon
     {
         Waves,
         Shop,
-        WaveToShop
+        WaveToShop//,
+        //Boss
     }
     /// <summary> All the different enemies </summary>
     public enum EnemyNames
@@ -601,7 +602,7 @@ namespace EnterTheOnegeon
                     randY = 0 + 96 * 2;
                 }
             }
-            return new Point(randX, randY);
+            return new Point(randX + width/2, randY + height/2);
         }
 
 

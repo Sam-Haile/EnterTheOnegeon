@@ -80,7 +80,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public virtual void TakeDamage(int damage)
         {
-            hitTimer = 0.3;
+            hitTimer = 0.1;
             health -= damage;
             if (health <= 0)
             {
