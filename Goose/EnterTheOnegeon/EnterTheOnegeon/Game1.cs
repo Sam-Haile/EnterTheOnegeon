@@ -159,7 +159,7 @@ namespace EnterTheOnegeon
             // loading enemy and initializing a list
             testerAsset = Content.Load<Texture2D>("SanicGuy");
             enemyAsset = Content.Load<Texture2D>("Enemy");
-            enemyManager = new EnemyManager(_graphics, testerAsset, enemyAsset, player);
+            enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset);
 
             // load font
             fipps = Content.Load<SpriteFont>("fipps15");
@@ -218,8 +218,11 @@ namespace EnterTheOnegeon
                 case GameState.Title:
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(1904, 1536, 32, 64));
+                    // TODO Make Reset methods for the managers instead of calling the constructor
+                    //bulletManager.Reset();
+                    //enemyManager.Reset();
                     bulletManager = new BulletManager(bulletAsset);
-                    enemyManager = new EnemyManager(_graphics, testerAsset, enemyAsset, player);
+                    enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset);
                     totalGameTime = 0;
                     tempTime = 0;
 

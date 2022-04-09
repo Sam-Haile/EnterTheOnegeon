@@ -73,7 +73,8 @@ namespace EnterTheOnegeon
         /// <summary>
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
         /// </summary>
-        public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite, Texture2D GargoyleSprite, Player player)
+        public EnemyManager(GraphicsDeviceManager graphics, Player player, BulletManager bManager, 
+            Texture2D testSprite, Texture2D GargoyleSprite)
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
 
@@ -92,20 +93,19 @@ namespace EnterTheOnegeon
             wavePoints = 5;
 
 
+            //Fill every list with inactive ones
             testEnemyList = new List<TestEnemy>();
             for(int i = 0; i < 0; i++)
             {
                 testEnemyList.Add(new TestEnemy(testSprite, new Rectangle(), 0));
             }
-
             //Making list of inactive walkers
             walkEnemyList = new List<WalkEnemy>();
             for (int i = 0; i < 50; i++) // Cap at 50
             {
-                walkEnemyList.Add(new WalkEnemy(testSprite));
+                walkEnemyList.Add(new WalkEnemy(GargoyleSprite));
                 walkEnemyList[i].OnDeathScore += IncreaseScore;
             }
-
             upgradeEnemyList = new List<UpgradeEnemy>();
             //fill with inactive ones
             //two for now
@@ -161,7 +161,7 @@ namespace EnterTheOnegeon
         #endregion
 
         /// <summary>
-        /// TODO
+        /// TODO Change difficulty scaling and stuff
         /// Used for updating the waves
         /// </summary>
         public void UpdateWave()
@@ -185,7 +185,7 @@ namespace EnterTheOnegeon
                         //Change LATER for different enemy types
                         if (rng.Next(10) == 0)
                         {
-                            SpawnGargoyle();
+                            SpawnEnemy(EnemyNames.Gargoyle);
                             curWavePoints -= 3;
                         }
                         else
@@ -508,7 +508,6 @@ namespace EnterTheOnegeon
             {
                 case EnemyNames.Gargoyle:
                     SpawnGargoyle();
-
                     break;
                 default:
                     break;
@@ -519,7 +518,7 @@ namespace EnterTheOnegeon
             WalkEnemy spawn = GetWalkEnemy();
             if (spawn != null)
             {
-                spawn.Reset(new Rectangle(0,0, GargoyleSize, GargoyleSize), RandPoint(GargoyleSize, GargoyleSize), 2, 2);
+                spawn.Reset(new Rectangle(0,0, GargoyleSize, GargoyleSize), RandPoint(GargoyleSize, GargoyleSize), 1, 2);
             }
         }
         /// <summary>

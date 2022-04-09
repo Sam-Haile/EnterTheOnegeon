@@ -77,5 +77,17 @@ namespace EnterTheOnegeon
             health = hp;
             maxHealth = hp;
         }
+
+        public void Reset(Texture2D sprite, Rectangle rect, Point spawnPos, int hp, int speed)
+        {
+            this.sprite = sprite;
+            hitTimer = 0;
+            rectangle = rect;
+            actualX = spawnPos.X;
+            actualY = spawnPos.Y;
+            this.speed = speed;
+            health = hp;
+            maxHealth = hp;
+        }
     }
 }

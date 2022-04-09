@@ -10,7 +10,7 @@ namespace EnterTheOnegeon
     {
         /// <summary> Things that were alreay hit by the bullet </summary>
         private List<GameObject> hitObjects;
-        /// <summary> coordinates of a point 1000 pixels in the direction of the mouse cursor </summary>
+        /// <summary> The bullet's velocity, but normalized </summary>
         private Vector2 trajectory;
 
         /// <summary> seconds taken to travel from player to trajectory</summary>
@@ -89,6 +89,9 @@ namespace EnterTheOnegeon
                 rectangle.Y = (int)(spawnY + (trajectory.Y * 1000 * timer / speed));
                 */
                 int arbConst = 100;
+                actualX = (float)(spawnX + (trajectory.X * arbConst * timer * speed));
+                actualY = (float)(spawnY + (trajectory.Y * arbConst * timer * speed));
+
                 rectangle.X = (int)(spawnX + (trajectory.X * arbConst * timer * speed));
                 rectangle.Y = (int)(spawnY + (trajectory.Y * arbConst * timer * speed));
             }
@@ -134,6 +137,8 @@ namespace EnterTheOnegeon
             rectangle = new Rectangle(spaX-bStats.Size/2, spaY- bStats.Size/2, bStats.Size, bStats.Size);
             spawnX = spaX - bStats.Size / 2;
             spawnY = spaY - bStats.Size / 2;
+            actualX = spaX;
+            actualY = spaY;
             trajectory = VectorToPosition(posToMove);
             trajectory.Normalize();
             timer = 0;
