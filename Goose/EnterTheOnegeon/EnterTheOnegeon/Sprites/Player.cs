@@ -105,18 +105,22 @@ namespace EnterTheOnegeon
             if (kState.IsKeyDown(Keys.W))
             {
                 rectangle.Y -= speed;
+                actualY -= speed;
             }
             if (kState.IsKeyDown(Keys.A))
             {
                 rectangle.X -= speed;
+                actualX -= speed;
             }
             if (kState.IsKeyDown(Keys.S))
             {
                 rectangle.Y += speed;
+                actualY += speed;
             }
             if (kState.IsKeyDown(Keys.D))
             {
                 rectangle.X += speed;
+                actualX += speed;
             }
 
             // Keeps player inside of the map

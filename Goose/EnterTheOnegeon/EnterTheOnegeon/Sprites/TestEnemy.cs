@@ -16,8 +16,6 @@ namespace EnterTheOnegeon
         {
             speed = 2;
             playerPos = new Vector2();
-            posX = rectangle.X;
-            posY = rectangle.Y;
         }
 
         /* Does the same as gameobject's collidewith
@@ -40,7 +38,7 @@ namespace EnterTheOnegeon
         public void Move()
         {
             // Moves to center of player, not upper left
-            Vector2 direction = this.VectorToPosition(new Vector2(playerPos.X + 16, playerPos.Y +32));
+            Vector2 direction = this.VectorToPosition(playerPos);
             
             if(direction.Length() > 0)
             {
@@ -68,5 +66,11 @@ namespace EnterTheOnegeon
             }
         }
 
+        public void Reset(int hp)
+        {
+            speed = 3;
+            health = hp;
+            maxHealth = hp;
+        }
     }
 }

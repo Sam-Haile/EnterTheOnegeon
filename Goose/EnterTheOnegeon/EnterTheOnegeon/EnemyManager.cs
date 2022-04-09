@@ -18,8 +18,11 @@ namespace EnterTheOnegeon
     {
         Gargoyle,
         BigGargoyle,
+        FastGargoyle,
         Other
     }
+    //USE THIS FOR SpawnEnemy(EnemyNames enemyType)
+
     /// <summary>
     /// This class handles all the enemies
     /// Also has the score and timer
@@ -31,7 +34,10 @@ namespace EnterTheOnegeon
         #region Enemy size constants
         //Gargoyles are square
         private const int GargoyleSize = 50;
+        private const int BigGargoyleWidth = 150;
+        private const int BigGargoyleHeight = 100;
         #endregion
+
         /// <summary>
         /// The exit box for shop
         /// </summary>
@@ -54,15 +60,19 @@ namespace EnterTheOnegeon
         //Have a separate list for each type of enemy
         private List<TestEnemy> testEnemyList;
         private Texture2D testEnemyAsset;
-        //private List<Enemy2> enemy2List;
+        
+        private List<Enemy> enemyList;
+
         private List<UpgradeEnemy> upgradeEnemyList;
 
         private EManagerState currState;
 
+        private WalkEnemy walkerTest;
+
         /// <summary>
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
         /// </summary>
-        public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite, Player player)
+        public EnemyManager(GraphicsDeviceManager graphics, Texture2D testSprite, Texture2D GargoyleSprite, Player player)
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
             currState = EManagerState.Waves;
@@ -74,18 +84,27 @@ namespace EnterTheOnegeon
             timeToWave = 5;
             wavePoints = 5;
             testEnemyList = new List<TestEnemy>();
-            testEnemyAsset = testSprite;
+            testEnemyAsset = GargoyleSprite;
             /*for(int i = 0; i < 30; i++)
             {
-                testEnemyList.Add(new TestEnemy(testSprite, new Rectangle(), 0));
+                testEnemyList.Add(new TestEnemy(GargoyleSprite, new Rectangle(), 0));
             }*/
+
+            enemyList = new List<Enemy>();
+            for(int i = 0; i < 30; i++)
+            {
+                enemyList.Add(new TestEnemy(GargoyleSprite, new Rectangle(), 0));
+            }
+            walkerTest = new WalkEnemy(testSprite, new Rectangle(300, 300, 300, 300), 4, 5);
+
+
 
             upgradeEnemyList = new List<UpgradeEnemy>();
             //fill with inactive ones
             //two for now
             for(int i = 0; i < 8; i++)
             {
-                upgradeEnemyList.Add(new UpgradeEnemy(testSprite, new Rectangle(0, 0, 150, 150)));
+                upgradeEnemyList.Add(new UpgradeEnemy(GargoyleSprite, new Rectangle(0, 0, 150, 150)));
                 upgradeEnemyList[i].OnDeath += player.ApplyUpgrade;
             }
         }
@@ -116,6 +135,9 @@ namespace EnterTheOnegeon
         /// </summary>
         public void Update(GameTime gameTime, Player player)
         {
+            walkerTest.Update(player, gameTime);
+            if (walkerTest.CollideWith(player))
+                walkerTest.MoveAwayFrom(player);
             switch (currState)
             {
                 case EManagerState.Waves:
@@ -311,6 +333,7 @@ namespace EnterTheOnegeon
 
         public void Draw(SpriteBatch sb, SpriteFont font)
         {
+            walkerTest.Draw(sb);
             switch(currState)
             {
                 case EManagerState.Waves:

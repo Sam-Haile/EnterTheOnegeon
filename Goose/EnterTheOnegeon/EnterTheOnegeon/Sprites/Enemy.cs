@@ -18,21 +18,17 @@ namespace EnterTheOnegeon
 
         protected int maxHealth;
 
+        /*
         //Invincibility frames
         //Unused
-        protected double invTime;
-        protected double invTimer;
-
+        protected double invTime;*/
         /// <summary>
-        /// Actual X value of the enemy
+        /// Used for showing hit feedback, 
         /// </summary>
-        protected float posX;
+        protected double hitTimer;
+        
 
-        /// <summary>
-        /// Actual Y value of the enemy
-        /// </summary>
-        protected float posY;
-
+        protected Vector2 velocity;
 
         /// <summary>
         /// returns enemies health
@@ -52,8 +48,9 @@ namespace EnterTheOnegeon
         {
             this.health = health;
             maxHealth = health;
-            invTime = 0;
-            invTimer = 0;
+            velocity = new Vector2();
+            //invTime = 0;
+            hitTimer = 0;
         }
 
 
@@ -64,22 +61,33 @@ namespace EnterTheOnegeon
                 return health > 0;
             }
         }
-
+        
         public virtual void TakeDamage(int damage)
         {
-            if(invTimer <= 0)
+            hitTimer = 0.5;
+            health -= damage;
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            if (hitTimer > 0)
             {
-                health -= damage;
+                hitTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
-        public void Update(GameTime gameTime)
+
+        /// <summary>
+        /// Overriding draw to make it have a different color when hit
+        /// </summary>
+        public override void Draw(SpriteBatch sb)
         {
-            if(this.Active)
+            if(hitTimer > 0)
             {
-                if (invTimer > 0)
-                {
-                    invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
-                }
+                sb.Draw(sprite, rectangle, Color.LightYellow);
+            }
+            else
+            {
+                base.Draw(sb);
             }
         }
 

@@ -25,10 +25,20 @@ namespace EnterTheOnegeon
         /// </summary>
         protected Rectangle rectangle;
 
+        /*
         /// <summary>
         /// checks if player is dead or bullet should be removed
         /// </summary>
         public bool isRemoved = false;
+        */
+        /// <summary>
+        /// Center x position but a float
+        /// </summary>
+        protected float actualX;
+        /// <summary>
+        /// Center y position but a float
+        /// </summary>
+        protected float actualY;
 
 
         public abstract bool Active{ get; }
@@ -43,6 +53,8 @@ namespace EnterTheOnegeon
         {
             this.sprite = sprite;
             this.rectangle = rectangle;
+            actualX = X + rectangle.Width;
+            actualY = Y + rectangle.Height;
         }
 
 
@@ -94,12 +106,14 @@ namespace EnterTheOnegeon
             get { return rectangle; }
         }
 
-        //
+        /// <summary>
+        /// Return the center, using actualX and actualY
+        /// </summary>
         public Vector2 PositionV
         {
             get
             {
-                return new Vector2(this.CenterX, this.CenterY);
+                return new Vector2(actualX, actualY);
             }
         }
 
@@ -165,25 +179,33 @@ namespace EnterTheOnegeon
             if(this.CenterX > other.CenterX)
             {
                 rectangle.X += moveBack;
+                actualX += moveBack;
                 other.rectangle.X += -moveBack;
+                other.actualX += -moveBack;
             }
             //On the left side
             if (this.CenterX < other.CenterX)
             {
                 rectangle.X += -moveBack;
+                actualX += -moveBack;
                 other.rectangle.X += moveBack;
+                other.actualX += moveBack;
             }
             //Under it
             if (this.CenterY > other.CenterY)
             {
                 rectangle.Y += moveBack;
+                actualY += moveBack;
                 other.rectangle.Y += -moveBack;
+                other.actualY += -moveBack;
             }
             //Above it
             if (this.CenterY > other.CenterY)
             {
                 rectangle.Y += -moveBack;
+                actualY += -moveBack;
                 other.rectangle.Y += moveBack;
+                other.actualY += moveBack;
             }
         }
     }
