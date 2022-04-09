@@ -15,14 +15,14 @@ namespace EnterTheOnegeon
         //Boss
     }
     /// <summary> All the different enemies </summary>
-    public enum EnemyNames
+    public enum EnemyTypes
     {
         Gargoyle,
         BigGargoyle,
         FastGuy,
         Other
     }
-    //USE THIS FOR SpawnEnemy(EnemyNames enemyType)
+    //USE THIS FOR SpawnEnemy(EnemyTypes enemyType)
 
     /// <summary>
     /// This class handles all the enemies
@@ -184,18 +184,18 @@ namespace EnterTheOnegeon
                         //Change LATER for different enemy types
                         if (rng.Next(5) == 0)
                         {
-                            SpawnEnemy(EnemyNames.BigGargoyle);
+                            SpawnEnemy(EnemyTypes.BigGargoyle);
                             curWavePoints -= 3;
                         }
                         else
                         {
-                            SpawnEnemy(EnemyNames.FastGuy);
+                            SpawnEnemy(EnemyTypes.FastGuy);
                             curWavePoints -= 2;
                         }
                     }
                     else
                     {
-                        SpawnEnemy(EnemyNames.Gargoyle);
+                        SpawnEnemy(EnemyTypes.Gargoyle);
                         curWavePoints -= 1;
                     }
                 }
@@ -501,17 +501,17 @@ namespace EnterTheOnegeon
             Draw(sb, font);
         }
         //Spawns the type of enemy you want
-        private void SpawnEnemy(EnemyNames enemyType)
+        private void SpawnEnemy(EnemyTypes enemyType)
         {
             switch(enemyType)
             {
-                case EnemyNames.Gargoyle:
+                case EnemyTypes.Gargoyle:
                     SpawnGargoyle();
                     break;
-                case EnemyNames.BigGargoyle:
+                case EnemyTypes.BigGargoyle:
                     SpawnBigGargoyle();
                     break;
-                case EnemyNames.FastGuy:
+                case EnemyTypes.FastGuy:
                     SpawnFastGuy();
                     break;
                 default:
