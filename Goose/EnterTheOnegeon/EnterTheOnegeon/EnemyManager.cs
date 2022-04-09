@@ -18,7 +18,7 @@ namespace EnterTheOnegeon
     {
         Gargoyle,
         BigGargoyle,
-        FastGargoyle,
+        FastGuy,
         Other
     }
     //USE THIS FOR SpawnEnemy(EnemyNames enemyType)
@@ -29,13 +29,11 @@ namespace EnterTheOnegeon
     /// </summary>
     class EnemyManager
     {
-        //MODIFY THE SIZE OF ENEMIES HERE
-        //USE THOSE SIZES EVERYWHERE
-        #region Enemy size constants
-        //Gargoyles are square
-        private const int GargoyleSize = 50;
-        private const int BigGargoyleWidth = 150;
-        private const int BigGargoyleHeight = 100;
+        //EnemyStats constructor takes width, height, health, speed(can be a double), (contact)damage
+        #region Enemy stat constants
+        private EnemyStats GargoyleStats = new EnemyStats(50, 50, 1, 3, 1);
+        private EnemyStats BigGargoyleStats = new EnemyStats(150, 150, 5, 2, 2);
+        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 15, 0);
         #endregion
 
         /// <summary>
@@ -164,7 +162,7 @@ namespace EnterTheOnegeon
         /// TODO Change difficulty scaling and stuff
         /// Used for updating the waves
         /// </summary>
-        public void UpdateWave()
+        public void UpdateWaveStuff()
         {
             if (timeToWave <= 0)
             {
@@ -181,22 +179,22 @@ namespace EnterTheOnegeon
                     //when there is enough points it will do checks for spawning which type of enemy
                     if (curWavePoints >= 3)
                     {
-                        //10% chance to spawn wide dude
+                        
                         //Change LATER for different enemy types
-                        if (rng.Next(10) == 0)
+                        if (rng.Next(5) == 0)
                         {
-                            SpawnEnemy(EnemyNames.Gargoyle);
+                            SpawnEnemy(EnemyNames.BigGargoyle);
                             curWavePoints -= 3;
                         }
                         else
                         {
-                            SpawnGargoyle();
-                            curWavePoints -= 1;
+                            SpawnEnemy(EnemyNames.FastGuy);
+                            curWavePoints -= 2;
                         }
                     }
                     else
                     {
-                        SpawnGargoyle();
+                        SpawnEnemy(EnemyNames.Gargoyle);
                         curWavePoints -= 1;
                     }
                 }
@@ -217,7 +215,7 @@ namespace EnterTheOnegeon
                     timeToShop -= gameTime.ElapsedGameTime.TotalSeconds;
 
                     //Spawn and update wave stuff 
-                    UpdateWave();
+                    UpdateWaveStuff();
                     //Update the enemies
                     UpdateTestEnemy(player, gameTime);
                     UpdateWalkEnemies(player, gameTime);
@@ -509,6 +507,12 @@ namespace EnterTheOnegeon
                 case EnemyNames.Gargoyle:
                     SpawnGargoyle();
                     break;
+                case EnemyNames.BigGargoyle:
+                    SpawnBigGargoyle();
+                    break;
+                case EnemyNames.FastGuy:
+                    SpawnFastGuy();
+                    break;
                 default:
                     break;
             }
@@ -518,7 +522,24 @@ namespace EnterTheOnegeon
             WalkEnemy spawn = GetWalkEnemy();
             if (spawn != null)
             {
-                spawn.Reset(new Rectangle(0,0, GargoyleSize, GargoyleSize), RandPoint(GargoyleSize, GargoyleSize), 1, 2);
+                spawn.Reset(GargoyleAsset, RandPoint(GargoyleStats.Width, GargoyleStats.Height), GargoyleStats);
+            }
+        }
+        private void SpawnBigGargoyle()
+        {
+            WalkEnemy spawn = GetWalkEnemy();
+            if (spawn != null)
+            {
+                spawn.Reset(GargoyleAsset, RandPoint(BigGargoyleStats.Width, BigGargoyleStats.Height), BigGargoyleStats);
+            }
+        }
+
+        private void SpawnFastGuy()
+        {
+            WalkEnemy spawn = GetWalkEnemy();
+            if (spawn != null)
+            {
+                spawn.Reset(sanicAsset, RandPoint(FastGuyStats.Width, FastGuyStats.Height), FastGuyStats);
             }
         }
         /// <summary>

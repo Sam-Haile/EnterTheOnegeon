@@ -167,10 +167,10 @@ namespace EnterTheOnegeon
         /// Adds the stats in the param to the player's stats
         /// </summary>
         /// <param name="bs">Bullet's stats</param>
-        public void ApplyUpgrade(int hp, int spd, BulletStats bs)
+        public void ApplyUpgrade(int spd, int hp, BulletStats bs)
         {
             this.hp += hp;
-            maxH += hp;
+            //maxH += hp;
             speed += spd;
             bStats += bs;
         }

@@ -12,7 +12,6 @@ namespace EnterTheOnegeon
     /// </summary>
     class WalkEnemy : Enemy
     {
-        private int speed;
         private Vector2 playerPos;
 
         /// <summary>
@@ -42,8 +41,8 @@ namespace EnterTheOnegeon
             {
                 velocity.Normalize();
             }
-            velocity.X *= speed;
-            velocity.Y *= speed;
+            velocity.X *= (float)speed;
+            velocity.Y *= (float)speed;
         }
 
         /// <summary>
@@ -67,27 +66,23 @@ namespace EnterTheOnegeon
            
         }
 
-        public void Reset(Rectangle rect, Point spawnPos, int hp, int speed)
+        public void Reset(Point spawnPos, EnemyStats enemyStats)
         {
             hitTimer = 0;
-            rectangle = rect;
+            rectangle.Width = enemyStats.Width;
+            rectangle.Height = enemyStats.Height;
             actualX = spawnPos.X;
             actualY = spawnPos.Y;
-            this.speed = speed;
-            health = hp;
-            maxHealth = hp;
+            speed = enemyStats.Speed;
+            health = enemyStats.Health;
+            maxHealth = enemyStats.Health;
+            damage = enemyStats.Damage;
         }
-
-        public void Reset(Texture2D sprite, Rectangle rect, Point spawnPos, int hp, int speed)
+        //Also changes the sprite
+        public void Reset(Texture2D sprite, Point spawnPos, EnemyStats enemyStats)
         {
+            this.Reset(spawnPos, enemyStats);
             this.sprite = sprite;
-            hitTimer = 0;
-            rectangle = rect;
-            actualX = spawnPos.X;
-            actualY = spawnPos.Y;
-            this.speed = speed;
-            health = hp;
-            maxHealth = hp;
         }
     }
 }

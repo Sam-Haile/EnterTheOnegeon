@@ -11,7 +11,7 @@ namespace EnterTheOnegeon
     class UpgradeEnemy : Enemy
     {
         //Stats of upgrades
-        private int speed;
+        private new int speed;
         private int hp;
         private BulletStats bStats;
 
@@ -71,7 +71,7 @@ namespace EnterTheOnegeon
         /// Resets(spawns) an upgrade enemy
         /// </summary>
         /// <param name="health">Actual health of it</param>
-        /// <param name="hp">Hp up points</param>
+        /// <param name="hp">Max hp up points</param>
         /// <param name="spd">Spd up point</param>
         /// <param name="bStats">Bullet stats points</param>
         public void Reset(int x, int y, int health, int hp, int spd, BulletStats bStats)
