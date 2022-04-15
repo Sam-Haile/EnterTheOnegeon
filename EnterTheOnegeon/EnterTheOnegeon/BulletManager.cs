@@ -87,14 +87,14 @@ namespace EnterTheOnegeon
             foreach (Bullet b in pBullets)
             {
                 b.Update(gameTime);
-                foreach (TestEnemy en in eManager.GetTestEnemies)
+                /*foreach (TestEnemy en in eManager.GetTestEnemies)
                 {
                     if (b.CollideWith(en))
                     {
                         b.HitEnemy(en);
                         player.BulletCount++;
                     }
-                }
+                }*/
                 foreach(WalkEnemy walke in eManager.GetWalkEnemies)
                 {
                     if(b.CollideWith(walke))

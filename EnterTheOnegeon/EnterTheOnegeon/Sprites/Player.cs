@@ -183,7 +183,7 @@ namespace EnterTheOnegeon
 
         public void Parry(GameObject other)
         {
-            // if player is colliding with any TestEnemy
+            // if player is colliding with any enemy
             // foreach ()
             {
                 //if (CollideWith(b))

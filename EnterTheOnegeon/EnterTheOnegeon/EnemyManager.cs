@@ -41,6 +41,7 @@ namespace EnterTheOnegeon
         /// The exit box for shop
         /// </summary>
         private Rectangle exitBox;
+
         //fields
         private Random rng;
         private GraphicsDeviceManager graphics;
@@ -57,15 +58,12 @@ namespace EnterTheOnegeon
         protected Camera camera = new Camera();
 
         //Have a separate list for each type of enemy
-        private List<TestEnemy> testEnemyList;
-
+        //private List<TestEnemy> testEnemyList;
         private List<WalkEnemy> walkEnemyList;
-        private Texture2D GargoyleAsset;
-
-        private Texture2D sanicAsset;
-        
-
         private List<UpgradeEnemy> upgradeEnemyList;
+
+        private Texture2D GargoyleAsset;
+        private Texture2D sanicAsset;
 
         private EManagerState currState;
 
@@ -93,11 +91,11 @@ namespace EnterTheOnegeon
 
 
             //Fill every list with inactive ones
-            testEnemyList = new List<TestEnemy>();
+            /*testEnemyList = new List<TestEnemy>();
             for(int i = 0; i < 0; i++)
             {
                 testEnemyList.Add(new TestEnemy(testSprite, new Rectangle(), 0));
-            }
+            }*/
             //Making list of inactive walkers
             walkEnemyList = new List<WalkEnemy>();
             for (int i = 0; i < 50; i++) // Cap at 50
@@ -107,7 +105,7 @@ namespace EnterTheOnegeon
             }
             upgradeEnemyList = new List<UpgradeEnemy>();
             //fill with inactive ones
-            //two for now
+            //eight in total
             for(int i = 0; i < 8; i++)
             {
                 upgradeEnemyList.Add(new UpgradeEnemy(GargoyleSprite, new Rectangle(0, 0, 150, 150)));
@@ -149,10 +147,10 @@ namespace EnterTheOnegeon
         {
             get { return upgradeEnemyList; }
         }
-        public List<TestEnemy> GetTestEnemies
+        /*public List<TestEnemy> GetTestEnemies
         {
             get { return testEnemyList; }
-        }
+        }*/
         public List<WalkEnemy> GetWalkEnemies
         {
             get { return walkEnemyList; }
@@ -203,6 +201,7 @@ namespace EnterTheOnegeon
                 wavePoints += 1;
             }
         }
+
         /// <summary>
         /// Handles updating all the enemies and the spawning of them
         /// </summary>
@@ -210,31 +209,35 @@ namespace EnterTheOnegeon
         {
             switch (currState)
             {
+                #region Wave state
+                // Enemies waves spawn until timeToShop < 0 
                 case EManagerState.Waves:
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     timeToWave -= gameTime.ElapsedGameTime.TotalSeconds;
                     timeToShop -= gameTime.ElapsedGameTime.TotalSeconds;
 
-                    //Spawn and update wave stuff 
+                    // Spawn and update wave stuff 
                     UpdateWaveStuff();
-                    //Update the enemies
-                    UpdateTestEnemy(player, gameTime);
+
+                    // Update the enemies
+                    // UpdateTestEnemy(player, gameTime);
                     UpdateWalkEnemies(player, gameTime);
 
-                    //Transition the state and reset some variables
+                    // Transition the state and reset some variables
                     if (timeToShop < 0)
                     {
-                        //Will be used as time to consectively stand on a box to left the shop
+                        // Will be used as time to consectively stand on a box to left the shop
                         timeToShop = 0;
                         timeToWave = 5;
                         currState = EManagerState.WaveToShop;
                     }
                     break;
-                //Transition from wave to shop
-                //Wait for all enemies to die
+                #endregion
+                #region Wave to shop state
+                // When all enemies die, state ends and shop opens 
                 case EManagerState.WaveToShop:
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
-                    UpdateTestEnemy(player, gameTime);
+                    // UpdateTestEnemy(player, gameTime);
                     UpdateWalkEnemies(player, gameTime);
                     
                     if(TotalEnemyCount == 0)
@@ -244,77 +247,77 @@ namespace EnterTheOnegeon
                         currState = EManagerState.Shop;
                     }
                     break;
+                #endregion
+                #region Shop state
+                // Ends when player stands on exit box for 3 seconds
                 case EManagerState.Shop:
-                    //populating shop
-                    //hardcoded
+                    // Populating shop
+                    // Hardcoded
                     for(int i = 0; i < upgradeEnemyList.Count; i++)
                     {
                         if(!upgradeEnemyList[i].Active)
                         {
-                            //Planning to have one for each stat
-                            //Upgrades hp
-                            if(i == 0)
+                            switch (i)
                             {
-                                //position, cost, hp up, spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2- 300, 2176 / 2- 300, 5, 1, 0, new BulletStats(0, 0, 0, 0));
-                            }
-                            //Upgrades spd
-                            else if (i == 1)
-                            {
-                                //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2 - 100, 2176 / 2 - 300, 5, 0, 1, new BulletStats(0, 0, 0, 0));
-                            }
-                            //Upgrades bullet size
-                            else if (i == 2)
-                            {
-                                //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2 - 800, 2176 / 2 + 300, 5, 0, 0, new BulletStats(10, 0, 0, 0));
-                            }
-                            //Upgrades bullet spd
-                            else if (i == 3)
-                            {
-                                //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2 - 600, 2176 / 2 + 300, 5, 0, 0, new BulletStats(0, 1, 0, 0));
-                            }
-                            //Upgrades bullet pierce
-                            else if (i == 4)
-                            {
-                                //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2 - 400, 2176 / 2 + 300, 
-                                    10*player.BStats.Passes //COST INCREASES BY THE STAT
-                                    , 0, 0, new BulletStats(0, 0, 1, 0));
-                            }
-                            //Upgrades bullet damage
-                            else if (i == 5)
-                            {
-                                //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2 - 200, 2176 / 2 + 300,
-                                    10 * player.BStats.Damage
-                                    , 0, 0, new BulletStats(0, 0, 0, 1));
-                            }
-
-                            else if(i == 100)
-                            {
-                                //position, cost, hp up,spd up, bullet
-                                upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2 +300, 7, 0, 0, new BulletStats(20, 7, 2, 0));
+                                //Planning to have one for each stat
+                                //Hp
+                                case 0:
+                                    upgradeEnemyList[i].Reset(3840 / 2 - 300, 2176 / 2 - 300, 5, 1, 0, new BulletStats(0, 0, 0, 0));
+                                    break;
+                                //Speed
+                                case 1:
+                                    upgradeEnemyList[i].Reset(3840 / 2 - 100, 2176 / 2 - 300, 5, 0, 1, new BulletStats(0, 0, 0, 0));
+                                    break;
+                                //Bullet size
+                                case 2:
+                                    upgradeEnemyList[i].Reset(3840 / 2 - 800, 2176 / 2 + 300, 5, 0, 0, new BulletStats(10, 0, 0, 0));
+                                    break;
+                                //Bullet speed
+                                case 3:
+                                    upgradeEnemyList[i].Reset(3840 / 2 - 600, 2176 / 2 + 300, 5, 0, 0, new BulletStats(0, 1, 0, 0));
+                                    break;
+                                //Bullet pierce
+                                case 4:
+                                    upgradeEnemyList[i].Reset(3840 / 2 - 400, 2176 / 2 + 300,
+                                        10 * player.BStats.Passes //COST INCREASES BY THE STAT
+                                        , 0, 0, new BulletStats(0, 0, 1, 0));
+                                    break;
+                                //Bullet damage
+                                case 5:
+                                    upgradeEnemyList[i].Reset(3840 / 2 - 200, 2176 / 2 + 300,
+                                        10 * player.BStats.Damage
+                                        , 0, 0, new BulletStats(0, 0, 0, 1));
+                                    break;
+                                case 100:
+                                    upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2 + 300, 7, 0, 0, new BulletStats(20, 7, 2, 0));
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                     }
-                    //going to reuse variable as timer variable
-                    //Controlling the exit box logic here
-                    //When the player was and is in the box
+
+                    // Reuses timeToShop variable as exit shop timer variable
+                    // Controlling the exit box logic here
+                    // When the player is in the box, counts to 3
                     if (player.Position.Intersects(exitBox))
                     {
                         timeToShop += gameTime.ElapsedGameTime.TotalSeconds;
                     }
+                    // Player is off exit box and was previously on it for <3s
+                    // (Sets timer to 0 again)
                     else if (timeToShop > 0)
                     {
                         timeToShop -= gameTime.ElapsedGameTime.TotalSeconds;
                     }
+                    // Safety to keep timer at or above 0
                     else if(timeToShop < 0)
+                    {
                         timeToShop = 0;
-                    //When the player has stood long enough on it
-                    //Transition out of shop
+                    }
+
+                    // When the player has stood in exit box for 3s
+                    // Transition out of shop
                     if (timeToShop > 3)
                     {
                         //actually reseting now
@@ -327,6 +330,7 @@ namespace EnterTheOnegeon
                         currState = EManagerState.Waves;
                     }
                     break;
+                    #endregion
             }
             camera.Follow(player);
         }
@@ -335,7 +339,7 @@ namespace EnterTheOnegeon
         /// <summary>
         /// Updates all the TestEnemies
         /// </summary>
-        private void UpdateTestEnemy(Player player, GameTime gameTime)
+        /*private void UpdateTestEnemy(Player player, GameTime gameTime)
         {
             //Updating each enemy and checking the collision
             //As well as making sure they don't overlap
@@ -343,7 +347,9 @@ namespace EnterTheOnegeon
             {
                 testEnemyList[i].Update(player, gameTime);
                 if (testEnemyList[i].CollideWith(player))
+                {
                     testEnemyList[i].HitPlayer(player);
+                }
                 //Checking each enemy with each other
                 for (int j = i + 1; j < testEnemyList.Count; j++)
                 {
@@ -351,7 +357,8 @@ namespace EnterTheOnegeon
                         testEnemyList[i].MoveAwayFrom(testEnemyList[j]);
                 }
             }
-        }
+        }*/
+
         private void UpdateWalkEnemies(Player player, GameTime gameTime)
         {
             for (int i = 0; i < walkEnemyList.Count; i++)
@@ -372,10 +379,10 @@ namespace EnterTheOnegeon
             switch(currState)
             {
                 case EManagerState.Waves:
-                    foreach (TestEnemy en in testEnemyList)
+                    /*foreach (TestEnemy en in testEnemyList)
                     {
                         en.Draw(sb);
-                    }
+                    }*/
                     foreach (WalkEnemy walke in walkEnemyList)
                     {
                         walke.Draw(sb);
@@ -399,10 +406,10 @@ namespace EnterTheOnegeon
                         Color.White);
                     break;
                 case EManagerState.WaveToShop:
-                    foreach (TestEnemy en in testEnemyList)
+                    /*foreach (TestEnemy en in testEnemyList)
                     {
                         en.Draw(sb);
-                    }
+                    }*/
                     foreach (WalkEnemy walke in walkEnemyList)
                     {
                         walke.Draw(sb);
