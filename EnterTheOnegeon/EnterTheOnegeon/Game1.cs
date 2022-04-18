@@ -700,7 +700,7 @@ namespace EnterTheOnegeon
                        );
                     _spriteBatch2.DrawString(
                        fipps,
-                       "Penetration: " + player.BStats.Passes.ToString(),
+                       "Penetration: " + (player.BStats.Passes-1).ToString(),
                        new Vector2(20, 500),
                        Color.White
                        );
