@@ -101,6 +101,7 @@ namespace EnterTheOnegeon
         Texture2D coverArt;
         Texture2D scoreBoard;
         Texture2D pause;
+        Texture2D logo;
 
         // button fields
         Texture2D T_Button;
@@ -117,6 +118,19 @@ namespace EnterTheOnegeon
 
         // Text size for centering
         Vector2 textSize;
+
+
+
+        // Animation reqs
+        Vector2 logoPosition;
+        Texture2D background;
+        int numSpritesInSheet;
+        int widthOfSingleSprite;
+        int currentFrame;
+        double fps;
+        double secondsPerFrame;
+        double timeCounter;
+
 
         public Game1()
         {
@@ -147,10 +161,25 @@ namespace EnterTheOnegeon
             _prevKbState = _currentKbState;
 
             // initialize background texture
-            coverArt = Content.Load<Texture2D>("coverArt");
+            logo = Content.Load<Texture2D>("Enviornment/logoTitleSheet");
+            coverArt = Content.Load<Texture2D>("Enviornment/TitleScreen");
             dungeon = Content.Load<Texture2D>("dungeon");
             scoreBoard = Content.Load<Texture2D>("scoreBoard");
             pause = Content.Load<Texture2D>("Pause");
+
+
+            // Setting up animation stuff
+            #region Animation
+            numSpritesInSheet = 8;
+            widthOfSingleSprite = logo.Width / numSpritesInSheet;
+            logoPosition = new Vector2(320,-150);
+
+            currentFrame = 1;
+            fps = 10.0;
+            secondsPerFrame = 1.0f / fps;
+            timeCounter = 0;
+            #endregion
+
 
             // initialize player and its asset
             playerAsset = Content.Load<Texture2D>("Player/PlayerSpriteSheet");
@@ -174,19 +203,26 @@ namespace EnterTheOnegeon
             buttonOn = Content.Load<Texture2D>("buttonOn");
             buttonOff = Content.Load<Texture2D>("buttonOff");
 
+            #region Loading Buttons
             // load button texture and create all buttons
             T_Button = Content.Load<Texture2D>("T_Button");
             strtButt = new Button(
                 fipps,
                 T_Button,
                 "Start",
-                new Rectangle(30, screenHeight - 130, 150, 75),
+                new Rectangle((screenWidth / 2) -75 , screenHeight - 400, 150, 75),
+                Color.Gold);
+            helpButt = new Button(
+                fipps,
+                T_Button,
+                "Controls",
+                new Rectangle((screenWidth / 2) - 75,screenHeight - 275, 150, 75),
                 Color.Gold);
             quitButt = new Button(
                 fipps,
                 T_Button,
                 "Quit",
-                new Rectangle(screenWidth - 180, screenHeight - 130, 150, 75), Color.Gold);
+                new Rectangle(screenWidth / 2 -75, screenHeight - 150, 150, 75), Color.Gold);
             menuButt = new Button(
                 fipps,
                 T_Button,
@@ -199,15 +235,9 @@ namespace EnterTheOnegeon
                 "Debug",
                 new Rectangle(20 , 10, 50, 50),
                 Color.Gold);
-            helpButt = new Button(
-                fipps,
-                T_Button,
-                "Controls",
-                new Rectangle((screenWidth / 2) - 75,screenHeight - 130, 150, 75),
-                Color.Gold
-                );
             // modify "Debug" text location
             debugButt.textPos.X = 75;
+            #endregion
         }
 
         protected override void Update(GameTime gameTime)
@@ -222,6 +252,7 @@ namespace EnterTheOnegeon
             {
                 #region Title State
                 case GameState.Title:
+                    UpdateAnimation(gameTime);
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(1904, 1536, 32, 64));
                     // TODO Make Reset methods for the managers instead of calling the constructor
@@ -483,7 +514,7 @@ namespace EnterTheOnegeon
                             1920,
                             1080),
                         Color.White);
-
+                    DrawLogoAnimation();
                     strtButt.Draw(_spriteBatch2);
                     quitButt.Draw(_spriteBatch2);
                     debugButt.Draw(_spriteBatch2);
@@ -888,8 +919,44 @@ namespace EnterTheOnegeon
 
 
 
+        /// <summary>
+        /// Updates the animation time
+        /// </summary>
+        /// <param name="gameTime">Game time information</param>
+        private void UpdateAnimation(GameTime gameTime)
+        {
+            // Add to the time counter (need TOTALSECONDS here)
+            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
 
+            // Has enough time gone by to actually flip frames?
+            if (timeCounter >= secondsPerFrame)
+            {
+                // Update the frame and wrap
+                currentFrame++;
+                if (currentFrame >= 8) currentFrame = 7;
 
+                // Remove one "frame" worth of time
+                timeCounter -= secondsPerFrame;
+            }
+        }
+
+        /// <summary>
+        /// Draws mario with a walking animation
+        /// </summary>
+        /// <param name="flip">Should he be flipped horizontally?</param>
+        private void DrawLogoAnimation()
+        {
+            _spriteBatch2.Draw(
+                logo,
+                logoPosition,
+                new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, logo.Height),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1f,
+                SpriteEffects.None,
+                0.0f);
+        }
 
 
 
