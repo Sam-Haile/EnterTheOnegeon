@@ -34,7 +34,7 @@ namespace EnterTheOnegeon
         #region Enemy stat constants
         private EnemyStats GargoyleStats = new EnemyStats(50, 50, 1, 3, 1);
         private EnemyStats BigGargoyleStats = new EnemyStats(150, 150, 5, 2, 2);
-        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 15, 0);
+        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 7, 0);
         #endregion
 
         /// <summary>
