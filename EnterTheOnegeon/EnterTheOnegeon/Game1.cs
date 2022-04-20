@@ -122,8 +122,6 @@ namespace EnterTheOnegeon
 
 
         // Animation reqs
-        Vector2 logoPosition;
-        Texture2D background;
         int numSpritesInSheet;
         int widthOfSingleSprite;
         int currentFrame;
@@ -164,16 +162,12 @@ namespace EnterTheOnegeon
             logo = Content.Load<Texture2D>("Enviornment/logoTitleSheet");
             coverArt = Content.Load<Texture2D>("Enviornment/TitleScreen");
             dungeon = Content.Load<Texture2D>("dungeon");
-            scoreBoard = Content.Load<Texture2D>("scoreBoard");
+            scoreBoard = Content.Load<Texture2D>("Enviornment/scoreSpriteSheet");
             pause = Content.Load<Texture2D>("Pause");
 
 
             // Setting up animation stuff
-            #region Animation
-            numSpritesInSheet = 8;
-            widthOfSingleSprite = logo.Width / numSpritesInSheet;
-            logoPosition = new Vector2(320,-150);
-
+            #region Animation          
             currentFrame = 1;
             fps = 10.0;
             secondsPerFrame = 1.0f / fps;
@@ -372,10 +366,13 @@ namespace EnterTheOnegeon
                     {
                         gameState = GameState.Pause;
                     }
+                    currentFrame = 1;
                     break;
                 #endregion
                 #region Scoreboard State
                 case GameState.Score:
+                    UpdateAnimation(gameTime);
+
                     textSize = titleFont.MeasureString(enemyManager.Score.ToString());
 
                     // quit button pressed
@@ -514,7 +511,7 @@ namespace EnterTheOnegeon
                             1920,
                             1080),
                         Color.White);
-                    DrawLogoAnimation();
+                    DrawLogoAnimation(logo, 150);
                     strtButt.Draw(_spriteBatch2);
                     quitButt.Draw(_spriteBatch2);
                     debugButt.Draw(_spriteBatch2);
@@ -578,14 +575,15 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Scoreboard State
                 case GameState.Score:
+                    
                     _spriteBatch2.Draw(
-                        scoreBoard,
+                        coverArt,
                         new Rectangle(
                            0, 0,
                             screenWidth,
                             screenHeight),
                         Color.White);
-
+                    DrawLogoAnimation(scoreBoard, -250);
                     _spriteBatch2.DrawString(
                         titleFont,
                         enemyManager.Score.ToString(),
@@ -938,18 +936,22 @@ namespace EnterTheOnegeon
                 // Remove one "frame" worth of time
                 timeCounter -= secondsPerFrame;
             }
+
         }
 
         /// <summary>
         /// Draws mario with a walking animation
         /// </summary>
         /// <param name="flip">Should he be flipped horizontally?</param>
-        private void DrawLogoAnimation()
+        private void DrawLogoAnimation(Texture2D sprite, int height)
         {
+            numSpritesInSheet = 8;
+            widthOfSingleSprite = sprite.Width / numSpritesInSheet;
+
             _spriteBatch2.Draw(
-                logo,
-                logoPosition,
-                new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, logo.Height),
+                sprite,
+                new Vector2(screenWidth/2 - (sprite.Width/8)/2, -height),
+                new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, sprite.Height),
                 Color.White,
                 0.0f,
                 Vector2.Zero,

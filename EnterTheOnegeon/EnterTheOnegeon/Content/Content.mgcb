@@ -49,18 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:buttonOn.png
 
-#begin CoverArt.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:CoverArt.png
-
 #begin dungeon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -97,6 +85,18 @@
 /processorParam:TextureFormat=Color
 /build:Enviornment/logoTitleSheet.png
 
+#begin Enviornment/scoreSpriteSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enviornment/scoreSpriteSheet.png
+
 #begin Enviornment/TitleScreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -116,18 +116,6 @@
 /processorParam:TextureFormat=Compressed
 /build:fipps15.spritefont
 
-#begin gun.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:gun.png
-
 #begin Pause.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -139,18 +127,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Pause.png
-
-#begin player.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:player.png
 
 #begin Player/PlayerSpriteSheet.png
 /importer:TextureImporter
