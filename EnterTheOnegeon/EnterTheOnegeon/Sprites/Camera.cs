@@ -20,8 +20,8 @@ namespace EnterTheOnegeon
         {
             //center point of sprite
             var position = Matrix.CreateTranslation(
-              -target.Position.X - (target.Rectangle.Width),
-              -target.Position.Y - (target.Rectangle.Height),
+              -target.Position.X - (target.Rectangle.Width) / 6,
+              -target.Position.Y - (target.Rectangle.Height) / 4,
               0);
             // put sprite at center of the window
             var offset = Matrix.CreateTranslation(

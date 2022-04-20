@@ -4,6 +4,12 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
+/*******************************
+*    Title: SpriteSheet FSM
+*    Author: <author(s) names>
+*    Date: 4/19/22
+/*******************************
+
 /*
  * TO DO: 
  * > Add parry mechanic (bullet can be stationary for now)
@@ -73,7 +79,7 @@ namespace EnterTheOnegeon
         Random random = new Random();
 
         // player fields
-        Texture2D playerAsset;
+        public Texture2D playerAsset;
         Player player;
 
         // bullet fields
@@ -147,7 +153,7 @@ namespace EnterTheOnegeon
             pause = Content.Load<Texture2D>("Pause");
 
             // initialize player and its asset
-            playerAsset = Content.Load<Texture2D>("player");
+            playerAsset = Content.Load<Texture2D>("Player/PlayerSpriteSheet");
 
             // for now, i put the location of the sprite near the bottom of the screen
             player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
@@ -879,5 +885,15 @@ namespace EnterTheOnegeon
         }
         */
         #endregion
+
+
+
+
+
+
+
+
+
+
     }
 }

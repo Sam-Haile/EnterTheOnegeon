@@ -6,6 +6,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 namespace EnterTheOnegeon
 {
+    enum WalkState
+    {
+        FaceLeft,
+        WalkLeft,
+        FaceRight,
+        WalkRight,
+        FaceDown,
+        WalkDown,
+        FaceUp,
+        WalkUp
+    }
     /// <summary>
     /// The player controlled character. Dies when health < 1
     /// </summary>
@@ -13,6 +24,7 @@ namespace EnterTheOnegeon
     {
         private int speed;
         private int bulletCount;
+
         //temp hp
         private int hp;
         private int maxH;
@@ -23,6 +35,21 @@ namespace EnterTheOnegeon
 
         //The stats of the bullet the player will shoot
         private BulletStats bStats;
+
+        private int numSpritesInSheet;
+        private int widthOfSingleSprite;
+        private int heightOfSingleSprite;
+
+
+        // Animation reqs
+        int currentFrame;
+        double fps;
+        double secondsPerFrame;
+        double timeCounter;
+
+        // enum to hold the current state
+        private WalkState walkState;
+
 
         public Player(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {
@@ -36,6 +63,19 @@ namespace EnterTheOnegeon
 
             //Size, Speed, Num of Passes, Damage
             bStats = new BulletStats(10, 7, 1, 1);
+
+            numSpritesInSheet = 6;
+            widthOfSingleSprite = sprite.Width / numSpritesInSheet;
+            heightOfSingleSprite = sprite.Height / 4;
+
+
+            // Set up animation stuff
+            currentFrame = 1;
+            fps = 10.0;
+            secondsPerFrame = 1.0f / fps;
+            timeCounter = 0;
+
+
         }
 
         public int BulletCount
@@ -90,6 +130,7 @@ namespace EnterTheOnegeon
         {
             invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             Move(kState);
+            UpdateAnimation(gameTime);
             if (mState.RightButton == ButtonState.Pressed)
             {
                 //Parry();
@@ -101,27 +142,201 @@ namespace EnterTheOnegeon
         /// </summary>
         public void Move(KeyboardState kState)
         {
-            // speed at which player moves is subject to change
-            if (kState.IsKeyDown(Keys.W))
+            
+            switch (walkState)
             {
-                rectangle.Y -= speed;
-                actualY -= speed;
+
+                case WalkState.FaceLeft:
+
+                    if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.FaceRight;
+                    }
+                    else if (kState.IsKeyDown(Keys.A))
+                    {
+                        walkState = WalkState.WalkLeft;
+                    }
+                    else if (kState.IsKeyDown(Keys.S))
+                    {
+                        walkState = WalkState.FaceDown;
+                    }
+                    else if (kState.IsKeyDown(Keys.W))
+                    {
+                        walkState = WalkState.FaceUp;
+                    }
+
+                    break;
+
+                case WalkState.WalkLeft:
+
+                    if (kState.IsKeyDown(Keys.A))
+                    {
+                        rectangle.X -= speed;
+                        actualX -= speed;
+                    }
+                    else if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.FaceRight;
+                    }
+                    else if (kState.IsKeyUp(Keys.A))
+                    {
+                        walkState = WalkState.FaceLeft;
+                    }
+                    else if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.FaceDown;
+                    }
+                    else if (kState.IsKeyDown(Keys.W))
+                    {
+                        walkState = WalkState.FaceUp;
+                    }
+                    break;
+
+
+                case WalkState.FaceRight:
+
+                    if (kState.IsKeyDown(Keys.A))
+                    {
+                        walkState = WalkState.FaceLeft;
+                    }
+                    else if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.WalkRight;
+                    }
+
+                    else if (kState.IsKeyDown(Keys.S))
+                    {
+                        walkState = WalkState.FaceDown;
+                    }
+                    else if (kState.IsKeyDown(Keys.W))
+                    {
+                        walkState = WalkState.FaceUp;
+                    }
+                    break;
+
+                case WalkState.WalkRight:
+
+                    if (kState.IsKeyDown(Keys.D))
+                    {
+                        rectangle.X += speed;
+                        actualX += speed;
+                    }
+                    else if (kState.IsKeyDown(Keys.A))
+                    {
+                        walkState = WalkState.FaceLeft;
+                    }
+                    else if (kState.IsKeyUp(Keys.D))
+                    {
+                        walkState = WalkState.FaceRight;
+                    }
+
+                    else if (kState.IsKeyDown(Keys.S))
+                    {
+                        walkState = WalkState.FaceDown;
+                    }
+                    else if (kState.IsKeyDown(Keys.W))
+                    {
+                        walkState = WalkState.FaceUp;
+                    }
+                    break;
+
+                case WalkState.FaceDown:
+
+                    if (kState.IsKeyDown(Keys.S))
+                    {
+                        walkState = WalkState.WalkDown;
+                    }
+                    else if (kState.IsKeyDown(Keys.A))
+                    {
+                        walkState = WalkState.FaceLeft;
+                    }
+                    else if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.FaceRight;
+                    }
+                    else if (kState.IsKeyDown(Keys.W))
+                    {
+                        walkState = WalkState.FaceUp;
+                    }
+                    break;
+
+
+                case WalkState.WalkDown:
+
+                    if (kState.IsKeyDown(Keys.S))
+                    {
+                        rectangle.Y += speed;
+                        actualY += speed;
+                    }
+                    else if (kState.IsKeyUp(Keys.S))
+                    {
+                        walkState = WalkState.FaceDown;
+                    }
+                    else if (kState.IsKeyDown(Keys.A))
+                    {
+                        walkState = WalkState.FaceLeft;
+                    }
+                    else if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.FaceRight;
+                    }
+                    else if (kState.IsKeyDown(Keys.W))
+                    {
+                        walkState = WalkState.FaceUp;
+                    }
+                    break;
+
+                case WalkState.FaceUp:
+
+                    if (kState.IsKeyDown(Keys.W))
+                    {
+                        walkState = WalkState.WalkUp;
+                    }
+                    else if (kState.IsKeyDown(Keys.A))
+                    {
+                        walkState = WalkState.FaceLeft;
+                    }
+                    else if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.FaceRight;
+                    }
+                    else if (kState.IsKeyDown(Keys.S))
+                    {
+                        walkState = WalkState.FaceDown;
+                    }
+                    break;
+
+                case WalkState.WalkUp:
+
+                    if (kState.IsKeyDown(Keys.W))
+                    {
+                        rectangle.Y -= speed;
+                        actualY -= speed;
+                    }
+                    else if (kState.IsKeyDown(Keys.S))
+                    {
+                        walkState = WalkState.FaceDown;
+                    }
+                    else if (kState.IsKeyUp(Keys.W))
+                    {
+                        walkState = WalkState.FaceUp;
+                    }
+                    else if (kState.IsKeyDown(Keys.A))
+                    {
+                        walkState = WalkState.FaceLeft;
+                    }
+                    else if (kState.IsKeyDown(Keys.D))
+                    {
+                        walkState = WalkState.FaceRight;
+                    }
+                    break;
+
+
+                default:
+                    break;
             }
-            if (kState.IsKeyDown(Keys.A))
-            {
-                rectangle.X -= speed;
-                actualX -= speed;
-            }
-            if (kState.IsKeyDown(Keys.S))
-            {
-                rectangle.Y += speed;
-                actualY += speed;
-            }
-            if (kState.IsKeyDown(Keys.D))
-            {
-                rectangle.X += speed;
-                actualX += speed;
-            }
+
+
 
             // Keeps player inside of the map
             if (rectangle.Y < 0 + 96 * 2) // North
@@ -146,26 +361,183 @@ namespace EnterTheOnegeon
             }
         }
 
+
+
+        /// <summary>
+        /// Updates the animation time
+        /// </summary>
+        /// <param name="gameTime">Game time information</param>
+        private void UpdateAnimation(GameTime gameTime)
+        {
+            // Add to the time counter (need TOTALSECONDS here)
+            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Has enough time gone by to actually flip frames?
+            if (timeCounter >= secondsPerFrame)
+            {
+                // Update the frame and wrap
+                currentFrame++;
+                if (currentFrame >= 4) currentFrame = 1;
+
+                // Remove one "frame" worth of time
+                timeCounter -= secondsPerFrame;
+            }
+
+        }
+
+
         //Overriding draw to draw a hp bar as well
         public override void Draw(SpriteBatch sb)
         {
-            //When invincible he is red
-            if (invTimer > 0)
-            {
-                sb.Draw(sprite, rectangle, Color.Red);
-            }
-            //not invincible
-            else
-            {
-                sb.Draw(sprite, rectangle, Color.White);
-            }
-
             //Hp bar here
             Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
             tempTexture.SetData(new Color[] { Color.White });
-            sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, rectangle.Width, 5), Color.Red);
-            sb.Draw(tempTexture, new Rectangle(rectangle.X, rectangle.Y + rectangle.Height, (int)(rectangle.Width * ((double)hp / maxH)), 5), Color.LimeGreen);
+            sb.Draw(tempTexture, new Rectangle(rectangle.X + 6, rectangle.Y + rectangle.Height + 20, rectangle.Width + 10, 5), Color.Red);
+            sb.Draw(tempTexture, new Rectangle(rectangle.X + 6, rectangle.Y + rectangle.Height + 20, (int)(rectangle.Width * ((double)hp / maxH)) + 10 , 5), Color.LimeGreen);
+
+            // different states for walking
+            // player will turn red when hit
+            switch (walkState)
+            {
+                case WalkState.FaceLeft:
+                    if (walkState == WalkState.FaceLeft)
+                    {
+                        DrawPlayerStanding(82, sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerStanding(82, sb, Color.Red);
+                        }
+                    }
+                    break;
+                case WalkState.WalkLeft:
+                    if (walkState == WalkState.WalkLeft)
+                    {
+                        DrawPlayerWalking(82, sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerWalking(82, sb, Color.Red);
+                        }
+                    }
+                    break;
+               
+                case WalkState.FaceRight:
+                    if (walkState == WalkState.FaceRight)
+                    {
+                        DrawPlayerStanding(152, sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerStanding(152, sb, Color.Red);
+                        }
+                    }
+                    break;
+                
+                case WalkState.WalkRight:
+                    if (walkState == WalkState.WalkRight)
+                    {
+                        DrawPlayerWalking(152, sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerWalking(152, sb, Color.Red);
+                        }
+                    }
+                    break;
+
+                case WalkState.FaceUp:
+                    if (walkState == WalkState.FaceUp)
+                    {
+                        DrawPlayerStanding(218,sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerStanding(218, sb, Color.Red);
+                        }
+                    }
+                    break;
+                case WalkState.WalkUp:
+                    if (walkState == WalkState.WalkUp)
+                    {
+                        DrawPlayerWalking(218, sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerWalking(218, sb, Color.Red);
+                        }
+                    }
+                    break;
+
+                case WalkState.FaceDown:
+                    if (walkState == WalkState.FaceDown)
+                    {
+                        DrawPlayerStanding(10, sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerStanding(10, sb, Color.Red);
+
+                        }
+                    }
+                    break;
+                case WalkState.WalkDown:
+                    if (walkState == WalkState.WalkDown)
+                    {
+                        DrawPlayerWalking(10, sb, Color.White);
+
+                        if (invTimer > 0)
+                        {
+                            DrawPlayerWalking(10, sb, Color.Red);
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+           
         }
+
+        /// <summary>
+        /// Draws player with a walking animation
+        /// </summary>
+        /// <param name="flip">Should he be flipped horizontally?</param>
+        private void DrawPlayerWalking(int yOffset, SpriteBatch sb, Color color)
+        {
+            
+            sb.Draw(
+                sprite,
+                new Vector2(rectangle.X - 10 , rectangle.Y + 10),
+                new Rectangle(widthOfSingleSprite * currentFrame, yOffset, widthOfSingleSprite, heightOfSingleSprite - 5),
+                color,
+                0.0f,
+                Vector2.Zero,
+                1.2f,
+                SpriteEffects.None,
+                0.0f);
+        }
+
+
+        /// <summary>
+        /// Draws player standing still
+        /// </summary>
+        /// <param name="flip">Should he be flipped horizontally?</param>
+        private void DrawPlayerStanding(int yOffset, SpriteBatch sb, Color color)
+        {
+            sb.Draw(
+                sprite,
+                new Vector2(rectangle.X - 10, rectangle.Y + 10),
+                new Rectangle(0, yOffset, widthOfSingleSprite, heightOfSingleSprite - 5),
+                color,
+                0.0f,
+                Vector2.Zero,
+                1.2f,
+                SpriteEffects.None,
+                0.0f);
+        }
+
+
 
         /// <summary>
         /// Adds the stats in the param to the player's stats
