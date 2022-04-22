@@ -15,7 +15,7 @@ namespace EnterTheOnegeon
         FaceDown,
         WalkDown,
         FaceUp,
-        WalkUp
+        WalkUp,        
     }
     /// <summary>
     /// The player controlled character. Dies when health < 1
@@ -335,8 +335,6 @@ namespace EnterTheOnegeon
                         walkState = WalkState.FaceRight;
                     }
                     break;
-
-
                 default:
                     break;
             }

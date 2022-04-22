@@ -104,6 +104,10 @@ namespace EnterTheOnegeon
         Texture2D pause;
         Texture2D logo;
 
+        //ui fields
+        Texture2D uiBackground;
+        Texture2D uiCorner;
+
         // button fields
         Texture2D T_Button;
         Button strtButt;
@@ -165,6 +169,8 @@ namespace EnterTheOnegeon
             dungeon = Content.Load<Texture2D>("dungeon");
             scoreBoard = Content.Load<Texture2D>("Enviornment/scoreSpriteSheet");
             pause = Content.Load<Texture2D>("Pause");
+            uiBackground = Content.Load<Texture2D>("uiBackground");
+            uiCorner = Content.Load<Texture2D>("uiBackgroundCorner");
 
 
             // Setting up animation stuff
@@ -540,6 +546,15 @@ namespace EnterTheOnegeon
 
                     // Player
                     player.Draw(_spriteBatch);
+
+                    _spriteBatch.Draw(uiBackground, new Rectangle(
+                            66 - (int)camera.Transform.Translation.X,
+                            38 - (int)camera.Transform.Translation.Y,
+                            uiBackground.Width/2,
+                            uiBackground.Height/2),
+                        Color.White);
+
+
                     // Bullet UI
                     _spriteBatch.Draw(
                         bulletAsset,
@@ -557,7 +572,7 @@ namespace EnterTheOnegeon
                             140 - (int)camera.Transform.Translation.X,
                             65 - (int)camera.Transform.Translation.Y),
                         Color.White);
-
+                    
 
                     bulletManager.Draw(_spriteBatch);
 
@@ -853,6 +868,7 @@ namespace EnterTheOnegeon
                     }
                     if (gameState == GameState.Game)
                     {
+
                         // Player iframes
                         _spriteBatch.DrawString(
                             fipps,
