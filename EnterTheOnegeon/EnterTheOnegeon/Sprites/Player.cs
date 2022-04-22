@@ -50,6 +50,11 @@ namespace EnterTheOnegeon
         // enum to hold the current state
         private WalkState walkState;
 
+        public WalkState WalkState
+        {
+            get { return this.walkState; }
+        }
+
 
         public Player(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle)
         {

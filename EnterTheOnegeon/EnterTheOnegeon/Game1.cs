@@ -81,6 +81,7 @@ namespace EnterTheOnegeon
         // player fields
         public Texture2D playerAsset;
         Player player;
+        WalkState walkState;
 
         // bullet fields
         Texture2D bulletAsset;
@@ -180,6 +181,7 @@ namespace EnterTheOnegeon
 
             // for now, i put the location of the sprite near the bottom of the screen
             player = new Player(playerAsset, new Rectangle(400, 350, 32, 64));
+            walkState = player.WalkState;
 
             //Loading for bullets
             bulletAsset = Content.Load<Texture2D>("Bullet");
@@ -221,7 +223,7 @@ namespace EnterTheOnegeon
                 fipps,
                 T_Button,
                 "Menu",
-                new Rectangle(30, screenHeight - 130, 150, 75),
+                new Rectangle(screenWidth / 2 - 75, screenHeight - 275, 150, 75),
                 Color.Gold);
             debugButt = new Button(
                 fipps,
@@ -322,6 +324,7 @@ namespace EnterTheOnegeon
                 #region Game State
                 case GameState.Game:
 
+                    walkState = player.WalkState;
                     // Scoreboard when player dies
                     if (!player.Active)
                     {
@@ -558,18 +561,76 @@ namespace EnterTheOnegeon
 
                     bulletManager.Draw(_spriteBatch);
 
-                    //Drawing the line from player to cursor
-                    for (int i = 0; i < 20; i++)
+                    // draws bullet line in different areas depending on the direction the player is facing
+                    switch (walkState)
                     {
-                        _spriteBatch.Draw(
-                            dungeon,
+                        case WalkState.FaceLeft:
+                        case WalkState.WalkLeft:
+                             //Drawing the line from player to cursor
+                             for (int i = 0; i < 20; i++)
+                             {
+                                 _spriteBatch.Draw(
+                                     dungeon,
 
-                            new Rectangle(
-                                player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20),
-                                player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20),
-                                4,
-                                4),
-                            Color.Black);
+                                     new Rectangle(
+                                         player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 - 15),
+                                         player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 + 10),
+                                         4,
+                                         4),
+                                     Color.Black);
+                             }
+                            break;
+                        case WalkState.FaceRight:
+                        case WalkState.WalkRight:
+                            //Drawing the line from player to cursor
+                            for (int i = 0; i < 20; i++)
+                            {
+                                _spriteBatch.Draw(
+                                    dungeon,
+
+                                    new Rectangle(
+                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 + 35),
+                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 + 10),
+                                        4,
+                                        4),
+                                    Color.Black);
+                            }
+                            break;
+                        case WalkState.FaceDown:
+                        case WalkState.WalkDown:
+                            //Drawing the line from player to cursor
+                            for (int i = 0; i < 20; i++)
+                            {
+                                _spriteBatch.Draw(
+                                    dungeon,
+
+                                    new Rectangle(
+                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 + 10),
+                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 + 20),
+                                        4,
+                                        4),
+                                    Color.Black);
+                            }
+                            break;
+                            
+                        case WalkState.FaceUp:
+                        case WalkState.WalkUp:
+                            //Drawing the line from player to cursor
+                            for (int i = 0; i < 20; i++)
+                            {
+                                _spriteBatch.Draw(
+                                    dungeon,
+
+                                    new Rectangle(
+                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 + 8),
+                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 - 20),
+                                        4,
+                                        4),
+                                    Color.Black);
+                            }
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 #endregion
