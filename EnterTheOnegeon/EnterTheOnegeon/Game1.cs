@@ -104,6 +104,8 @@ namespace EnterTheOnegeon
         Texture2D pause;
         Texture2D logo;
 
+        Texture2D amgoose;
+
         // button fields
         Texture2D T_Button;
         Button strtButt;
@@ -166,6 +168,7 @@ namespace EnterTheOnegeon
             scoreBoard = Content.Load<Texture2D>("Enviornment/scoreSpriteSheet");
             pause = Content.Load<Texture2D>("Pause");
 
+            amgoose = Content.Load<Texture2D>("amgoose");
 
             // Setting up animation stuff
             #region Animation          
@@ -537,6 +540,9 @@ namespace EnterTheOnegeon
                     
                     // Enemy manager draws all enemies, score and time
                     enemyManager.Draw(_spriteBatch, fipps);
+
+                    for(int i=0;i<15;i++)
+                    _spriteBatch.Draw(amgoose, new Rectangle(-710,2410 - 250 * i, 250,250), Color.White);
 
                     // Player
                     player.Draw(_spriteBatch);
