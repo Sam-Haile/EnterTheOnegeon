@@ -48,13 +48,13 @@ namespace EnterTheOnegeon
             {
                   return passes > 0 &&
                     // North wall
-                    rectangle.Y > 0 + 96*2 &&
+                    rectangle.Center.Y > 0 + 96*2 &&
                     // West wall
-                    rectangle.X > 0 + 96*2 &&
+                    rectangle.Center.X > 0 + 96*2 &&
                     // East wall
-                    rectangle.Y < 2176 - 32*2 &&
+                    rectangle.Center.Y < 2176 - 32*2 &&
                     // South wall
-                    rectangle.X < 3840 - 96*2;
+                    rectangle.Center.X < 3840 - 96*2;
             }
         }
 
