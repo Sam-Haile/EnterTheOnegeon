@@ -64,6 +64,7 @@ namespace EnterTheOnegeon
 
         private Texture2D GargoyleAsset;
         private Texture2D sanicAsset;
+        private Texture2D UpgradeSheet;
 
         private EManagerState currState;
 
@@ -71,7 +72,7 @@ namespace EnterTheOnegeon
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
         /// </summary>
         public EnemyManager(GraphicsDeviceManager graphics, Player player, BulletManager bManager, 
-            Texture2D testSprite, Texture2D GargoyleSprite)
+            Texture2D testSprite, Texture2D GargoyleSprite, Texture2D upgradeSheet)
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
 
@@ -83,6 +84,7 @@ namespace EnterTheOnegeon
 
             GargoyleAsset = GargoyleSprite;
             sanicAsset = testSprite;
+            UpgradeSheet = upgradeSheet;
 
             ShopTime = 20;
             timeToShop = ShopTime;
@@ -108,7 +110,7 @@ namespace EnterTheOnegeon
             //eight in total
             for(int i = 0; i < 8; i++)
             {
-                upgradeEnemyList.Add(new UpgradeEnemy(GargoyleSprite, new Rectangle(0, 0, 150, 150)));
+                upgradeEnemyList.Add(new UpgradeEnemy(UpgradeSheet, new Rectangle(0, 0, 150, 150),rng));
                 upgradeEnemyList[i].OnDeathUpgrade += player.ApplyUpgrade;
             }
         }
@@ -251,6 +253,10 @@ namespace EnterTheOnegeon
                 #region Shop state
                 // Ends when player stands on exit box for 3 seconds
                 case EManagerState.Shop:
+                    foreach(UpgradeEnemy uEnemy in upgradeEnemyList)
+                    {
+                        uEnemy.UpdateAnimation(gameTime);
+                    }
                     // Populating shop
                     // Hardcoded
                     for(int i = 0; i < upgradeEnemyList.Count; i++)

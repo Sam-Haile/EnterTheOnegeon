@@ -90,6 +90,7 @@ namespace EnterTheOnegeon
         // enemy fields
         Texture2D testerAsset;
         Texture2D enemyAsset;
+        Texture2D upgradeSheet;
         EnemyManager enemyManager;
 
 
@@ -199,7 +200,8 @@ namespace EnterTheOnegeon
             // loading enemy and initializing a list
             testerAsset = Content.Load<Texture2D>("SanicGuy");
             enemyAsset = Content.Load<Texture2D>("Enemy");
-            enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset);
+            upgradeSheet = Content.Load<Texture2D>("UpgradeEnemy");
+            enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset, upgradeSheet);
 
             // load font
             fipps = Content.Load<SpriteFont>("fipps15");
@@ -264,7 +266,7 @@ namespace EnterTheOnegeon
                     //bulletManager.Reset();
                     //enemyManager.Reset();
                     bulletManager = new BulletManager(bulletAsset);
-                    enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset);
+                    enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset,upgradeSheet);
                     totalGameTime = 0;
                     tempTime = 0;
 

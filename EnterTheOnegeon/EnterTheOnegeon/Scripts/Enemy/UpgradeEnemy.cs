@@ -14,19 +14,33 @@ namespace EnterTheOnegeon
         private new int speed;
         private int hp;
         private BulletStats bStats;
-
+        private int widthOfSingleSprite;
+        private int heightOfSingleSprite;
         public event OnDeathUpgrade OnDeathUpgrade;
+        private Texture2D enemySS;
+        // Animation reqs
+        int currentFrame;
+        double fps;
+        double secondsPerFrame;
+        double timeCounter;
 
         /// <summary>
         /// Creates an inactive upgrade enemy
         /// </summary>
         /// <param name="sprite"></param>
         /// <param name="rectangle"></param>
-        public UpgradeEnemy(Texture2D sprite, Rectangle rectangle) : base(sprite, rectangle, 0)
+        public UpgradeEnemy(Texture2D sprite, Rectangle rectangle,Random rng) : base(sprite, rectangle, 0)
         {
+            enemySS = sprite;
             speed = 0;
             hp = 0;
             bStats = new BulletStats(0,0,0,0);
+            widthOfSingleSprite = 111;
+            heightOfSingleSprite = 120;
+            currentFrame = rng.Next(4);
+            fps = 3;
+            secondsPerFrame = 1.0f / fps;
+            timeCounter = 0;
         }
 
         /* Added Active to gameobject so this does nothing
@@ -58,12 +72,8 @@ namespace EnterTheOnegeon
         {
             if (this.Active)
             {
-                Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
-                tempTexture.SetData(new Color[] { Color.White });
-                sb.Draw(tempTexture, this.rectangle, Color.Aqua);
-                sb.DrawString(font, string.Format("x{0}", health), new Vector2(CenterX-20, CenterY-10), Color.Black);
-                sb.DrawString(font, bStats.ToString(), new Vector2(X, CenterY+ 20), Color.Black);
-                sb.DrawString(font, string.Format("{0}, {1}", hp, speed), new Vector2(X, CenterY - 40), Color.Black);
+                DrawUEnemy(sb, Color.White);
+                sb.DrawString(font, string.Format("x{0}", health), new Vector2(CenterX-20, CenterY-10), Color.Orange);
             }
         }
 
@@ -82,6 +92,42 @@ namespace EnterTheOnegeon
             this.hp = hp;
             speed = spd;
             this.bStats = bStats;
+        }
+
+        /// <summary>
+        /// Updates the animation time
+        /// </summary>
+        /// <param name="gameTime">Game time information</param>
+        public void UpdateAnimation(GameTime gameTime)
+        {
+            // Add to the time counter (need TOTALSECONDS here)
+            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Has enough time gone by to actually flip frames?
+            if (timeCounter >= secondsPerFrame)
+            {
+                // Update the frame and wrap
+                currentFrame++;
+                if (currentFrame >= 3) currentFrame = 0;
+
+                // Remove one "frame" worth of time
+                timeCounter -= secondsPerFrame;
+            }
+        }
+
+        private void DrawUEnemy( SpriteBatch sb, Color color)
+        {
+
+            sb.Draw(
+                enemySS,
+                new Vector2(this.rectangle.X,this.rectangle.Y),
+                new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                color,
+                0.0f,
+                Vector2.Zero,
+                1.2f,
+                SpriteEffects.None,
+                0.0f);
         }
     }
 }
