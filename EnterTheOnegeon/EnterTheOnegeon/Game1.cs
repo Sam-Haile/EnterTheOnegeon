@@ -573,8 +573,8 @@ namespace EnterTheOnegeon
                                      dungeon,
 
                                      new Rectangle(
-                                         player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 - 15),
-                                         player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 + 10),
+                                         player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX + 15) * i / 20 - 15),
+                                         player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY - 10) * i / 20 + 10),
                                          4,
                                          4),
                                      Color.Black);
@@ -589,8 +589,8 @@ namespace EnterTheOnegeon
                                     dungeon,
 
                                     new Rectangle(
-                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 + 35),
-                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 + 10),
+                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX - 35) * i / 20 + 35),
+                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY - 10) * i / 20 + 10),
                                         4,
                                         4),
                                     Color.Black);
@@ -605,8 +605,8 @@ namespace EnterTheOnegeon
                                     dungeon,
 
                                     new Rectangle(
-                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 + 10),
-                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 + 20),
+                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX - 10) * i / 20 + 10),
+                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY - 20) * i / 20 + 20),
                                         4,
                                         4),
                                     Color.Black);
@@ -622,8 +622,8 @@ namespace EnterTheOnegeon
                                     dungeon,
 
                                     new Rectangle(
-                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX) * i / 20 + 8),
-                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY) * i / 20 - 20),
+                                        player.CenterX + ((_mState.X - (int)camera.Transform.Translation.X - player.CenterX - 8) * i / 20 + 8),
+                                        player.CenterY + ((_mState.Y - (int)camera.Transform.Translation.Y - player.CenterY + 20) * i / 20 - 20),
                                         4,
                                         4),
                                     Color.Black);
