@@ -26,7 +26,7 @@ namespace EnterTheOnegeon
             //this.bulletAsset = bulletAsset;
             pBullets = new List<Bullet>();
             //Adding inactive bullets, this is the cap on the amount of bullets on screen
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 15; i++)
             {
                 pBullets.Add(new Bullet(bulletAsset, new Rectangle(0, 0, 1, 1)));
             }
@@ -48,8 +48,6 @@ namespace EnterTheOnegeon
         /// <param name="eManager"></param>
         public void Update(GameTime gameTime, MouseState mState, MouseState prevMState, Player player, EnemyManager eManager, WalkState walkState)
         {
-            camera.Follow(player);
-
             //Creating player bullets when clicking
             if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
             {
@@ -57,6 +55,7 @@ namespace EnterTheOnegeon
                 {
                     switch (walkState)
                     {
+                        case WalkState.WalkLeft:
                         case WalkState.FaceLeft:
                             GetPlayerBullet().Reset(
                                 player.CenterX - 15,
@@ -67,6 +66,7 @@ namespace EnterTheOnegeon
                                 player.BStats);
                             player.BulletCount--;
                             break;
+                        case WalkState.WalkRight:
                         case WalkState.FaceRight:
                             GetPlayerBullet().Reset(
                                 player.CenterX + 40,
@@ -77,6 +77,7 @@ namespace EnterTheOnegeon
                                 player.BStats);
                             player.BulletCount--;
                             break;
+                        case WalkState.WalkUp:
                         case WalkState.FaceUp:
                             GetPlayerBullet().Reset(
                                 player.CenterX + 12,
@@ -87,6 +88,7 @@ namespace EnterTheOnegeon
                                 player.BStats);
                             player.BulletCount--;
                             break;
+                        case WalkState.WalkDown:
                         case WalkState.FaceDown:
                             GetPlayerBullet().Reset(
                                 player.CenterX + 12,
@@ -99,6 +101,8 @@ namespace EnterTheOnegeon
                             break;
                     }
                 }
+
+                camera.Follow(player);
             }
             /*TEMPORARY SPAWNING OF ENEMY BULLETS AT THE TOP LEFT OF DUNGEON
              * 
