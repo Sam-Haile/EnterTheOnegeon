@@ -90,6 +90,7 @@ namespace EnterTheOnegeon
         // enemy fields
         Texture2D testerAsset;
         Texture2D enemyAsset;
+        Texture2D upgradeSheet;
         EnemyManager enemyManager;
 
 
@@ -103,6 +104,12 @@ namespace EnterTheOnegeon
         Texture2D scoreBoard;
         Texture2D pause;
         Texture2D logo;
+
+        //ui fields
+        Texture2D uiBackground;
+        Texture2D uiCorner;
+
+        Texture2D amgoose;
 
         // button fields
         Texture2D T_Button;
@@ -165,7 +172,10 @@ namespace EnterTheOnegeon
             dungeon = Content.Load<Texture2D>("dungeon");
             scoreBoard = Content.Load<Texture2D>("Enviornment/scoreSpriteSheet");
             pause = Content.Load<Texture2D>("Pause");
+            uiBackground = Content.Load<Texture2D>("uiBackground");
+            uiCorner = Content.Load<Texture2D>("uiBackgroundCorner");
 
+            amgoose = Content.Load<Texture2D>("amgoose");
 
             // Setting up animation stuff
             #region Animation          
@@ -190,7 +200,8 @@ namespace EnterTheOnegeon
             // loading enemy and initializing a list
             testerAsset = Content.Load<Texture2D>("SanicGuy");
             enemyAsset = Content.Load<Texture2D>("Enemy");
-            enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset);
+            upgradeSheet = Content.Load<Texture2D>("UpgradeEnemy");
+            enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset, upgradeSheet);
 
             // load font
             fipps = Content.Load<SpriteFont>("fipps15");
@@ -255,7 +266,7 @@ namespace EnterTheOnegeon
                     //bulletManager.Reset();
                     //enemyManager.Reset();
                     bulletManager = new BulletManager(bulletAsset);
-                    enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset);
+                    enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset,upgradeSheet);
                     totalGameTime = 0;
                     tempTime = 0;
 
@@ -538,8 +549,20 @@ namespace EnterTheOnegeon
                     // Enemy manager draws all enemies, score and time
                     enemyManager.Draw(_spriteBatch, fipps);
 
+                    for(int i=0;i<15;i++)
+                    _spriteBatch.Draw(amgoose, new Rectangle(-710,2410 - 250 * i, 250,250), Color.White);
+
                     // Player
                     player.Draw(_spriteBatch);
+
+                    _spriteBatch.Draw(uiBackground, new Rectangle(
+                            66 - (int)camera.Transform.Translation.X,
+                            38 - (int)camera.Transform.Translation.Y,
+                            uiBackground.Width/2,
+                            uiBackground.Height/2),
+                        Color.White);
+
+
                     // Bullet UI
                     _spriteBatch.Draw(
                         bulletAsset,
@@ -557,7 +580,7 @@ namespace EnterTheOnegeon
                             140 - (int)camera.Transform.Translation.X,
                             65 - (int)camera.Transform.Translation.Y),
                         Color.White);
-
+                    
 
                     bulletManager.Draw(_spriteBatch);
 
@@ -853,6 +876,7 @@ namespace EnterTheOnegeon
                     }
                     if (gameState == GameState.Game)
                     {
+
                         // Player iframes
                         _spriteBatch.DrawString(
                             fipps,
