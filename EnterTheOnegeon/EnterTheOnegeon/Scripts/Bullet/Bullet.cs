@@ -146,6 +146,29 @@ namespace EnterTheOnegeon
             passes = bStats.Passes;
             damage = bStats.Damage;
         }
-        
+
+        /// <summary>
+        /// Resets(Spawns) an inactive bullet
+        /// Use the center for where you spawn it
+        /// </summary>
+        /// <param name="spaX">Spawning x pos</param>
+        /// <param name="spaY">Spawning y pos</param>
+        /// <param name="bStats">The stats</param>
+        public void Reset(Texture2D textur, int spaX, int spaY, Vector2 traject, BulletStats bStats)
+        {
+            hitObjects.Clear();
+            sprite = textur;
+            rectangle = new Rectangle(spaX - bStats.Size / 2, spaY - bStats.Size / 2, bStats.Size, bStats.Size);
+            spawnX = spaX - bStats.Size / 2;
+            spawnY = spaY - bStats.Size / 2;
+            actualX = spaX;
+            actualY = spaY;
+            trajectory = traject;
+            trajectory.Normalize();
+            timer = 0;
+            speed = bStats.Speed;
+            passes = bStats.Passes;
+            damage = bStats.Damage;
+        }
     }
 }

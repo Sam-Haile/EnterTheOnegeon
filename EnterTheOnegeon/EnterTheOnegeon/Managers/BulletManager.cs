@@ -205,5 +205,13 @@ namespace EnterTheOnegeon
             }
             return null;
         }
+
+        public void SpawnEnemyBullet(int x, int y, Vector2 posi, BulletStats bStats)
+        {
+            if(GetEnemyBullet() != null)
+            {
+                GetEnemyBullet().Reset(x, y, posi, bStats);
+            }
+        }
     }
 }
