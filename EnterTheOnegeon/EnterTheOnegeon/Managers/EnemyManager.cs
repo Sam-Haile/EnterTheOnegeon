@@ -37,7 +37,7 @@ namespace EnterTheOnegeon
         private EnemyStats BigGargoyleStats = new EnemyStats(150, 150, 5, 2, 2);
         private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 5, 1);
         private EnemyStats ShooterStats = new EnemyStats(100, 100, 1, 3, 1);
-        public BulletStats ShooterBullets = new BulletStats(10, 5, 1, 1);
+        public BulletStats ShooterBullets = new BulletStats(20, 5, 1, 1);
         #endregion
 
         /// <summary>

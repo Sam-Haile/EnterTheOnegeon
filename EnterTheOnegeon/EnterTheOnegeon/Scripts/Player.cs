@@ -147,7 +147,27 @@ namespace EnterTheOnegeon
         /// </summary>
         public void Move(KeyboardState kState)
         {
-            
+            if (kState.IsKeyDown(Keys.A))
+            {
+                rectangle.X -= speed;
+                actualX -= speed;
+            }
+            if (kState.IsKeyDown(Keys.D))
+            {
+                rectangle.X += speed;
+                actualX += speed;
+            }
+            if (kState.IsKeyDown(Keys.S))
+            {
+                rectangle.Y += speed;
+                actualY += speed;
+            }
+            if (kState.IsKeyDown(Keys.W))
+            {
+                rectangle.Y -= speed;
+                actualY -= speed;
+            }
+
             switch (walkState)
             {
 
@@ -169,31 +189,27 @@ namespace EnterTheOnegeon
                     {
                         walkState = WalkState.FaceUp;
                     }
-
                     break;
-
                 case WalkState.WalkLeft:
 
-                    if (kState.IsKeyDown(Keys.A))
+                    if(kState.IsKeyDown(Keys.A))
                     {
-                        rectangle.X -= speed;
-                        actualX -= speed;
                     }
                     else if (kState.IsKeyDown(Keys.D))
                     {
-                        walkState = WalkState.FaceRight;
+                        walkState = WalkState.WalkRight;
                     }
                     else if (kState.IsKeyUp(Keys.A))
                     {
                         walkState = WalkState.FaceLeft;
                     }
-                    else if (kState.IsKeyDown(Keys.D))
+                    else if (kState.IsKeyDown(Keys.S))
                     {
-                        walkState = WalkState.FaceDown;
+                        walkState = WalkState.WalkDown;
                     }
                     else if (kState.IsKeyDown(Keys.W))
                     {
-                        walkState = WalkState.FaceUp;
+                        walkState = WalkState.WalkUp;
                     }
                     break;
 
@@ -223,8 +239,6 @@ namespace EnterTheOnegeon
 
                     if (kState.IsKeyDown(Keys.D))
                     {
-                        rectangle.X += speed;
-                        actualX += speed;
                     }
                     else if (kState.IsKeyDown(Keys.A))
                     {
@@ -234,7 +248,6 @@ namespace EnterTheOnegeon
                     {
                         walkState = WalkState.FaceRight;
                     }
-
                     else if (kState.IsKeyDown(Keys.S))
                     {
                         walkState = WalkState.FaceDown;
@@ -247,6 +260,7 @@ namespace EnterTheOnegeon
 
                 case WalkState.FaceDown:
 
+                    
                     if (kState.IsKeyDown(Keys.S))
                     {
                         walkState = WalkState.WalkDown;
@@ -267,13 +281,7 @@ namespace EnterTheOnegeon
 
 
                 case WalkState.WalkDown:
-
-                    if (kState.IsKeyDown(Keys.S))
-                    {
-                        rectangle.Y += speed;
-                        actualY += speed;
-                    }
-                    else if (kState.IsKeyUp(Keys.S))
+                    if (kState.IsKeyUp(Keys.S))
                     {
                         walkState = WalkState.FaceDown;
                     }
@@ -292,6 +300,7 @@ namespace EnterTheOnegeon
                     break;
 
                 case WalkState.FaceUp:
+
 
                     if (kState.IsKeyDown(Keys.W))
                     {
@@ -313,12 +322,8 @@ namespace EnterTheOnegeon
 
                 case WalkState.WalkUp:
 
-                    if (kState.IsKeyDown(Keys.W))
-                    {
-                        rectangle.Y -= speed;
-                        actualY -= speed;
-                    }
-                    else if (kState.IsKeyDown(Keys.S))
+                    
+                    if (kState.IsKeyDown(Keys.S))
                     {
                         walkState = WalkState.FaceDown;
                     }
