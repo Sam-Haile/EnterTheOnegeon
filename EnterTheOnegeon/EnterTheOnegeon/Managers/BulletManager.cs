@@ -170,6 +170,13 @@ namespace EnterTheOnegeon
                         b.HitEnemy(en);
                     }
                 }
+                foreach(ShootingEnemy sho in eManager.GetShooters())
+                {
+                    if(b.CollideWith(sho))
+                    {
+                        b.HitEnemy(sho);
+                    }
+                }
             }
             #endregion
             #region Updating the enemy bullets

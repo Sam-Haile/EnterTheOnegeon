@@ -93,22 +93,26 @@ namespace EnterTheOnegeon
 
         public override void Draw(SpriteBatch sb)
         {
-            switch (currState)
+            if(Active)
             {
-                case ShootEnState.Walking:
-                    base.Draw(sb);
-                    break;
-                case ShootEnState.Shooting:
-                    if(shootTimer > 0)
-                    {
-                        sb.Draw(sprite, rectangle, Color.Green);
-                    }
-                    else
-                    {
+                switch (currState)
+                {
+                    case ShootEnState.Walking:
                         base.Draw(sb);
-                    }
-                    break;
+                        break;
+                    case ShootEnState.Shooting:
+                        if (shootTimer > 0)
+                        {
+                            sb.Draw(sprite, rectangle, Color.Green);
+                        }
+                        else
+                        {
+                            base.Draw(sb);
+                        }
+                        break;
+                }
             }
+            
         }
 
         /// <summary>
