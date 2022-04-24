@@ -49,17 +49,18 @@ namespace EnterTheOnegeon
             textColor = textColour;
         }
 
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, Color color)
         {
             sb.Draw(
                 buttText,
                 buttRect,
-                Color.White);
+                color);
+
             sb.DrawString(
                 font,
                 text,
                 textPos,
-                textColor);
+                color);
         }
     }
 }

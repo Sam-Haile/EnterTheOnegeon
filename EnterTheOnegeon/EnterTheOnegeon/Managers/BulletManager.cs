@@ -18,6 +18,12 @@ namespace EnterTheOnegeon
         private double tempTimer;
         //private Texture2D bulletAsset;
 
+        public bool shooting;
+
+        public bool Shooting 
+        { get { return this.shooting; }
+          set { this.shooting = value; } }
+
         protected Camera camera = new Camera();
 
         public BulletManager(Texture2D bulletAsset)
@@ -100,10 +106,17 @@ namespace EnterTheOnegeon
                             player.BulletCount--;
                             break;
                     }
+                    shooting = true;
                 }
 
                 camera.Follow(player);
             }
+            else if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released && player.BulletCount == 0)
+            {
+                shooting = true;
+            }
+            
+
             /*TEMPORARY SPAWNING OF ENEMY BULLETS AT THE TOP LEFT OF DUNGEON
              * 
             tempTimer += gameTime.ElapsedGameTime.TotalSeconds;

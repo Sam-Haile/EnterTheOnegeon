@@ -25,6 +25,24 @@
 /processorParam:TextureFormat=Color
 /build:amgoose.png
 
+#begin Audio/emptyChamber.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/emptyChamber.wav
+
+#begin Audio/entrance.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/entrance.wav
+
+#begin Audio/shootSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/shootSound.wav
+
 #begin Bullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -96,6 +114,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Enviornment/logoTitleSheet.png
+
+#begin Enviornment/reticleAsset.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enviornment/reticleAsset.png
 
 #begin Enviornment/scoreSpriteSheet.png
 /importer:TextureImporter

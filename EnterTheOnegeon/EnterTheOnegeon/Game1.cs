@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 
 /*******************************
 *    Title: SpriteSheet FSM
-*    Author: <author(s) names>
+*    Author: Professor Erin Cascioli
 *    Date: 4/19/22
 /*******************************
 
@@ -39,7 +40,8 @@ namespace EnterTheOnegeon
         Game,
         Score,
         Help,
-        Pause
+        Pause,
+        Transition
     }
 
     enum DebugMode
@@ -56,10 +58,11 @@ namespace EnterTheOnegeon
         private SpriteBatch _spriteBatch;
         private SpriteBatch _spriteBatch2;
         private GameState gameState = GameState.Title;
+        private GameState prevGameState;
 
         // camera that follows sprite
         private Camera camera;
-
+        
         // static variables can not be changed once declared
         public static int screenHeight = 1080;
         public static int screenWidth = 1920;
@@ -93,6 +96,8 @@ namespace EnterTheOnegeon
         Texture2D upgradeSheet;
         EnemyManager enemyManager;
 
+        //audio files
+        List<SoundEffect> soundEffect;
 
         // text/font fields
         SpriteFont fipps;
@@ -108,8 +113,13 @@ namespace EnterTheOnegeon
         //ui fields
         Texture2D uiBackground;
         Texture2D uiCorner;
+        Texture2D reticleAsset;
+        float rotation;
+        Color color;
 
         Texture2D amgoose;
+
+        float timer = 2f;
 
         // button fields
         Texture2D T_Button;
@@ -127,8 +137,6 @@ namespace EnterTheOnegeon
         // Text size for centering
         Vector2 textSize;
 
-
-
         // Animation reqs
         int numSpritesInSheet;
         int widthOfSingleSprite;
@@ -143,6 +151,7 @@ namespace EnterTheOnegeon
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            soundEffect = new List<SoundEffect>();
         }
 
         protected override void Initialize()
@@ -174,7 +183,8 @@ namespace EnterTheOnegeon
             pause = Content.Load<Texture2D>("Pause");
             uiBackground = Content.Load<Texture2D>("uiBackground");
             uiCorner = Content.Load<Texture2D>("uiBackgroundCorner");
-
+            reticleAsset = Content.Load<Texture2D>("Enviornment/reticleAsset");
+            color = new Color(255,255,255);
             amgoose = Content.Load<Texture2D>("amgoose");
 
             // Setting up animation stuff
@@ -242,7 +252,11 @@ namespace EnterTheOnegeon
                 "Debug",
                 new Rectangle(20 , 10, 50, 50),
                 Color.Gold);
-            // modify "Debug" text location
+            // load audio
+            soundEffect.Add(Content.Load<SoundEffect>("Audio/shootSound"));
+            soundEffect.Add(Content.Load<SoundEffect>("Audio/emptyChamber"));
+            soundEffect.Add(Content.Load<SoundEffect>("Audio/entrance"));
+
             debugButt.textPos.X = 75;
             #endregion
         }
@@ -260,6 +274,7 @@ namespace EnterTheOnegeon
                 #region Title State
                 case GameState.Title:
                     UpdateAnimation(gameTime);
+                    rotation += .001f;
                     //Reset all the lists and player whenever going to title for now
                     player = new Player(playerAsset, new Rectangle(1904, 1536, 32, 64));
                     // TODO Make Reset methods for the managers instead of calling the constructor
@@ -276,14 +291,14 @@ namespace EnterTheOnegeon
                         _mState.Y < strtButt.ButtRect.Y + strtButt.ButtRect.Height &&
                         _mState.Y > strtButt.ButtRect.Y &&
                         _mState.LeftButton == ButtonState.Released &&
-                        _prevMState.LeftButton == ButtonState.Pressed)
+                        _prevMState.LeftButton == ButtonState.Pressed 
+                        || _currentKbState.IsKeyDown(Keys.Enter))
                     {
-                        gameState = GameState.Game;
+                        soundEffect[2].Play();
+                        prevGameState = GameState.Title;
+                        gameState = GameState.Transition;
                     }
-                    else if (_currentKbState.IsKeyDown(Keys.Enter))
-                    {
-                        gameState = GameState.Game;
-                    }
+
 
                     // Quit clicked
                     else if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width &&
@@ -328,6 +343,7 @@ namespace EnterTheOnegeon
                         _mState.LeftButton == ButtonState.Released &&
                         _prevMState.LeftButton == ButtonState.Pressed)
                     {
+                        soundEffect[2].Play();
                         gameState = GameState.Help;
                     }
                     break;
@@ -340,6 +356,21 @@ namespace EnterTheOnegeon
                     if (!player.Active)
                     {
                         gameState = GameState.Score;
+                    }
+                    // play gunshot audio
+                    if (bulletManager.Shooting == true && player.BulletCount > 0)
+                    {
+                        SoundEffect.MasterVolume = 0.5f;
+                        soundEffect[0].Play();
+                        bulletManager.Shooting = false;
+                    }
+
+                    // play audio if bullets are 0
+                    if (bulletManager.Shooting == true && player.BulletCount == 0)
+                    {
+                        SoundEffect.MasterVolume = 0.5f;
+                        soundEffect[1].Play();
+                        bulletManager.Shooting = false;
                     }
 
                     // players movement
@@ -408,6 +439,7 @@ namespace EnterTheOnegeon
                         _mState.LeftButton == ButtonState.Released &&
                         _prevMState.LeftButton == ButtonState.Pressed)
                     {
+                        soundEffect[2].Play();
                         gameState = GameState.Title;
                     }
                     
@@ -443,6 +475,7 @@ namespace EnterTheOnegeon
                         _mState.LeftButton == ButtonState.Released &&
                         _prevMState.LeftButton == ButtonState.Pressed)
                     {
+                        soundEffect[2].Play();
                         gameState = GameState.Title;
                     }
                     // quit button pressed
@@ -477,6 +510,23 @@ namespace EnterTheOnegeon
                         debug == DebugMode.On)
                     {
                         debug = DebugMode.Off;
+                    }
+                    break;
+                case GameState.Transition:
+                    
+                    timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    
+                    color.R-= 2;
+                    color.G-= 2;
+                    color.B-= 2;
+
+                    if (prevGameState == GameState.Title && timer <= 0)
+                    {
+                        gameState = GameState.Game;
+                        color.R = 225;
+                        color.G = 225;
+                        color.B = 225;
+                        timer = 2f;
                     }
                     break;
 
@@ -515,8 +565,10 @@ namespace EnterTheOnegeon
             switch (gameState)
             {
 
+                
                 #region Title State
                 case GameState.Title:
+                case GameState.Transition:
                     _spriteBatch2.Draw(
                         coverArt,
                         new Rectangle(
@@ -524,12 +576,23 @@ namespace EnterTheOnegeon
                             0,
                             1920,
                             1080),
-                        Color.White);
-                    DrawLogoAnimation(logo, 150);
-                    strtButt.Draw(_spriteBatch2);
-                    quitButt.Draw(_spriteBatch2);
-                    debugButt.Draw(_spriteBatch2);
-                    helpButt.Draw(_spriteBatch2);
+                        color);
+
+                    _spriteBatch2.Draw(reticleAsset,
+                        new Vector2(screenWidth/2 + 550, screenHeight/2 - 150),
+                        new Rectangle(0, 0, reticleAsset.Width, reticleAsset.Height),
+                        color, 
+                        rotation, 
+                        new Vector2(reticleAsset.Width/2, reticleAsset.Height/2),
+                        1f,
+                        SpriteEffects.None, 
+                        1f);
+
+                    DrawLogoAnimation(logo, 150, color);
+                    strtButt.Draw(_spriteBatch2, color);
+                    quitButt.Draw(_spriteBatch2, color);
+                    debugButt.Draw(_spriteBatch2, color);
+                    helpButt.Draw(_spriteBatch2, color);
                     break;
                 #endregion
                 #region Game State
@@ -667,7 +730,9 @@ namespace EnterTheOnegeon
                             screenWidth,
                             screenHeight),
                         Color.White);
-                    DrawLogoAnimation(scoreBoard, -250);
+
+                    DrawLogoAnimation(scoreBoard, -250, color);
+
                     _spriteBatch2.DrawString(
                         titleFont,
                         enemyManager.Score.ToString(),
@@ -676,9 +741,9 @@ namespace EnterTheOnegeon
                             screenHeight / 2),
                         Color.White);
 
-                    menuButt.Draw(_spriteBatch2);
+                    menuButt.Draw(_spriteBatch2, color);
 
-                    quitButt.Draw(_spriteBatch2);
+                    quitButt.Draw(_spriteBatch2, color);
                     break;
                 #endregion
                 #region Help State
@@ -729,7 +794,7 @@ namespace EnterTheOnegeon
                         new Vector2(20, 500),
                         Color.White
                         );
-                    menuButt.Draw(_spriteBatch2);
+                    menuButt.Draw(_spriteBatch2, color);
 
                     break;
                 #endregion
@@ -835,8 +900,8 @@ namespace EnterTheOnegeon
                        new Vector2(20, 600),
                        Color.White
                        );
-                    menuButt.Draw(_spriteBatch2);
-                    debugButt.Draw(_spriteBatch2);
+                    menuButt.Draw(_spriteBatch2, color);
+                    debugButt.Draw(_spriteBatch2, color);
                     break;
                 #endregion
             }
@@ -883,7 +948,7 @@ namespace EnterTheOnegeon
                             String.Format("Iframe time: {0:F3}", player.IFrameTimeLeft),
                             new Vector2(
                                 100 - (int)camera.Transform.Translation.X,
-                                100 - (int)camera.Transform.Translation.Y),
+                                160 - (int)camera.Transform.Translation.Y),
                             Color.White);
 
                         #region Debug hotkey text
@@ -1028,7 +1093,7 @@ namespace EnterTheOnegeon
         /// Draws mario with a walking animation
         /// </summary>
         /// <param name="flip">Should he be flipped horizontally?</param>
-        private void DrawLogoAnimation(Texture2D sprite, int height)
+        private void DrawLogoAnimation(Texture2D sprite, int height, Color color)
         {
             numSpritesInSheet = 8;
             widthOfSingleSprite = sprite.Width / numSpritesInSheet;
@@ -1037,7 +1102,7 @@ namespace EnterTheOnegeon
                 sprite,
                 new Vector2(screenWidth/2 - (sprite.Width/8)/2, -height),
                 new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, sprite.Height),
-                Color.White,
+                color,
                 0.0f,
                 Vector2.Zero,
                 1f,
