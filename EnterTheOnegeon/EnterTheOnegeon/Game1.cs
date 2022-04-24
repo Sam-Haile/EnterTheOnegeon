@@ -455,7 +455,7 @@ namespace EnterTheOnegeon
                     {
                         soundEffect[2].Play();
                         gameState = GameState.Title;
-                        MediaPlayer.Stop();
+                        MediaPlayer.Play(introMusic);
                     }
 
                     break;
@@ -493,7 +493,7 @@ namespace EnterTheOnegeon
                     {
                         soundEffect[2].Play();
                         gameState = GameState.Title;
-                        MediaPlayer.Stop();
+                        MediaPlayer.Play(introMusic);
                     }
                     // quit button pressed
                     if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width &&
