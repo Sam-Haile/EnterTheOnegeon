@@ -62,6 +62,7 @@ namespace EnterTheOnegeon
         private List<WalkEnemy> walkEnemyList;
         private List<UpgradeEnemy> upgradeEnemyList;
 
+        private Texture2D GargoyleSpriteSheet;
         private Texture2D GargoyleAsset;
         private Texture2D sanicAsset;
         private Texture2D UpgradeSheet;
@@ -72,7 +73,7 @@ namespace EnterTheOnegeon
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
         /// </summary>
         public EnemyManager(GraphicsDeviceManager graphics, Player player, BulletManager bManager, 
-            Texture2D testSprite, Texture2D GargoyleSprite, Texture2D upgradeSheet)
+            Texture2D testSprite, Texture2D GargoyleSprite, Texture2D GargoyleSpriteSheet, Texture2D upgradeSheet)
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
 
@@ -85,6 +86,7 @@ namespace EnterTheOnegeon
             GargoyleAsset = GargoyleSprite;
             sanicAsset = testSprite;
             UpgradeSheet = upgradeSheet;
+            this.GargoyleSpriteSheet = GargoyleSpriteSheet;
 
             ShopTime = 20;
             timeToShop = ShopTime;
@@ -391,7 +393,16 @@ namespace EnterTheOnegeon
                     }*/
                     foreach (WalkEnemy walke in walkEnemyList)
                     {
-                        walke.Draw(sb);
+                        if(walke.Damage == GargoyleStats.Damage || walke.Damage == BigGargoyleStats.Damage)
+                        {
+                            walke.DrawWalkEnemy(sb,Color.White);
+                        }
+                        
+                        else
+                        {
+                            walke.Draw(sb);
+                        }
+
                     }
 
                     //Time to next wave
@@ -418,7 +429,15 @@ namespace EnterTheOnegeon
                     }*/
                     foreach (WalkEnemy walke in walkEnemyList)
                     {
-                        walke.Draw(sb);
+                        if (walke.Damage == GargoyleStats.Damage || walke.Damage == BigGargoyleStats.Damage)
+                        {
+                            walke.DrawWalkEnemy(sb, Color.White);
+                        }
+                        else
+                        {
+                            walke.Draw(sb);
+                        }
+
                     }
                     //Some message to clear the enemies
                     sb.DrawString(
@@ -536,7 +555,7 @@ namespace EnterTheOnegeon
             WalkEnemy spawn = GetWalkEnemy();
             if (spawn != null)
             {
-                spawn.Reset(GargoyleAsset, RandPoint(GargoyleStats.Width, GargoyleStats.Height), GargoyleStats);
+                spawn.Reset(GargoyleSpriteSheet, RandPoint(GargoyleStats.Width, GargoyleStats.Height), GargoyleStats);
             }
         }
         private void SpawnBigGargoyle()
@@ -544,7 +563,7 @@ namespace EnterTheOnegeon
             WalkEnemy spawn = GetWalkEnemy();
             if (spawn != null)
             {
-                spawn.Reset(GargoyleAsset, RandPoint(BigGargoyleStats.Width, BigGargoyleStats.Height), BigGargoyleStats);
+                spawn.Reset(GargoyleSpriteSheet, RandPoint(BigGargoyleStats.Width, BigGargoyleStats.Height), BigGargoyleStats);
             }
         }
 
