@@ -14,7 +14,7 @@ namespace EnterTheOnegeon
         private List<Bullet> pBullets;
         /// <summary>Bullets from the enemies</summary>
         private List<Bullet> eBullets;
-
+        public BulletStats ShooterBullets = new BulletStats(10, 5, 1, 1);
         private double tempTimer;
         //private Texture2D bulletAsset;
 
@@ -116,7 +116,14 @@ namespace EnterTheOnegeon
                 shooting = true;
             }
             
-
+            foreach(ShootingEnemy sho in eManager.GetShooters())
+            {
+                if(sho.Active)
+                {
+                    if (sho.IsShooting)
+                        SpawnEnemyBullet(sho.CenterX, sho.CenterY, player.PositionV, ShooterBullets);
+                }
+            }
             /*TEMPORARY SPAWNING OF ENEMY BULLETS AT THE TOP LEFT OF DUNGEON
              * 
             tempTimer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -161,6 +168,13 @@ namespace EnterTheOnegeon
                     if (b.CollideWith(en))
                     {
                         b.HitEnemy(en);
+                    }
+                }
+                foreach(ShootingEnemy sho in eManager.GetShooters())
+                {
+                    if(b.CollideWith(sho))
+                    {
+                        b.HitEnemy(sho);
                     }
                 }
             }

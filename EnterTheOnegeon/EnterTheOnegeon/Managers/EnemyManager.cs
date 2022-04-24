@@ -20,6 +20,7 @@ namespace EnterTheOnegeon
         Gargoyle,
         BigGargoyle,
         FastGuy,
+        Shooter,
         Other
     }
     //USE THIS FOR SpawnEnemy(EnemyTypes enemyType)
@@ -34,7 +35,9 @@ namespace EnterTheOnegeon
         #region Enemy stat constants
         private EnemyStats GargoyleStats = new EnemyStats(50, 50, 1, 3, 1);
         private EnemyStats BigGargoyleStats = new EnemyStats(150, 150, 5, 2, 2);
-        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 7, 0);
+        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 5, 1);
+        private EnemyStats ShooterStats = new EnemyStats(100, 100, 1, 3, 1);
+        public BulletStats ShooterBullets = new BulletStats(20, 5, 1, 1);
         #endregion
 
         /// <summary>
@@ -61,6 +64,7 @@ namespace EnterTheOnegeon
         //private List<TestEnemy> testEnemyList;
         private List<WalkEnemy> walkEnemyList;
         private List<UpgradeEnemy> upgradeEnemyList;
+        private List<ShootingEnemy> shootEnemyList;
 
         private Texture2D GargoyleSpriteSheet;
         private Texture2D GargoyleAsset;
@@ -115,8 +119,21 @@ namespace EnterTheOnegeon
                 upgradeEnemyList.Add(new UpgradeEnemy(UpgradeSheet, new Rectangle(0, 0, 150, 150),rng));
                 upgradeEnemyList[i].OnDeathUpgrade += player.ApplyUpgrade;
             }
+
+            shootEnemyList = new List<ShootingEnemy>();
+            //fill with inactive ones
+            //eight in total
+            for (int i = 0; i < 20; i++)
+            {
+                shootEnemyList.Add(new ShootingEnemy(GargoyleSprite));
+            }
+            
         }
 
+        public List<ShootingEnemy> GetShooters()
+        {
+            return shootEnemyList;
+        }
         private void IncreaseScore(int score)
         {
             this.score += score;
@@ -135,6 +152,11 @@ namespace EnterTheOnegeon
                     if (walke.Active)
                         total++;
                 }
+                foreach(ShootingEnemy sho in shootEnemyList)
+                {
+                    if (sho.Active)
+                        total++;
+                }    
                 return total; 
             }
         }
@@ -179,15 +201,21 @@ namespace EnterTheOnegeon
                 int curWavePoints = wavePoints;
                 while (curWavePoints > 0)
                 {
+                    
                     //when there is enough points it will do checks for spawning which type of enemy
                     if (curWavePoints >= 3)
                     {
-                        
+                        int randNum = rng.Next(10);
                         //Change LATER for different enemy types
-                        if (rng.Next(5) == 0)
+                        if (randNum > 7)
                         {
                             SpawnEnemy(EnemyTypes.BigGargoyle);
                             curWavePoints -= 3;
+                        }
+                        else if(randNum >= 4)
+                        {
+                            SpawnEnemy(EnemyTypes.Shooter);
+                            curWavePoints -= 2;
                         }
                         else
                         {
@@ -204,6 +232,7 @@ namespace EnterTheOnegeon
                 //Every wave gets harder
                 wavePoints += 1;
             }
+            
         }
 
         /// <summary>
@@ -227,6 +256,8 @@ namespace EnterTheOnegeon
                     // UpdateTestEnemy(player, gameTime);
                     UpdateWalkEnemies(player, gameTime);
 
+                    UpdateShooters(player, gameTime);
+
                     // Transition the state and reset some variables
                     if (timeToShop < 0)
                     {
@@ -243,8 +274,9 @@ namespace EnterTheOnegeon
                     timer += gameTime.ElapsedGameTime.TotalSeconds;
                     // UpdateTestEnemy(player, gameTime);
                     UpdateWalkEnemies(player, gameTime);
-                    
-                    if(TotalEnemyCount == 0)
+                    UpdateShooters(player, gameTime);
+
+                    if (TotalEnemyCount == 0)
                     {
                         timeToShop = 0;
                         timeToWave = 5;
@@ -382,6 +414,16 @@ namespace EnterTheOnegeon
                 }
             }
         }
+
+        private void UpdateShooters(Player player, GameTime gameTime)
+        {
+            foreach(ShootingEnemy sho in shootEnemyList)
+            {
+                sho.Update(player, gameTime);
+                if (sho.CollideWith(player))
+                    sho.HitPlayer(player);
+            }
+        }
         public void Draw(SpriteBatch sb, SpriteFont font)
         {
             switch(currState)
@@ -404,6 +446,8 @@ namespace EnterTheOnegeon
                         }
 
                     }
+                    foreach (ShootingEnemy sho in shootEnemyList)
+                        sho.Draw(sb);
 
                     //Time to next wave
                     sb.DrawString(
@@ -439,6 +483,8 @@ namespace EnterTheOnegeon
                         }
 
                     }
+                    foreach (ShootingEnemy sho in shootEnemyList)
+                        sho.Draw(sb);
                     //Some message to clear the enemies
                     sb.DrawString(
                         font,
@@ -546,6 +592,9 @@ namespace EnterTheOnegeon
                 case EnemyTypes.FastGuy:
                     SpawnFastGuy();
                     break;
+                case EnemyTypes.Shooter:
+                    SpawnShooter();
+                    break;
                 default:
                     break;
             }
@@ -575,6 +624,15 @@ namespace EnterTheOnegeon
                 spawn.Reset(sanicAsset, RandPoint(FastGuyStats.Width, FastGuyStats.Height), FastGuyStats);
             }
         }
+
+        private void SpawnShooter()
+        {
+            ShootingEnemy spawn = GetShootingEnemy();
+            if (spawn != null)
+            {
+                spawn.Reset(RandPoint(ShooterStats.Width, ShooterStats.Height), ShooterStats, 1, ShooterBullets);
+            }
+        }
         /// <summary>
         /// Helping method: gets the first inactive walk enemy
         /// </summary>
@@ -584,6 +642,16 @@ namespace EnterTheOnegeon
             {
                 if (walkEnemyList[i].Active == false)
                     return walkEnemyList[i];
+            }
+            return null;
+        }
+
+        private ShootingEnemy GetShootingEnemy()
+        {
+            for (int i = 0; i < walkEnemyList.Count; i++)
+            {
+                if (shootEnemyList[i].Active == false)
+                    return shootEnemyList[i];
             }
             return null;
         }
