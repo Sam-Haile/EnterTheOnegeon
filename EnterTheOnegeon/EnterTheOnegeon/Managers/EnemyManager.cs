@@ -486,7 +486,7 @@ namespace EnterTheOnegeon
                     sb.Draw(tempTexture, new Rectangle(exitBox.X, exitBox.Y, (int)(exitBox.Width * (timeToShop / 3)), exitBox.Height), Color.DarkBlue);
                     sb.DrawString(
                         font,
-                        String.Format("Stand here to exit"),
+                        String.Format("EXIT"),
                         new Vector2(exitBox.X-50, exitBox.Y),
                         Color.White);
 

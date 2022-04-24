@@ -158,6 +158,24 @@
 /processorParam:TextureFormat=Compressed
 /build:fipps15.spritefont
 
+#begin Music/gameMusic.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/gameMusic.wav
+
+#begin Music/introMusic.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/introMusic.wav
+
+#begin Music/scoreBoardMusic.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/scoreBoardMusic.wav
+
 #begin Pause.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -181,6 +199,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player/PlayerSpriteSheet.png
+
+#begin Player/reticleGame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/reticleGame.png
 
 #begin Player/WalkingDown.png
 /importer:TextureImporter

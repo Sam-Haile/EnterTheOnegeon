@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Media;
 
 /*******************************
 *    Title: SpriteSheet FSM
@@ -98,6 +99,9 @@ namespace EnterTheOnegeon
 
         //audio files
         List<SoundEffect> soundEffect;
+        Song introMusic;
+        Song gameMusic;
+        Song scoreMusic;
 
         // text/font fields
         SpriteFont fipps;
@@ -113,6 +117,7 @@ namespace EnterTheOnegeon
         //ui fields
         Texture2D uiBackground;
         Texture2D uiCorner;
+        Texture2D gameReticle;
         Texture2D reticleAsset;
         float rotation;
         Color color;
@@ -151,6 +156,7 @@ namespace EnterTheOnegeon
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
             soundEffect = new List<SoundEffect>();
         }
 
@@ -184,6 +190,7 @@ namespace EnterTheOnegeon
             uiBackground = Content.Load<Texture2D>("uiBackground");
             uiCorner = Content.Load<Texture2D>("uiBackgroundCorner");
             reticleAsset = Content.Load<Texture2D>("Enviornment/reticleAsset");
+            gameReticle = Content.Load<Texture2D>("Player/reticleGame");
             color = new Color(255,255,255);
             amgoose = Content.Load<Texture2D>("amgoose");
 
@@ -256,7 +263,11 @@ namespace EnterTheOnegeon
             soundEffect.Add(Content.Load<SoundEffect>("Audio/shootSound"));
             soundEffect.Add(Content.Load<SoundEffect>("Audio/emptyChamber"));
             soundEffect.Add(Content.Load<SoundEffect>("Audio/entrance"));
-
+            // music
+            introMusic = Content.Load<Song>("Music/introMusic");
+            gameMusic = Content.Load<Song>("Music/gameMusic");
+            scoreMusic = Content.Load<Song>("Music/scoreBoardMusic");
+            MediaPlayer.Play(introMusic);
             debugButt.textPos.X = 75;
             #endregion
         }
@@ -350,12 +361,13 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Game State
                 case GameState.Game:
-
+                    IsMouseVisible = false;
                     walkState = player.WalkState;
                     // Scoreboard when player dies
                     if (!player.Active)
                     {
-                        gameState = GameState.Score;
+                        prevGameState = GameState.Game;
+                        gameState = GameState.Transition;
                     }
                     // play gunshot audio
                     if (bulletManager.Shooting == true && player.BulletCount > 0)
@@ -416,8 +428,10 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Scoreboard State
                 case GameState.Score:
+                    IsMouseVisible = true;
                     UpdateAnimation(gameTime);
-
+                    //prevGameState = GameState.Score;
+                    //gameState = GameState.Transition;
                     textSize = titleFont.MeasureString(enemyManager.Score.ToString());
 
                     // quit button pressed
@@ -441,8 +455,9 @@ namespace EnterTheOnegeon
                     {
                         soundEffect[2].Play();
                         gameState = GameState.Title;
+                        MediaPlayer.Stop();
                     }
-                    
+
                     break;
                 #endregion
                 #region Help State
@@ -462,6 +477,7 @@ namespace EnterTheOnegeon
                 #endregion
                 #region Pause State
                 case GameState.Pause:
+                    IsMouseVisible = true;
                     if (_currentKbState.IsKeyUp(Keys.Escape) && _prevKbState.IsKeyDown(Keys.Escape))
                     {
                         gameState = GameState.Game;
@@ -477,6 +493,7 @@ namespace EnterTheOnegeon
                     {
                         soundEffect[2].Play();
                         gameState = GameState.Title;
+                        MediaPlayer.Stop();
                     }
                     // quit button pressed
                     if (_mState.X < quitButt.ButtRect.X + quitButt.ButtRect.Width &&
@@ -522,11 +539,19 @@ namespace EnterTheOnegeon
 
                     if (prevGameState == GameState.Title && timer <= 0)
                     {
+                        MediaPlayer.Play(gameMusic);
                         gameState = GameState.Game;
+                        prevGameState = GameState.Transition;
                         color.R = 225;
                         color.G = 225;
                         color.B = 225;
                         timer = 2f;
+                    }
+                    else if (prevGameState == GameState.Game && gameState == GameState.Transition)
+                    {
+                        MediaPlayer.Play(scoreMusic);
+                        gameState = GameState.Score;
+                        prevGameState = GameState.Transition;
                     }
                     break;
 
@@ -646,6 +671,19 @@ namespace EnterTheOnegeon
                     
 
                     bulletManager.Draw(_spriteBatch);
+
+                    _spriteBatch2.Draw(
+                        gameReticle,
+                        new Vector2(_mState.X, _mState.Y),
+                        new Rectangle(0, 0, gameReticle.Width, gameReticle.Height),
+                        Color.White,
+                        1f,
+                        new Vector2(gameReticle.Width / 2, gameReticle.Height / 2),
+                        .15f,
+                        SpriteEffects.None,
+                        1f
+                        );
+                        
 
                     // draws bullet line in different areas depending on the direction the player is facing
                     switch (walkState)
