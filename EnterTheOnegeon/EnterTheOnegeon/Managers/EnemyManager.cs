@@ -435,7 +435,7 @@ namespace EnterTheOnegeon
                     }*/
                     foreach (WalkEnemy walke in walkEnemyList)
                     {
-                        if(walke.Damage == GargoyleStats.Damage || walke.Damage == BigGargoyleStats.Damage)
+                        if(walke.Speed == GargoyleStats.Speed)
                         {
                             walke.DrawWalkEnemy(sb,Color.White);
                         }
@@ -473,7 +473,7 @@ namespace EnterTheOnegeon
                     }*/
                     foreach (WalkEnemy walke in walkEnemyList)
                     {
-                        if (walke.Damage == GargoyleStats.Damage || walke.Damage == BigGargoyleStats.Damage)
+                        if (walke.Speed == GargoyleStats.Speed)
                         {
                             walke.DrawWalkEnemy(sb, Color.White);
                         }
@@ -612,7 +612,7 @@ namespace EnterTheOnegeon
             WalkEnemy spawn = GetWalkEnemy();
             if (spawn != null)
             {
-                spawn.Reset(GargoyleSpriteSheet, RandPoint(BigGargoyleStats.Width, BigGargoyleStats.Height), BigGargoyleStats);
+                spawn.Reset(GargoyleAsset, RandPoint(BigGargoyleStats.Width, BigGargoyleStats.Height), BigGargoyleStats);
             }
         }
 

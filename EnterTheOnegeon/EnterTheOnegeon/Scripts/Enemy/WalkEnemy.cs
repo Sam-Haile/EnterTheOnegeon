@@ -7,6 +7,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
+    enum WState
+    {
+        Left,
+        Right,
+    }
+    
+    
     /// <summary>
     /// Simple enemy that only walks towards the player
     /// </summary>
@@ -20,15 +27,16 @@ namespace EnterTheOnegeon
         private double timeCounter;
         private int widthOfSingleSprite;
         private int heightOfSingleSprite;
-        private int damage;
-        
-        
+        private double speed;
+        private WState walkState;
+
+
         /// <summary>
         /// 
         /// </summary>
-        public int Damage
+        public double Speed
         {
-            get { return damage; }
+            get { return speed; }
         }
         
         /// <summary>
@@ -85,7 +93,14 @@ namespace EnterTheOnegeon
                 UpdateVelocity();
                 actualX += velocity.X;
                 actualY += velocity.Y;
-
+                if(velocity.X >= 0)
+                {
+                    walkState = WState.Right;
+                }
+                else
+                {
+                    walkState = WState.Left;
+                }
                 //Need to adjust rectangle 
                 base.UpdateRectanglePos();
                 UpdateAnimation(gameTime);
@@ -123,31 +138,63 @@ namespace EnterTheOnegeon
 
         public void DrawWalkEnemy(SpriteBatch sb, Color color)
         {
-            if(this.Health != 0)
+           if(walkState == WState.Right)
             {
-                sb.Draw(
-               sprite,
-               new Vector2(this.rectangle.X, this.rectangle.Y),
-               new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
-               color,
-               0.0f,
-               Vector2.Zero,
-               1f,
-               SpriteEffects.None,
-               0.0f);
+                if (this.Health != 0)
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   color,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.None,
+                   0.0f);
+                }
+                else
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   Color.Red,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.None,
+                   0.0f);
+                }
             }
-            else
+           else if(walkState == WState.Left)
             {
-                sb.Draw(
-               sprite,
-               new Vector2(this.rectangle.X, this.rectangle.Y),
-               new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
-               Color.Red,
-               0.0f,
-               Vector2.Zero,
-               1f,
-               SpriteEffects.None,
-               0.0f);
+                if (this.Health != 0)
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   color,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.FlipHorizontally,
+                   0.0f);
+                }
+                else
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   Color.Red,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.FlipHorizontally,
+                   0.0f);
+                }
             }
         }
 
