@@ -372,6 +372,7 @@ namespace EnterTheOnegeon
                         //clear the shop enemies
                         foreach (UpgradeEnemy upEn in upgradeEnemyList)
                             upEn.Health = 0;
+                        player.BulletCount += 5;
                         currState = EManagerState.Waves;
                     }
                     break;
