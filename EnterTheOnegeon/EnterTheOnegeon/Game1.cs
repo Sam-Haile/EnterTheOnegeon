@@ -97,6 +97,7 @@ namespace EnterTheOnegeon
         Texture2D upgradeSheet;
         Texture2D enemySheet;
         EnemyManager enemyManager;
+        Texture2D exitAsset;
 
         //audio files
         List<SoundEffect> soundEffect;
@@ -220,7 +221,9 @@ namespace EnterTheOnegeon
             enemyAsset = Content.Load<Texture2D>("Enemy");
             enemySheet = Content.Load<Texture2D>("Devli_SS");
             upgradeSheet = Content.Load<Texture2D>("UpgradeEnemy");
-            enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset, enemySheet, upgradeSheet);
+            exitAsset = Content.Load<Texture2D>("exitAsset");
+            enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset, enemySheet, upgradeSheet, exitAsset);
+
 
             // load font
             fipps = Content.Load<SpriteFont>("fipps15");
@@ -294,7 +297,7 @@ namespace EnterTheOnegeon
                     //bulletManager.Reset();
                     //enemyManager.Reset();
                     bulletManager = new BulletManager(bulletAsset);
-                    enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset,enemySheet,upgradeSheet);
+                    enemyManager = new EnemyManager(_graphics, player, bulletManager, testerAsset, enemyAsset,enemySheet,upgradeSheet, exitAsset);
                     totalGameTime = 0;
                     tempTime = 0;
 

@@ -70,18 +70,19 @@ namespace EnterTheOnegeon
         private Texture2D GargoyleAsset;
         private Texture2D eyeballAsset;
         private Texture2D UpgradeSheet;
+        private Texture2D exitAsset;
 
         private EManagerState currState;
 
         /// <summary>
         /// Constructor will initialize the lists for every enemy type(only test enemies for now) 
         /// </summary>
-        public EnemyManager(GraphicsDeviceManager graphics, Player player, BulletManager bManager, 
-            Texture2D testSprite, Texture2D GargoyleSprite, Texture2D GargoyleSpriteSheet, Texture2D upgradeSheet)
+        public EnemyManager(GraphicsDeviceManager graphics, Player player, BulletManager bManager,
+            Texture2D testSprite, Texture2D GargoyleSprite, Texture2D GargoyleSpriteSheet, Texture2D upgradeSheet, Texture2D exitSprite)
         {
-            exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
+            exitBox = new Rectangle(3840- 1400, 2176/2+50, 200, 200);
 
-            currState = EManagerState.Waves;
+            currState = EManagerState.WaveToShop;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
@@ -96,6 +97,7 @@ namespace EnterTheOnegeon
             timeToShop = ShopTime;
             timeToWave = 5;
             wavePoints = 5;
+            exitAsset = exitSprite;
 
 
             //Fill every list with inactive ones
@@ -541,22 +543,23 @@ namespace EnterTheOnegeon
                         Color.White);
 
                     //Some temporary exit text
-                    sb.DrawString(
+                    /*sb.DrawString(
                         font,
                         String.Format("Exit --------------------------->"),
                         new Vector2(3840 / 2, 2176 / 2 + 100),
                         Color.Goldenrod);
+                    */
                     //Drawing the exit box
                     Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
-                    tempTexture.SetData(new Color[] { Color.White });
-                    sb.Draw(tempTexture, exitBox, Color.Gray);
-                    sb.Draw(tempTexture, new Rectangle(exitBox.X, exitBox.Y, (int)(exitBox.Width * (timeToShop / 3)), exitBox.Height), Color.DarkBlue);
+                    tempTexture.SetData(new Color[] { Color.Goldenrod });
+                    sb.Draw(tempTexture, exitBox, Color.White);
+                    sb.Draw(tempTexture, new Rectangle(exitBox.X, exitBox.Y, (int)(exitBox.Width * (timeToShop / 3)), exitBox.Height), Color.DarkGoldenrod);
                     sb.DrawString(
                         font,
                         String.Format("EXIT"),
-                        new Vector2(exitBox.X- 30, exitBox.Y - 60),
+                        new Vector2(exitBox.X + 65, exitBox.Y - 60),
                         Color.White);
-
+                    sb.Draw(exitAsset,exitBox, Color.White);
                     break;
             }
             //Score
