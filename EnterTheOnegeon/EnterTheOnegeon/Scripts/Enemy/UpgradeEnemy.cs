@@ -73,7 +73,7 @@ namespace EnterTheOnegeon
             if (this.Active)
             {
                 DrawUEnemy(sb, Color.White);
-                sb.DrawString(font, string.Format("x{0}", health), new Vector2(CenterX-20, CenterY-10), Color.Orange);
+                sb.DrawString(font, string.Format("x{0}", health), new Vector2(CenterX-20, CenterY+70), Color.Goldenrod);
             }
         }
 
