@@ -82,7 +82,7 @@ namespace EnterTheOnegeon
         {
             exitBox = new Rectangle(3840- 1400, 2176/2+50, 200, 200);
 
-            currState = EManagerState.WaveToShop;
+            currState = EManagerState.Waves;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
