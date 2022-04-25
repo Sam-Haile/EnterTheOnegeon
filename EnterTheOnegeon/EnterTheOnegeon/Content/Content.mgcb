@@ -163,6 +163,18 @@
 /processorParam:TextureFormat=Color
 /build:Enviornment/TitleScreen.png
 
+#begin eyeballEnemy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:eyeballEnemy.png
+
 #begin fipps15.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -235,18 +247,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayerSpriteSheet.png
-
-#begin SanicGuy.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SanicGuy.png
 
 #begin T_Button.png
 /importer:TextureImporter

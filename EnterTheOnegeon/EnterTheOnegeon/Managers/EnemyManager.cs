@@ -35,7 +35,7 @@ namespace EnterTheOnegeon
         #region Enemy stat constants
         private EnemyStats GargoyleStats = new EnemyStats(50, 50, 1, 3, 1);
         private EnemyStats BigGargoyleStats = new EnemyStats(150, 150, 5, 2, 2);
-        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 7, 1);
+        private EnemyStats FastGuyStats = new EnemyStats(40, 60, 1, 7, 1);
         private EnemyStats ShooterStats = new EnemyStats(100, 100, 1, 3, 1);
         public BulletStats ShooterBullets = new BulletStats(20, 5, 1, 1);
         #endregion
@@ -68,7 +68,7 @@ namespace EnterTheOnegeon
 
         private Texture2D GargoyleSpriteSheet;
         private Texture2D GargoyleAsset;
-        private Texture2D sanicAsset;
+        private Texture2D eyeballAsset;
         private Texture2D UpgradeSheet;
 
         private EManagerState currState;
@@ -88,7 +88,7 @@ namespace EnterTheOnegeon
             score = 0;
 
             GargoyleAsset = GargoyleSprite;
-            sanicAsset = testSprite;
+            eyeballAsset = testSprite;
             UpgradeSheet = upgradeSheet;
             this.GargoyleSpriteSheet = GargoyleSpriteSheet;
 
@@ -509,17 +509,17 @@ namespace EnterTheOnegeon
                     for(int i = 0; i < upgradeEnemyList.Count; i++)
                     {
                         if (i == 0)
-                            sb.DrawString(font, "HP UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                            sb.DrawString(font, "HP UP", new Vector2(upgradeEnemyList[i].X , upgradeEnemyList[i].Y - 50), Color.Goldenrod);
                         if (i == 1)
-                            sb.DrawString(font, "SPD UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                            sb.DrawString(font, "SPD UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y - 50), Color.Goldenrod);
                         if (i == 2)
-                            sb.DrawString(font, "BUL SIZE UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                            sb.DrawString(font, "BUL SIZE UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y -50), Color.Goldenrod);
                         if (i == 3)
-                            sb.DrawString(font, "BUL SPD UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                            sb.DrawString(font, "BUL SPD UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y - 50), Color.Goldenrod);
                         if (i == 4)
-                            sb.DrawString(font, "PIERCE UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                            sb.DrawString(font, "PIERCE UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y- 50), Color.Goldenrod);
                         if (i == 5)
-                            sb.DrawString(font, "DMG UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
+                            sb.DrawString(font, "DMG UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y - 50), Color.Goldenrod);
                     }
                     //TODO: position these
                     /*
@@ -548,7 +548,7 @@ namespace EnterTheOnegeon
                         font,
                         String.Format("Exit --------------------------->"),
                         new Vector2(3840 / 2, 2176 / 2 + 100),
-                        Color.White);
+                        Color.Goldenrod);
                     //Drawing the exit box
                     Texture2D tempTexture = new Texture2D(sb.GraphicsDevice, 1, 1);
                     tempTexture.SetData(new Color[] { Color.White });
@@ -557,7 +557,7 @@ namespace EnterTheOnegeon
                     sb.DrawString(
                         font,
                         String.Format("EXIT"),
-                        new Vector2(exitBox.X-50, exitBox.Y),
+                        new Vector2(exitBox.X- 30, exitBox.Y - 60),
                         Color.White);
 
                     break;
@@ -626,7 +626,7 @@ namespace EnterTheOnegeon
             WalkEnemy spawn = GetWalkEnemy();
             if (spawn != null)
             {
-                spawn.Reset(sanicAsset, RandPoint(FastGuyStats.Width, FastGuyStats.Height), FastGuyStats);
+                spawn.Reset(eyeballAsset, RandPoint(FastGuyStats.Width, FastGuyStats.Height), FastGuyStats);
             }
         }
 

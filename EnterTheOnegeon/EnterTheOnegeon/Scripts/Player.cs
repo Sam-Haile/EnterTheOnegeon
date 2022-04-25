@@ -73,7 +73,6 @@ namespace EnterTheOnegeon
             widthOfSingleSprite = sprite.Width / numSpritesInSheet;
             heightOfSingleSprite = sprite.Height / 4;
 
-
             // Set up animation stuff
             currentFrame = 1;
             fps = 10.0;

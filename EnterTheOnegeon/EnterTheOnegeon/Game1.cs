@@ -216,7 +216,7 @@ namespace EnterTheOnegeon
             bulletManager = new BulletManager(bulletAsset);
 
             // loading enemy and initializing a list
-            testerAsset = Content.Load<Texture2D>("SanicGuy");
+            testerAsset = Content.Load<Texture2D>("eyeballEnemy");
             enemyAsset = Content.Load<Texture2D>("Enemy");
             enemySheet = Content.Load<Texture2D>("Devli_SS");
             upgradeSheet = Content.Load<Texture2D>("UpgradeEnemy");
