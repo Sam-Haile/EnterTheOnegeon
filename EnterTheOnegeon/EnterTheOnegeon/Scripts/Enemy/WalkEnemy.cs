@@ -7,13 +7,38 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheOnegeon
 {
+    enum WState
+    {
+        Left,
+        Right,
+    }
+    
+    
     /// <summary>
     /// Simple enemy that only walks towards the player
     /// </summary>
     class WalkEnemy : Enemy
     {
         private Vector2 playerPos;
+        // Animation reqs
+        private int currentFrame;
+        private double fps;
+        private double secondsPerFrame;
+        private double timeCounter;
+        private int widthOfSingleSprite;
+        private int heightOfSingleSprite;
+        private double speed;
+        private WState walkState;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double Speed
+        {
+            get { return speed; }
+        }
+        
         /// <summary>
         /// Makes an inactive one
         /// </summary>
@@ -22,6 +47,12 @@ namespace EnterTheOnegeon
         {
             speed = 1;
             playerPos = new Vector2();
+            widthOfSingleSprite = 69;
+            heightOfSingleSprite = 69;
+            currentFrame = 0;
+            fps = 8;
+            secondsPerFrame = 1.0f / fps;
+            timeCounter = 0;
         }
 
         //Test purposes
@@ -29,6 +60,12 @@ namespace EnterTheOnegeon
         {
             speed = spd;
             playerPos = new Vector2();
+            widthOfSingleSprite = 69;
+            heightOfSingleSprite = 69;
+            currentFrame = 0;
+            fps = 8;
+            secondsPerFrame = 1.0f / fps;
+            timeCounter = 0;
         }
 
         /// <summary>
@@ -56,12 +93,21 @@ namespace EnterTheOnegeon
                 UpdateVelocity();
                 actualX += velocity.X;
                 actualY += velocity.Y;
-
+                if(velocity.X >= 0)
+                {
+                    walkState = WState.Right;
+                }
+                else
+                {
+                    walkState = WState.Left;
+                }
                 //Need to adjust rectangle 
                 base.UpdateRectanglePos();
+                UpdateAnimation(gameTime);
 
                 //Also update the hitTime
                 base.Update(gameTime);
+
             }
            
         }
@@ -88,6 +134,85 @@ namespace EnterTheOnegeon
         {
             this.Reset(spawnPos, enemyStats);
             this.sprite = sprite;
+        }
+
+        public void DrawWalkEnemy(SpriteBatch sb, Color color)
+        {
+           if(walkState == WState.Right)
+            {
+                if (this.Health != 0)
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   color,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.None,
+                   0.0f);
+                }
+                else
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   Color.Red,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.None,
+                   0.0f);
+                }
+            }
+           else if(walkState == WState.Left)
+            {
+                if (this.Health != 0)
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   color,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.FlipHorizontally,
+                   0.0f);
+                }
+                else
+                {
+                    sb.Draw(
+                   sprite,
+                   new Vector2(this.rectangle.X, this.rectangle.Y),
+                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                   Color.Red,
+                   0.0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.FlipHorizontally,
+                   0.0f);
+                }
+            }
+        }
+
+        public void UpdateAnimation(GameTime gameTime)
+        {
+            // Add to the time counter (need TOTALSECONDS here)
+            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Has enough time gone by to actually flip frames?
+            if (timeCounter >= secondsPerFrame)
+            {
+                // Update the frame and wrap
+                currentFrame++;
+                if (currentFrame >= 7) currentFrame = 0;
+
+                // Remove one "frame" worth of time
+                timeCounter -= secondsPerFrame;
+            }
         }
     }
 }
