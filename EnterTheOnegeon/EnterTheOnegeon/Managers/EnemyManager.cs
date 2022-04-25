@@ -323,9 +323,13 @@ namespace EnterTheOnegeon
                                     break;
                                 //Bullet pierce
                                 case 4:
-                                    upgradeEnemyList[i].Reset(3840 / 2 - 400, 2176 / 2 + 300,
+                                    if(player.BStats.Passes < 4)
+                                    {
+                                        upgradeEnemyList[i].Reset(3840 / 2 - 400, 2176 / 2 + 300,
                                         10 * player.BStats.Passes //COST INCREASES BY THE STAT
                                         , 0, 0, new BulletStats(0, 0, 1, 0));
+                                    }
+                                    
                                     break;
                                 //Bullet damage
                                 case 5:

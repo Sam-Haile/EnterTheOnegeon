@@ -79,7 +79,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public int CenterX
         {
-            get { return (int)Math.Round(actualX); }
+            get { return rectangle.X + rectangle.Width/2; }
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace EnterTheOnegeon
         /// </summary>
         public int CenterY
         {
-            get { return (int)Math.Round(actualY); }
+            get { return rectangle.Y + rectangle.Height / 2; }
         }
 
         /// <summary>
