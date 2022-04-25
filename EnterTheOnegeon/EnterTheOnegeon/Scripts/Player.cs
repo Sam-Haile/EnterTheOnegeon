@@ -135,10 +135,6 @@ namespace EnterTheOnegeon
             invTimer -= gameTime.ElapsedGameTime.TotalSeconds;
             Move(kState);
             UpdateAnimation(gameTime);
-            if (mState.RightButton == ButtonState.Pressed)
-            {
-                //Parry();
-            }
         }
 
         /// <summary>
