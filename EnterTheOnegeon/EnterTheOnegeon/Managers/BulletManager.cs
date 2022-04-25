@@ -54,6 +54,7 @@ namespace EnterTheOnegeon
         /// <param name="eManager"></param>
         public void Update(GameTime gameTime, MouseState mState, MouseState prevMState, Player player, EnemyManager eManager, WalkState walkState)
         {
+            camera.Follow(player);
             //Creating player bullets when clicking
             if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released && player.BulletCount > 0)
             {
