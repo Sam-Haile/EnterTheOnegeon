@@ -81,7 +81,7 @@ namespace EnterTheOnegeon
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
 
-            currState = EManagerState.WaveToShop;
+            currState = EManagerState.Waves;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
@@ -315,7 +315,8 @@ namespace EnterTheOnegeon
                                     break;
                                 //Bullet size
                                 case 2:
-                                    upgradeEnemyList[i].Reset(3840 / 2 - 800, 2176 / 2 + 300, 5, 0, 0, new BulletStats(10, 0, 0, 0));
+                                    if(player.BStats.Size < 400)
+                                        upgradeEnemyList[i].Reset(3840 / 2 - 800, 2176 / 2 + 300, 5, 0, 0, new BulletStats(10, 0, 0, 0));
                                     break;
                                 //Bullet speed
                                 case 3:
@@ -333,9 +334,12 @@ namespace EnterTheOnegeon
                                     break;
                                 //Bullet damage
                                 case 5:
-                                    upgradeEnemyList[i].Reset(3840 / 2 - 200, 2176 / 2 + 300,
+                                    if (player.BStats.Damage <= 3)
+                                    {
+                                        upgradeEnemyList[i].Reset(3840 / 2 - 200, 2176 / 2 + 300,
                                         10 * player.BStats.Damage
                                         , 0, 0, new BulletStats(0, 0, 0, 1));
+                                    }
                                     break;
                                 case 100:
                                     upgradeEnemyList[i].Reset(3840 / 2, 2176 / 2 + 300, 7, 0, 0, new BulletStats(20, 7, 2, 0));
