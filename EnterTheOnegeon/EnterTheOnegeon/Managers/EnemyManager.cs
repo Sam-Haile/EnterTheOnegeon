@@ -81,7 +81,7 @@ namespace EnterTheOnegeon
         {
             exitBox = new Rectangle(3840- 400, 2176/2+50, 200, 200);
 
-            currState = EManagerState.Waves;
+            currState = EManagerState.WaveToShop;
             this.graphics = graphics;
             rng = new Random();
             timer = 0;
@@ -365,6 +365,9 @@ namespace EnterTheOnegeon
                     // Transition out of shop
                     if (timeToShop > 3)
                     {
+                        //Adding some bullets and hp back
+                        player.BulletCount += 5;
+                        player.Health += 1;
                         //actually reseting now
                         ShopTime += 10;
                         timeToShop = ShopTime;
@@ -521,21 +524,6 @@ namespace EnterTheOnegeon
                         if (i == 5)
                             sb.DrawString(font, "DMG UP", new Vector2(upgradeEnemyList[i].X, upgradeEnemyList[i].Y), Color.Black);
                     }
-                    //TODO: position these
-                    /*
-                    This one above
-                    sb.DrawString(
-                        font,
-                        String.Format("Player Upgrades"),
-                        new Vector2(0, 0),
-                        Color.White);
-                    This one below
-                    sb.DrawString(
-                        font,
-                        String.Format("Bullet Upgrades"),
-                        new Vector2(0, 0),
-                        Color.White);
-                    */
                     sb.DrawString(
                         font,
                         String.Format("Gain power by breaking"),

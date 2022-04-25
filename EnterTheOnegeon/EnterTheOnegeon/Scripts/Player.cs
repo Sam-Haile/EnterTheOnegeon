@@ -92,7 +92,17 @@ namespace EnterTheOnegeon
         public int Health
         {
             get { return hp; }
-            set { hp = value; }
+            set 
+            { 
+                if(value > maxH)
+                {
+                    hp = maxH;
+                }
+                else
+                {
+                    hp = value;
+                }
+            }
         }
 
         public int MaxHealth
