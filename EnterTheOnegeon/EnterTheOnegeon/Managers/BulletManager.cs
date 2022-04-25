@@ -109,8 +109,6 @@ namespace EnterTheOnegeon
                     }
                     shooting = true;
                 }
-
-                camera.Follow(player);
             }
             else if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released && player.BulletCount == 0)
             {
