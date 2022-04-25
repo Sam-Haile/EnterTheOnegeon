@@ -175,6 +175,7 @@ namespace EnterTheOnegeon
                     if(b.CollideWith(sho))
                     {
                         b.HitEnemy(sho);
+                        player.BulletCount++;
                     }
                 }
             }

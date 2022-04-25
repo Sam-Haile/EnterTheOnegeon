@@ -35,7 +35,7 @@ namespace EnterTheOnegeon
         #region Enemy stat constants
         private EnemyStats GargoyleStats = new EnemyStats(50, 50, 1, 3, 1);
         private EnemyStats BigGargoyleStats = new EnemyStats(150, 150, 5, 2, 2);
-        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 5, 1);
+        private EnemyStats FastGuyStats = new EnemyStats(70, 60, 1, 7, 1);
         private EnemyStats ShooterStats = new EnemyStats(100, 100, 1, 3, 1);
         public BulletStats ShooterBullets = new BulletStats(20, 5, 1, 1);
         #endregion
@@ -212,15 +212,20 @@ namespace EnterTheOnegeon
                             SpawnEnemy(EnemyTypes.BigGargoyle);
                             curWavePoints -= 3;
                         }
-                        else if(randNum >= 4)
+                        else if(randNum >= 5)
                         {
                             SpawnEnemy(EnemyTypes.Shooter);
                             curWavePoints -= 2;
                         }
-                        else
+                        else if(randNum == 3)
                         {
                             SpawnEnemy(EnemyTypes.FastGuy);
                             curWavePoints -= 2;
+                        }
+                        else
+                        {
+                            SpawnEnemy(EnemyTypes.Gargoyle);
+                            curWavePoints -= 1;
                         }
                     }
                     else

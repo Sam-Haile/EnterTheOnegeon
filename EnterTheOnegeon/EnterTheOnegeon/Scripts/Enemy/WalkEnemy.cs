@@ -138,62 +138,65 @@ namespace EnterTheOnegeon
 
         public void DrawWalkEnemy(SpriteBatch sb, Color color)
         {
-           if(walkState == WState.Right)
+            if(Active)
             {
-                if (this.Health != 0)
+                if (walkState == WState.Right)
                 {
-                    sb.Draw(
-                   sprite,
-                   new Vector2(this.rectangle.X, this.rectangle.Y),
-                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
-                   color,
-                   0.0f,
-                   Vector2.Zero,
-                   1f,
-                   SpriteEffects.None,
-                   0.0f);
+                    if (this.Health != 0)
+                    {
+                        sb.Draw(
+                       sprite,
+                       new Vector2(this.rectangle.X, this.rectangle.Y),
+                       new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                       color,
+                       0.0f,
+                       Vector2.Zero,
+                       1f,
+                       SpriteEffects.None,
+                       0.0f);
+                    }
+                    else
+                    {
+                        sb.Draw(
+                       sprite,
+                       new Vector2(this.rectangle.X, this.rectangle.Y),
+                       new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                       Color.Red,
+                       0.0f,
+                       Vector2.Zero,
+                       1f,
+                       SpriteEffects.None,
+                       0.0f);
+                    }
                 }
-                else
+                else if (walkState == WState.Left)
                 {
-                    sb.Draw(
-                   sprite,
-                   new Vector2(this.rectangle.X, this.rectangle.Y),
-                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
-                   Color.Red,
-                   0.0f,
-                   Vector2.Zero,
-                   1f,
-                   SpriteEffects.None,
-                   0.0f);
-                }
-            }
-           else if(walkState == WState.Left)
-            {
-                if (this.Health != 0)
-                {
-                    sb.Draw(
-                   sprite,
-                   new Vector2(this.rectangle.X, this.rectangle.Y),
-                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
-                   color,
-                   0.0f,
-                   Vector2.Zero,
-                   1f,
-                   SpriteEffects.FlipHorizontally,
-                   0.0f);
-                }
-                else
-                {
-                    sb.Draw(
-                   sprite,
-                   new Vector2(this.rectangle.X, this.rectangle.Y),
-                   new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
-                   Color.Red,
-                   0.0f,
-                   Vector2.Zero,
-                   1f,
-                   SpriteEffects.FlipHorizontally,
-                   0.0f);
+                    if (this.Health != 0)
+                    {
+                        sb.Draw(
+                       sprite,
+                       new Vector2(this.rectangle.X, this.rectangle.Y),
+                       new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                       color,
+                       0.0f,
+                       Vector2.Zero,
+                       1f,
+                       SpriteEffects.FlipHorizontally,
+                       0.0f);
+                    }
+                    else
+                    {
+                        sb.Draw(
+                       sprite,
+                       new Vector2(this.rectangle.X, this.rectangle.Y),
+                       new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, heightOfSingleSprite),
+                       Color.Red,
+                       0.0f,
+                       Vector2.Zero,
+                       1f,
+                       SpriteEffects.FlipHorizontally,
+                       0.0f);
+                    }
                 }
             }
         }
