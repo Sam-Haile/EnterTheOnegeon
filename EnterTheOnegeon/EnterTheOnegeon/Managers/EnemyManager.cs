@@ -36,7 +36,7 @@ namespace EnterTheOnegeon
         private EnemyStats GargoyleStats = new EnemyStats(50, 50, 1, 3, 1);
         private EnemyStats BigGargoyleStats = new EnemyStats(150, 150, 5, 2, 2);
         private EnemyStats FastGuyStats = new EnemyStats(40, 60, 1, 7, 1);
-        private EnemyStats ShooterStats = new EnemyStats(100, 100, 1, 3, 1);
+        private EnemyStats ShooterStats = new EnemyStats(40, 60, 1, 3, 1);
         public BulletStats ShooterBullets = new BulletStats(20, 5, 1, 1);
         #endregion
 
@@ -125,7 +125,7 @@ namespace EnterTheOnegeon
             //eight in total
             for (int i = 0; i < 20; i++)
             {
-                shootEnemyList.Add(new ShootingEnemy(GargoyleSprite));
+                shootEnemyList.Add(new ShootingEnemy(eyeballAsset));
             }
             
         }
