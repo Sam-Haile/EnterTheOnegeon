@@ -679,7 +679,7 @@ namespace EnterTheOnegeon
                         new Vector2(_mState.X, _mState.Y),
                         new Rectangle(0, 0, gameReticle.Width, gameReticle.Height),
                         Color.White,
-                        1f,
+                        .8f,
                         new Vector2(gameReticle.Width / 2, gameReticle.Height / 2),
                         .15f,
                         SpriteEffects.None,
